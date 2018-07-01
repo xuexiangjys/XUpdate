@@ -28,6 +28,8 @@ import com.xuexiang.xupdate.listener.impl.DefaultUpdateFailureListener;
 import com.xuexiang.xupdate.utils.ApkInstallUtils;
 
 import java.io.File;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 版本更新的入口
@@ -39,12 +41,22 @@ public class XUpdate {
 
     private static XUpdate sInstance;
 
-
+    /**
+     * 请求参数【比如apk-key或者versionCode等】
+     */
+    private Map<String, Object> mParams;
+    /**
+     * 是否只在wifi下进行版本更新检查
+     */
+    boolean mIsWifiOnly;
+    /**
+     * 是否是自动版本更新模式【无人干预,有版本更新直接下载、安装】
+     */
+    boolean mIsAutoMode;
     /**
      * APK安装监听
      */
     private OnInstallListener mOnInstallListener;
-
     /**
      * 更新出错监听
      */
@@ -72,6 +84,65 @@ public class XUpdate {
         return sInstance;
     }
 
+    //===========================属性设置===================================//
+
+    /**
+     * 设置全局的apk更新请求参数
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public XUpdate param(@NonNull String key, @NonNull Object value) {
+        if (mParams == null) {
+            mParams = new TreeMap<>();
+        }
+        mParams.put(key, value);
+        return this;
+    }
+
+    /**
+     * 设置全局的apk更新请求参数
+     *
+     * @param params
+     * @return
+     */
+    public XUpdate params(@NonNull Map<String, Object> params) {
+        mParams = params;
+        return this;
+    }
+
+    public static Map<String, Object> getParams() {
+        return get().mParams;
+    }
+
+    /**
+     * 设置是否只在wifi下进行版本更新检查
+     * @param isWifiOnly
+     * @return
+     */
+    public XUpdate isWifiOnly(boolean isWifiOnly) {
+        mIsWifiOnly = isWifiOnly;
+        return this;
+    }
+
+    public static boolean isWifiOnly() {
+        return get().mIsWifiOnly;
+    }
+
+    /**
+     * 是否是自动版本更新模式【无人干预,有版本更新直接下载、安装】
+     * @param isAutoMode
+     * @return
+     */
+    public XUpdate isAutoMode(boolean isAutoMode) {
+        mIsAutoMode = isAutoMode;
+        return this;
+    }
+
+    public static boolean isAutoMode() {
+        return get().mIsAutoMode;
+    }
 
     //===========================apk安装监听===================================//
 
@@ -86,8 +157,8 @@ public class XUpdate {
         return this;
     }
 
-    public OnInstallListener getOnInstallListener() {
-        return mOnInstallListener;
+    public static OnInstallListener getOnInstallListener() {
+        return get().mOnInstallListener;
     }
 
     /**
@@ -117,8 +188,8 @@ public class XUpdate {
         return this;
     }
 
-    public OnUpdateFailureListener getOnUpdateFailureListener() {
-        return mOnUpdateFailureListener;
+    public static OnUpdateFailureListener getOnUpdateFailureListener() {
+        return get().mOnUpdateFailureListener;
     }
 
     /**

@@ -23,4 +23,7 @@ import com.xuexiang.xupdate.proxy.IUpdateProxy;
  * @since 2018/7/1 下午9:47
  */
 public class UpdateProxy implements IUpdateProxy {
+
+
+
 }

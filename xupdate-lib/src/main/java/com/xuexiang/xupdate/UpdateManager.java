@@ -16,12 +16,16 @@
 
 package com.xuexiang.xupdate;
 
-import com.xuexiang.xupdate.listener.OnInstallListener;
+import android.content.Context;
+import android.support.annotation.NonNull;
+
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
+import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateParser;
 import com.xuexiang.xupdate.proxy.IUpdatePrompter;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 版本更新管理
@@ -31,6 +35,7 @@ import java.util.Map;
  */
 public class UpdateManager {
 
+    private Context mContext;
     //============请求参数==============//
     /**
      * 版本更新的url地址
@@ -39,17 +44,23 @@ public class UpdateManager {
     /**
      * 请求参数
      */
-    private Map<String, String> mParams;
+    private Map<String, Object> mParams;
 
     //===========更新模式================//
+    /**
+     * 是否只在wifi下进行版本更新检查
+     */
+    private boolean mIsWifiOnly;
     /**
      * 是否是自动版本更新模式【无人干预】
      */
     private boolean mIsAutoMode;
 
-    private boolean mIsWifiOnly = false;
-
     //===========更新组件===============//
+    /**
+     * 版本更新网络请求服务API
+     */
+    private IUpdateHttpService mIUpdateHttpService;
     /**
      *
      */
@@ -63,4 +74,104 @@ public class UpdateManager {
      */
     private IUpdatePrompter mIUpdatePrompter;
 
+
+    /**
+     * 构造函数
+     *
+     * @param builder
+     */
+    private UpdateManager(Builder builder) {
+        mContext = builder.context;
+        mUpdateUrl = builder.updateUrl;
+        mParams = builder.params;
+
+        mIUpdateHttpService = builder.updateHttpService;
+    }
+
+
+    /**
+     * 版本更新管理构建者
+     */
+    public static class Builder {
+        //=======必填项========//
+        Context context;
+        /**
+         * 版本更新的url地址
+         */
+        String updateUrl;
+        /**
+         * 请求参数
+         */
+        Map<String, Object> params;
+        /**
+         * 版本更新网络请求服务API
+         */
+        IUpdateHttpService updateHttpService;
+
+        //===========更新模式================//
+        /**
+         * 是否只在wifi下进行版本更新检查
+         */
+        boolean isWifiOnly;
+        /**
+         * 是否是自动版本更新模式【无人干预,有版本更新直接下载、安装】
+         */
+        boolean isAutoMode;
+
+        public Builder(Context context) {
+            this.context = context;
+
+            params = new TreeMap<>();
+            if (XUpdate.getParams() != null) {
+                params.putAll(XUpdate.getParams());
+            }
+
+            isWifiOnly = XUpdate.isWifiOnly();
+            isAutoMode = XUpdate.isAutoMode();
+        }
+
+        /**
+         * 设置版本更新检查的url
+         *
+         * @param updateUrl
+         * @return
+         */
+        public Builder updateUrl(String updateUrl) {
+            this.updateUrl = updateUrl;
+            return this;
+        }
+
+        /**
+         * 设置请求参数
+         *
+         * @param params
+         * @return
+         */
+        public Builder params(@NonNull Map<String, Object> params) {
+            this.params.putAll(params);
+            return this;
+        }
+
+        /**
+         * 设置请求参数
+         *
+         * @param key
+         * @param value
+         * @return
+         */
+        public Builder param(@NonNull String key, @NonNull Object value) {
+            this.params.put(key, value);
+            return this;
+        }
+
+        /**
+         * 设置网络请求的请求服务API
+         * @param updateHttpService
+         * @return
+         */
+        public Builder updateHttpService(IUpdateHttpService updateHttpService) {
+            this.updateHttpService = updateHttpService;
+            return this;
+        }
+    }
 }
