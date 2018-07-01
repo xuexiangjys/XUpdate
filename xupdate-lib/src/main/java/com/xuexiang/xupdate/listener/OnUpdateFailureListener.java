@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-package com.xuexiang.xupdate.entity;
+package com.xuexiang.xupdate.listener;
+
+
+import com.xuexiang.xupdate.entity.UpdateError;
 
 /**
- * 版本更新信息
+ * 更新失败监听
  *
  * @author xuexiang
- * @since 2018/6/29 下午9:33
+ * @since 2018/7/1 下午7:43
  */
-public class UpdateInfo {
-
-
+public interface OnUpdateFailureListener {
+    /**
+     * 更新失败
+     *
+     * @param error 错误
+     */
+    void onFailure(UpdateError error);
 }

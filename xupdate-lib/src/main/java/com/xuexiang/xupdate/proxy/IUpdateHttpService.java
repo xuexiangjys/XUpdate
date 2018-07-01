@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xuexiang.xupdate.proxy.impl;
+package com.xuexiang.xupdate.proxy;
 
 import android.support.annotation.NonNull;
 
@@ -102,7 +102,7 @@ public interface IUpdateHttpService {
          *
          * @param file 下载好的文件
          */
-        void onResponse(File file);
+        void onSuccess(File file);
 
         /**
          * 错误回调

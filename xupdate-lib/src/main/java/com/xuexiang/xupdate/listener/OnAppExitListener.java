@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package com.xuexiang.xupdate.proxy.impl;
+package com.xuexiang.xupdate.listener;
 
 /**
- * 版本更新解析器
+ * 应用退出监听
  *
  * @author xuexiang
- * @since 2018/6/29 下午8:30
+ * @since 2018/7/1 下午7:34
  */
-public interface IUpdateParser {
+public interface OnAppExitListener {
+
+    /**
+     * 应用退出
+     */
+    void onAppExit();
+
 }

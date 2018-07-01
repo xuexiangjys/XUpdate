@@ -42,6 +42,11 @@ public class UpdateError extends Throwable {
         mCode = code;
     }
 
+    public UpdateError(Throwable e) {
+        super(e);
+        mCode = ERROR.UPDATE_UNKNOWN;
+    }
+
     public int getCode() {
         return mCode;
     }
@@ -87,7 +92,15 @@ public class UpdateError extends Throwable {
         public static final int DOWNLOAD_INCOMPLETE = DOWNLOAD_HTTP_STATUS + 1;
         public static final int DOWNLOAD_VERIFY = DOWNLOAD_INCOMPLETE + 1;
 
+        /**
+         * apk安装错误
+         */
         public static final int INSTALL_FAILED = 4000;
+
+        /**
+         * 未知的错误
+         */
+        public static final int UPDATE_UNKNOWN = 5000;
     }
 
     private static final SparseArray<String> sMessages = new SparseArray<String>();

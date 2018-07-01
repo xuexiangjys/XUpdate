@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-package com.xuexiang.xupdate.proxy.impl;
+package com.xuexiang.xupdate.listener.impl;
+
+import com.xuexiang.xupdate.entity.UpdateError;
+import com.xuexiang.xupdate.listener.OnUpdateFailureListener;
+import com.xuexiang.xupdate.logs.UpdateLog;
 
 /**
- * 版本更新检查器
+ * 默认的更新出错的处理(简单地打印日志）
  *
  * @author xuexiang
- * @since 2018/6/29 下午8:29
+ * @since 2018/7/1 下午7:48
  */
-public interface IUpdateChecker {
+public class DefaultUpdateFailureListener implements OnUpdateFailureListener {
 
-
+    @Override
+    public void onFailure(UpdateError error) {
+        UpdateLog.e(error);
+    }
 }

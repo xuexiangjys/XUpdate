@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xuexiang.xupdate.proxy.impl;
+package com.xuexiang.xupdate.proxy;
 
 /**
  * 版本更新提示器
