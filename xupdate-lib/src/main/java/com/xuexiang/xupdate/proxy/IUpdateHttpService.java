@@ -38,7 +38,7 @@ public interface IUpdateHttpService {
      * @param params   get参数
      * @param callBack 回调
      */
-    void asyncGet(@NonNull String url, @NonNull Map<String, String> params, @NonNull Callback callBack);
+    void asyncGet(@NonNull String url, @NonNull Map<String, Object> params, @NonNull Callback callBack);
 
 
     /**
@@ -48,7 +48,7 @@ public interface IUpdateHttpService {
      * @param params   post请求参数
      * @param callBack 回调
      */
-    void asyncPost(@NonNull String url, @NonNull Map<String, String> params, @NonNull Callback callBack);
+    void asyncPost(@NonNull String url, @NonNull Map<String, Object> params, @NonNull Callback callBack);
 
     /**
      * 文件下载
@@ -75,9 +75,9 @@ public interface IUpdateHttpService {
         /**
          * 错误回调
          *
-         * @param error 错误提示
+         * @param throwable 错误提示
          */
-        void onError(UpdateError error);
+        void onError(Throwable throwable);
     }
 
     /**
@@ -107,9 +107,9 @@ public interface IUpdateHttpService {
         /**
          * 错误回调
          *
-         * @param error 错误提示
+         * @param throwable 错误提示
          */
-        void onError(UpdateError error);
+        void onError(Throwable throwable);
 
     }
 

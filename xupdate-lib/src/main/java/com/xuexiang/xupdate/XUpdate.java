@@ -25,6 +25,8 @@ import com.xuexiang.xupdate.listener.OnInstallListener;
 import com.xuexiang.xupdate.listener.OnUpdateFailureListener;
 import com.xuexiang.xupdate.listener.impl.DefaultInstallListener;
 import com.xuexiang.xupdate.listener.impl.DefaultUpdateFailureListener;
+import com.xuexiang.xupdate.proxy.IUpdateHttpService;
+import com.xuexiang.xupdate.proxy.IUpdateParser;
 import com.xuexiang.xupdate.utils.ApkInstallUtils;
 
 import java.io.File;
@@ -41,18 +43,36 @@ public class XUpdate {
 
     private static XUpdate sInstance;
 
+    //========全局属性==========//
     /**
      * 请求参数【比如apk-key或者versionCode等】
      */
     private Map<String, Object> mParams;
     /**
+     * 是否使用的是Get请求
+     */
+    private boolean mIsGet;
+    /**
      * 是否只在wifi下进行版本更新检查
      */
-    boolean mIsWifiOnly;
+    private boolean mIsWifiOnly;
     /**
      * 是否是自动版本更新模式【无人干预,有版本更新直接下载、安装】
      */
-    boolean mIsAutoMode;
+    private boolean mIsAutoMode;
+    /**
+     * 下载的apk文件缓存目录
+     */
+    private String mApkCacheDir;
+    //========全局更新实现接口==========//
+    /**
+     * 版本更新网络请求服务API
+     */
+    private IUpdateHttpService mIUpdateHttpService;
+    /**
+     * 版本更新解析器
+     */
+    private IUpdateParser mIUpdateParser;
     /**
      * APK安装监听
      */
@@ -63,8 +83,14 @@ public class XUpdate {
     private OnUpdateFailureListener mOnUpdateFailureListener;
 
     private XUpdate() {
+        mIsGet = false;
+        mIsWifiOnly = true;
+        mIsAutoMode = false;
+
         mOnInstallListener = new DefaultInstallListener();
         mOnUpdateFailureListener = new DefaultUpdateFailureListener();
+
+
     }
 
 
@@ -117,7 +143,53 @@ public class XUpdate {
     }
 
     /**
+     * 设置版本更新网络请求服务API
+     *
+     * @param updateHttpService
+     * @return
+     */
+    public XUpdate setIUpdateHttpService(IUpdateHttpService updateHttpService) {
+        mIUpdateHttpService = updateHttpService;
+        return this;
+    }
+
+    public static IUpdateHttpService getIUpdateHttpService() {
+        return get().mIUpdateHttpService;
+    }
+
+    /**
+     * 设置版本更新的解析器
+     *
+     * @param updateParser
+     * @return
+     */
+    public XUpdate setIUpdateParser(IUpdateParser updateParser) {
+        mIUpdateParser = updateParser;
+        return this;
+    }
+
+    public static IUpdateParser getIUpdateParser() {
+        return get().mIUpdateParser;
+    }
+
+    /**
+     * 是否使用的是Get请求
+     *
+     * @param isGet
+     * @return
+     */
+    public XUpdate isGet(boolean isGet) {
+        mIsGet = isGet;
+        return this;
+    }
+
+    public static boolean isGet() {
+        return get().mIsGet;
+    }
+
+    /**
      * 设置是否只在wifi下进行版本更新检查
+     *
      * @param isWifiOnly
      * @return
      */
@@ -132,6 +204,7 @@ public class XUpdate {
 
     /**
      * 是否是自动版本更新模式【无人干预,有版本更新直接下载、安装】
+     *
      * @param isAutoMode
      * @return
      */
@@ -142,6 +215,21 @@ public class XUpdate {
 
     public static boolean isAutoMode() {
         return get().mIsAutoMode;
+    }
+
+    /**
+     * 设置apk的缓存路径
+     *
+     * @param apkCacheDir
+     * @return
+     */
+    public XUpdate setApkCacheDir(String apkCacheDir) {
+        mApkCacheDir = apkCacheDir;
+        return this;
+    }
+
+    public static String getApkCacheDir() {
+        return get().mApkCacheDir;
     }
 
     //===========================apk安装监听===================================//

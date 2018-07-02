@@ -71,17 +71,23 @@ public class UpdateError extends Throwable {
      * 版本更新错误码
      */
     public final static class ERROR {
+
         /**
          * 查询更新失败
          */
         public static final int CHECK_UNKNOWN = 2000;
         public static final int CHECK_NO_WIFI = CHECK_UNKNOWN + 1;
         public static final int CHECK_NO_NETWORK = CHECK_NO_WIFI + 1;
-        public static final int CHECK_NETWORK_IO = CHECK_NO_NETWORK + 1;
+        public static final int CHECK_NO_NEW_VERSION = CHECK_NO_NETWORK + 1;
+        public static final int CHECK_NETWORK_IO = CHECK_NO_NEW_VERSION + 1;
         public static final int CHECK_HTTP_STATUS = CHECK_NETWORK_IO + 1;
-        public static final int CHECK_PARSE = CHECK_HTTP_STATUS + 1;
+        public static final int CHECK_JSON_EMPTY = CHECK_HTTP_STATUS + 1;
+        public static final int CHECK_PARSE = CHECK_JSON_EMPTY + 1;
+        public static final int CHECK_IGNORED_VERSION = CHECK_PARSE + 1;
 
-        public static final int DOWNLOAD_UNKNOWN = 3000;
+        public static final int PROMPT_SHOW = 3000;
+
+        public static final int DOWNLOAD_UNKNOWN = 4000;
         public static final int DOWNLOAD_CANCELLED = DOWNLOAD_UNKNOWN + 1;
         public static final int DOWNLOAD_DISK_NO_SPACE = DOWNLOAD_CANCELLED + 1;
         public static final int DOWNLOAD_DISK_IO = DOWNLOAD_DISK_NO_SPACE + 1;
@@ -95,23 +101,26 @@ public class UpdateError extends Throwable {
         /**
          * apk安装错误
          */
-        public static final int INSTALL_FAILED = 4000;
+        public static final int INSTALL_FAILED = 5000;
 
         /**
          * 未知的错误
          */
-        public static final int UPDATE_UNKNOWN = 5000;
+        public static final int UPDATE_UNKNOWN = 5100;
     }
 
     private static final SparseArray<String> sMessages = new SparseArray<String>();
 
     static {
         sMessages.append(ERROR.CHECK_UNKNOWN, "查询更新失败：未知错误");
-        sMessages.append(ERROR.CHECK_NO_WIFI, "查询更新失败：没有 WIFI");
+        sMessages.append(ERROR.CHECK_NO_WIFI, "查询更新失败：没有WIFI");
         sMessages.append(ERROR.CHECK_NO_NETWORK, "查询更新失败：没有网络");
+        sMessages.append(ERROR.CHECK_NO_NEW_VERSION, "查询更新：没有新版本");
         sMessages.append(ERROR.CHECK_NETWORK_IO, "查询更新失败：网络异常");
         sMessages.append(ERROR.CHECK_HTTP_STATUS, "查询更新失败：错误的HTTP状态");
-        sMessages.append(ERROR.CHECK_PARSE, "查询更新失败：解析错误");
+        sMessages.append(ERROR.CHECK_JSON_EMPTY, "查询更新失败：Json 为空");
+        sMessages.append(ERROR.CHECK_PARSE, "查询更新失败：解析Json错误");
+        sMessages.append(ERROR.CHECK_IGNORED_VERSION, "查询更新失败：已经被忽略的版本");
 
         sMessages.append(ERROR.DOWNLOAD_UNKNOWN, "下载失败：未知错误");
         sMessages.append(ERROR.DOWNLOAD_CANCELLED, "下载失败：下载被取消");

@@ -17,23 +17,44 @@
 package com.xuexiang.xupdate;
 
 import android.content.Context;
+import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 
+import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateParser;
 import com.xuexiang.xupdate.proxy.IUpdatePrompter;
+import com.xuexiang.xupdate.proxy.IUpdateProxy;
+import com.xuexiang.xupdate.proxy.impl.DefaultUpdateChecker;
+import com.xuexiang.xupdate.proxy.impl.DefaultUpdatePrompter;
+import com.xuexiang.xupdate.utils.UpdateUtils;
 
 import java.util.Map;
 import java.util.TreeMap;
 
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NETWORK;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_WIFI;
+
 /**
- * 版本更新管理
+ * 版本更新管理者
  *
  * @author xuexiang
  * @since 2018/7/1 下午9:49
  */
-public class UpdateManager {
+public class UpdateManager implements IUpdateProxy {
+    /**
+     * 版本更新代理
+     */
+    private IUpdateProxy mIUpdateProxy;
+    /**
+     * 更新信息
+     */
+    private UpdateEntity mUpdateEntity;
 
     private Context mContext;
     //============请求参数==============//
@@ -46,31 +67,39 @@ public class UpdateManager {
      */
     private Map<String, Object> mParams;
 
+    /**
+     * apk缓存的目录
+     */
+    private String mApkCacheDir;
+
     //===========更新模式================//
     /**
      * 是否只在wifi下进行版本更新检查
      */
     private boolean mIsWifiOnly;
     /**
+     * 是否是Get请求
+     */
+    private boolean mIsGet;
+    /**
      * 是否是自动版本更新模式【无人干预】
      */
     private boolean mIsAutoMode;
-
     //===========更新组件===============//
     /**
      * 版本更新网络请求服务API
      */
     private IUpdateHttpService mIUpdateHttpService;
     /**
-     *
-     */
-    private IUpdateParser mIUpdateParser;
-    /**
-     *
+     * 版本更新检查器
      */
     private IUpdateChecker mIUpdateChecker;
     /**
-     *
+     * 版本更新解析器
+     */
+    private IUpdateParser mIUpdateParser;
+    /**
+     * 版本更新提示器
      */
     private IUpdatePrompter mIUpdatePrompter;
 
@@ -84,10 +113,153 @@ public class UpdateManager {
         mContext = builder.context;
         mUpdateUrl = builder.updateUrl;
         mParams = builder.params;
+        mApkCacheDir = builder.apkCacheDir;
+
+        mIsWifiOnly = builder.isWifiOnly;
+        mIsGet = builder.isGet;
+        mIsAutoMode = builder.isAutoMode;
 
         mIUpdateHttpService = builder.updateHttpService;
+        mIUpdateParser = builder.updateParser;
+
+        mIUpdateChecker = builder.updateChecker;
+        mIUpdatePrompter = builder.updatePrompter;
     }
 
+    /**
+     * 设置版本更新的代理，可自定义版本更新
+     *
+     * @param updateProxy
+     * @return
+     */
+    public UpdateManager setIUpdateProxy(IUpdateProxy updateProxy) {
+        mIUpdateProxy = updateProxy;
+        return this;
+    }
+
+    @Override
+    public Context getContext() {
+        return mContext;
+    }
+
+    @Override
+    public IUpdateHttpService getIUpdateHttpService() {
+        return mIUpdateHttpService;
+    }
+
+    /**
+     * 开始版本更新
+     */
+    @Override
+    public void update() {
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.update();
+        } else {
+            doUpdate();
+        }
+    }
+
+    /**
+     * 执行版本更新操作
+     */
+    private void doUpdate() {
+        onBeforeCheck();
+
+        if (mIsWifiOnly) {
+            if (UpdateUtils.checkWifi(mContext)) {
+                checkVersion();
+            } else {
+                onAfterCheck();
+                XUpdate.onUpdateError(CHECK_NO_WIFI);
+            }
+        } else {
+            if (UpdateUtils.checkNetwork(mContext)) {
+                checkVersion();
+            } else {
+                onAfterCheck();
+                XUpdate.onUpdateError(CHECK_NO_NETWORK);
+            }
+        }
+    }
+
+    /**
+     * 版本检查之前
+     */
+    @Override
+    public void onBeforeCheck() {
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.onBeforeCheck();
+        }
+    }
+
+    /**
+     * 执行网络请求，检查应用的版本信息
+     */
+    @Override
+    public void checkVersion() {
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.checkVersion();
+        } else {
+            mIUpdateChecker.checkVersion(mIsGet, mUpdateUrl, mParams, this);
+        }
+    }
+
+    /**
+     * 将请求的json结果解析为版本更新信息实体
+     *
+     * @param json
+     * @return
+     */
+    @Override
+    public UpdateEntity parseJson(@NonNull String json) {
+        if (mIUpdateProxy != null) {
+            mUpdateEntity = mIUpdateProxy.parseJson(json);
+        } else {
+            mUpdateEntity = mIUpdateParser.parseJson(json);
+        }
+        return mUpdateEntity;
+    }
+
+    /**
+     * 版本检查之后
+     */
+    @Override
+    public void onAfterCheck() {
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.onAfterCheck();
+        }
+    }
+
+    /**
+     * 发现新版本
+     *
+     * @param updateEntity 版本更新信息
+     * @param updateProxy  版本更新代理
+     */
+    @Override
+    public void findNewVersion(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy) {
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.findNewVersion(updateEntity, updateProxy);
+        } else {
+            mIUpdatePrompter.showPrompt(updateEntity, updateProxy);
+        }
+    }
+
+    /**
+     * 未发现新版本
+     *
+     * @param throwable 未发现的原因
+     */
+    @Override
+    public void noNewVersion(@NonNull Throwable throwable) {
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.noNewVersion(throwable);
+        } else {
+            XUpdate.onUpdateError(CHECK_NO_NEW_VERSION, throwable.getMessage());
+        }
+    }
+
+    //============================构建者===============================//
 
     /**
      * 版本更新管理构建者
@@ -107,8 +279,15 @@ public class UpdateManager {
          * 版本更新网络请求服务API
          */
         IUpdateHttpService updateHttpService;
-
+        /**
+         * 版本更新解析器
+         */
+        IUpdateParser updateParser;
         //===========更新模式================//
+        /**
+         * 是否使用的是Get请求
+         */
+        boolean isGet;
         /**
          * 是否只在wifi下进行版本更新检查
          */
@@ -118,7 +297,34 @@ public class UpdateManager {
          */
         boolean isAutoMode;
 
-        public Builder(Context context) {
+        //===========更新行为================//
+        /**
+         * 版本更新检查器
+         */
+        IUpdateChecker updateChecker;
+        /**
+         * 版本更新提示器
+         */
+        IUpdatePrompter updatePrompter;
+        /**
+         * 主题颜色
+         */
+        int themeColor;
+        /**
+         * 顶部背景图片
+         */
+        int topResId;
+        /**
+         * apk缓存的目录
+         */
+        String apkCacheDir;
+
+        /**
+         * 构建者
+         *
+         * @param context
+         */
+        public Builder(@NonNull Context context) {
             this.context = context;
 
             params = new TreeMap<>();
@@ -126,8 +332,15 @@ public class UpdateManager {
                 params.putAll(XUpdate.getParams());
             }
 
+            updateHttpService = XUpdate.getIUpdateHttpService();
+            updateParser = XUpdate.getIUpdateParser();
+
+            updateChecker = new DefaultUpdateChecker();
+
+            isGet = XUpdate.isGet();
             isWifiOnly = XUpdate.isWifiOnly();
             isAutoMode = XUpdate.isAutoMode();
+            apkCacheDir = XUpdate.getApkCacheDir();
         }
 
         /**
@@ -136,7 +349,7 @@ public class UpdateManager {
          * @param updateUrl
          * @return
          */
-        public Builder updateUrl(String updateUrl) {
+        public Builder updateUrl(@NonNull String updateUrl) {
             this.updateUrl = updateUrl;
             return this;
         }
@@ -166,12 +379,155 @@ public class UpdateManager {
 
         /**
          * 设置网络请求的请求服务API
+         *
          * @param updateHttpService
          * @return
          */
-        public Builder updateHttpService(IUpdateHttpService updateHttpService) {
+        public Builder updateHttpService(@NonNull IUpdateHttpService updateHttpService) {
             this.updateHttpService = updateHttpService;
             return this;
+        }
+
+        /**
+         * 设置apk下载的缓存目录
+         *
+         * @param apkCacheDir
+         * @return
+         */
+        public Builder apkCacheDir(@NonNull String apkCacheDir) {
+            this.apkCacheDir = apkCacheDir;
+            return this;
+        }
+
+        /**
+         * 是否使用Get请求
+         *
+         * @param isGet
+         * @return
+         */
+        public Builder isGet(boolean isGet) {
+            this.isGet = isGet;
+            return this;
+        }
+
+        /**
+         * 是否是自动版本更新模式【无人干预,有版本更新直接下载、安装】
+         *
+         * @param isAutoMode
+         * @return
+         */
+        public Builder isAutoMode(boolean isAutoMode) {
+            this.isAutoMode = isAutoMode;
+            return this;
+        }
+
+        /**
+         * 是否只在wifi下进行版本更新检查
+         *
+         * @param isWifiOnly
+         * @return
+         */
+        public Builder isWifiOnly(boolean isWifiOnly) {
+            this.isWifiOnly = isWifiOnly;
+            return this;
+        }
+
+        /**
+         * 设置版本更新的解析器
+         *
+         * @param updateParser
+         * @return
+         */
+        public Builder updateParser(@NonNull IUpdateParser updateParser) {
+            this.updateParser = updateParser;
+            return this;
+        }
+
+        /**
+         * 设置版本更新提示器
+         *
+         * @param updatePrompter
+         * @return
+         */
+        public Builder updatePrompter(@NonNull IUpdatePrompter updatePrompter) {
+            this.updatePrompter = updatePrompter;
+            return this;
+        }
+
+        /**
+         * 设置版本更新检查器
+         *
+         * @param updateChecker
+         * @return
+         */
+        public Builder updateChecker(@NonNull IUpdateChecker updateChecker) {
+            this.updateChecker = updateChecker;
+            return this;
+        }
+
+        /**
+         * 设置主题颜色
+         *
+         * @param themeColor
+         * @return
+         */
+        public Builder themeColor(@ColorInt int themeColor) {
+            this.themeColor = themeColor;
+            return this;
+        }
+
+        /**
+         * 设置顶部背景图片
+         *
+         * @param topResId
+         * @return
+         */
+        public Builder topResId(@DrawableRes int topResId) {
+            this.topResId = topResId;
+            return this;
+        }
+
+        /**
+         * 构建版本更新管理者
+         *
+         * @return 版本更新管理者
+         */
+        public UpdateManager build() {
+            UpdateUtils.requireNonNull(this.context, "[UpdateManager.Builder] : context == null");
+            UpdateUtils.requireNonNull(this.updateHttpService, "[UpdateManager.Builder] : updateHttpService == null");
+            if (TextUtils.isEmpty(this.updateUrl)) {
+                throw new NullPointerException("[UpdateManager.Builder] : updateUrl 不能为空");
+            }
+
+            if (this.updatePrompter == null) {
+                if (context instanceof FragmentActivity) {
+                    updatePrompter = new DefaultUpdatePrompter(((FragmentActivity) context).getSupportFragmentManager(), themeColor, topResId);
+                } else {
+                    throw new NullPointerException("[UpdateManager.Builder] : 使用默认的版本更新提示器，context必须传FragmentActivity！");
+                }
+            }
+
+            if (TextUtils.isEmpty(apkCacheDir)) {
+                apkCacheDir = UpdateUtils.getDiskCacheDir(this.context, "xupdate");
+            }
+            return new UpdateManager(this);
+        }
+
+        /**
+         * 进行版本更新
+         */
+        public void update() {
+            build().update();
+        }
+
+        /**
+         * 进行版本更新
+         *
+         * @param updateProxy 版本更新代理
+         */
+        public void update(IUpdateProxy updateProxy) {
+            build().setIUpdateProxy(updateProxy)
+                    .update();
         }
     }
 }

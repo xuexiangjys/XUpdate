@@ -16,14 +16,65 @@
 
 package com.xuexiang.xupdate.proxy.impl;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+
+import com.xuexiang.xupdate.entity.UpdateEntity;
+import com.xuexiang.xupdate.entity.UpdateError;
+import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
 
 /**
+ * 版本更新代理
+ *
  * @author xuexiang
  * @since 2018/7/1 下午9:47
  */
 public class UpdateProxy implements IUpdateProxy {
 
 
+    @Override
+    public Context getContext() {
+        return null;
+    }
 
+    @Override
+    public IUpdateHttpService getIUpdateHttpService() {
+        return null;
+    }
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void onBeforeCheck() {
+
+    }
+
+    @Override
+    public void checkVersion() {
+
+    }
+
+    @Override
+    public UpdateEntity parseJson(@NonNull String json) {
+        return null;
+    }
+
+    @Override
+    public void onAfterCheck() {
+
+    }
+
+    @Override
+    public void findNewVersion(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy) {
+
+    }
+
+    @Override
+    public void noNewVersion(@NonNull Throwable throwable) {
+
+    }
 }

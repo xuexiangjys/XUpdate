@@ -16,6 +16,8 @@
 
 package com.xuexiang.xupdate.proxy;
 
+import com.xuexiang.xupdate.entity.UpdateEntity;
+
 /**
  * 版本更新解析器
  *
@@ -23,4 +25,12 @@ package com.xuexiang.xupdate.proxy;
  * @since 2018/6/29 下午8:30
  */
 public interface IUpdateParser {
+
+    /**
+     * 将请求的json结果解析为版本更新信息实体
+     *
+     * @param json
+     * @return
+     */
+    UpdateEntity parseJson(String json);
 }

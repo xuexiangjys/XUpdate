@@ -16,6 +16,10 @@
 
 package com.xuexiang.xupdate.proxy;
 
+import android.support.annotation.NonNull;
+
+import java.util.Map;
+
 /**
  * 版本更新检查器
  *
@@ -24,5 +28,21 @@ package com.xuexiang.xupdate.proxy;
  */
 public interface IUpdateChecker {
 
+    /**
+     * 检查应用的版本信息
+     *
+     * @param isGet       是否是get请求
+     * @param url         版本更新的url地址
+     * @param params      请求参数
+     * @param updateProxy 版本更新代理
+     */
+    void checkVersion(boolean isGet, @NonNull String url, @NonNull Map<String, Object> params, @NonNull IUpdateProxy updateProxy);
+
+    /**
+     * 处理版本检查的结果
+     *
+     * @param result
+     */
+    void processCheckResult(@NonNull String result, @NonNull IUpdateProxy updateProxy);
 
 }

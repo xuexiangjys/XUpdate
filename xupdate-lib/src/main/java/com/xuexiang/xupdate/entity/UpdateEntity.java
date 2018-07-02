@@ -29,29 +29,29 @@ public class UpdateEntity implements Serializable {
     /**
      * 是否有新版本
      */
-    private boolean mHasUpdate = false;
+    private boolean mHasUpdate;
 
     /**
      * 是否强制安装：不安装无法使用app
      */
-    private boolean mIsForce = false;
+    private boolean mIsForce;
 
     /**
      * 是否可忽略该版本
      */
-    private boolean mIsIgnorable = true;
+    private boolean mIsIgnorable;
 
     //============升级行为============//
 
     /**
      * 是否静默下载：有新版本时不提示直接下载
      */
-    private boolean mIsSilent = false;
+    private boolean mIsSilent;
 
     /**
      * 是否下载完成后自动安装
      */
-    private boolean mIsAutoInstall = true;
+    private boolean mIsAutoInstall;
 
     //===========升级的信息=============//
     /**
@@ -77,7 +77,7 @@ public class UpdateEntity implements Serializable {
      */
     private String mMd5;
     /**
-     * app大小
+     * app大小【单位：KB】
      */
     private long mSize;
 
@@ -99,29 +99,29 @@ public class UpdateEntity implements Serializable {
         return this;
     }
 
-    public boolean ismIsIgnorable() {
+    public boolean isIgnorable() {
         return mIsIgnorable;
     }
 
-    public UpdateEntity setmIsIgnorable(boolean isIgnorable) {
+    public UpdateEntity setIsIgnorable(boolean isIgnorable) {
         mIsIgnorable = isIgnorable;
         return this;
     }
 
-    public boolean ismIsSilent() {
+    public boolean isSilent() {
         return mIsSilent;
     }
 
-    public UpdateEntity setmIsSilent(boolean isSilent) {
+    public UpdateEntity setIsSilent(boolean isSilent) {
         mIsSilent = isSilent;
         return this;
     }
 
-    public boolean ismIsAutoInstall() {
+    public boolean isAutoInstall() {
         return mIsAutoInstall;
     }
 
-    public UpdateEntity setmIsAutoInstall(boolean isAutoInstall) {
+    public UpdateEntity setIsAutoInstall(boolean isAutoInstall) {
         mIsAutoInstall = isAutoInstall;
         return this;
     }
