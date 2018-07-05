@@ -30,7 +30,7 @@ import java.security.NoSuchAlgorithmException;
  * @author xuexiang
  * @since 2018/7/2 下午3:14
  */
-public final class Md5Utils {
+final class Md5Utils {
 
     private Md5Utils() {
         throw new UnsupportedOperationException("cannot be instantiated");

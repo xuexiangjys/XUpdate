@@ -32,5 +32,5 @@ public interface IUpdateParser {
      * @param json
      * @return
      */
-    UpdateEntity parseJson(String json);
+    UpdateEntity parseJson(String json) throws Exception;
 }

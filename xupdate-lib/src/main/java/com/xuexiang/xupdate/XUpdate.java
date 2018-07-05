@@ -16,6 +16,7 @@
 
 package com.xuexiang.xupdate;
 
+import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
@@ -25,8 +26,13 @@ import com.xuexiang.xupdate.listener.OnInstallListener;
 import com.xuexiang.xupdate.listener.OnUpdateFailureListener;
 import com.xuexiang.xupdate.listener.impl.DefaultInstallListener;
 import com.xuexiang.xupdate.listener.impl.DefaultUpdateFailureListener;
+import com.xuexiang.xupdate.proxy.IUpdateChecker;
+import com.xuexiang.xupdate.proxy.IUpdateDownLoader;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateParser;
+import com.xuexiang.xupdate.proxy.impl.DefaultUpdateChecker;
+import com.xuexiang.xupdate.proxy.impl.DefaultUpdateDownLoader;
+import com.xuexiang.xupdate.proxy.impl.DefaultUpdateParser;
 import com.xuexiang.xupdate.utils.ApkInstallUtils;
 
 import java.io.File;
@@ -41,6 +47,7 @@ import java.util.TreeMap;
  */
 public class XUpdate {
 
+    private Application mContext;
     private static XUpdate sInstance;
 
     //========全局属性==========//
@@ -70,9 +77,17 @@ public class XUpdate {
      */
     private IUpdateHttpService mIUpdateHttpService;
     /**
+     * 版本更新检查器
+     */
+    private IUpdateChecker mIUpdateChecker;
+    /**
      * 版本更新解析器
      */
     private IUpdateParser mIUpdateParser;
+    /**
+     * 版本更新下载器
+     */
+    private IUpdateDownLoader mIUpdateDownLoader;
     /**
      * APK安装监听
      */
@@ -87,10 +102,11 @@ public class XUpdate {
         mIsWifiOnly = true;
         mIsAutoMode = false;
 
+        mIUpdateChecker = new DefaultUpdateChecker();
+        mIUpdateParser = new DefaultUpdateParser();
+        mIUpdateDownLoader = new DefaultUpdateDownLoader();
         mOnInstallListener = new DefaultInstallListener();
         mOnUpdateFailureListener = new DefaultUpdateFailureListener();
-
-
     }
 
 
@@ -108,6 +124,28 @@ public class XUpdate {
             }
         }
         return sInstance;
+    }
+
+    /**
+     * 初始化
+     * @param application
+     */
+    public void init(Application application) {
+        mContext = application;
+    }
+
+    private Application getApplication() {
+        testInitialize();
+        return mContext;
+    }
+
+    private void testInitialize() {
+        if (mContext == null)
+            throw new ExceptionInInitializerError("请先在全局Application中调用 XUpdate.get().init() 初始化！");
+    }
+
+    public static Context getContext() {
+        return get().getApplication();
     }
 
     //===========================属性设置===================================//
@@ -158,6 +196,21 @@ public class XUpdate {
     }
 
     /**
+     * 设置版本更新检查
+     *
+     * @param updateChecker
+     * @return
+     */
+    public XUpdate setIUpdateChecker(IUpdateChecker updateChecker) {
+        mIUpdateChecker = updateChecker;
+        return this;
+    }
+
+    public static IUpdateChecker getIUpdateChecker() {
+        return get().mIUpdateChecker;
+    }
+
+    /**
      * 设置版本更新的解析器
      *
      * @param updateParser
@@ -170,6 +223,21 @@ public class XUpdate {
 
     public static IUpdateParser getIUpdateParser() {
         return get().mIUpdateParser;
+    }
+
+    /**
+     * 设置版本更新下载器
+     *
+     * @param updateDownLoader
+     * @return
+     */
+    public XUpdate setIUpdateDownLoader(IUpdateDownLoader updateDownLoader) {
+        mIUpdateDownLoader = updateDownLoader;
+        return this;
+    }
+
+    public static IUpdateDownLoader getIUpdateDownLoader() {
+        return get().mIUpdateDownLoader;
     }
 
     /**

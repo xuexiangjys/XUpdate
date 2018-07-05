@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package com.xuexiang.xupdate.proxy;
+package com.xuexiang.xupdate.proxy.impl;
 
 import android.support.annotation.NonNull;
 
 import com.xuexiang.xupdate.entity.UpdateEntity;
+import com.xuexiang.xupdate.proxy.IUpdateDownLoader;
+import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 
 /**
- * 版本更新下载器
+ * 默认版本更新下载器
  *
  * @author xuexiang
- * @since 2018/6/29 下午8:31
+ * @since 2018/7/5 下午5:06
  */
-public interface IUpdateDownLoader {
+public class DefaultUpdateDownLoader implements IUpdateDownLoader {
+    @Override
+    public void startDownload(@NonNull UpdateEntity updateEntity, @NonNull IUpdateHttpService.DownLoadCallback callback) {
 
-    /**
-     * 开始下载更新
-     *
-     * @param updateEntity 更新信息
-     * @param callback     下载的回调
-     */
-    void startDownload(@NonNull UpdateEntity updateEntity, @NonNull IUpdateHttpService.DownLoadCallback callback);
+    }
 }

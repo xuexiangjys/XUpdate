@@ -25,6 +25,7 @@ import android.text.TextUtils;
 
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
+import com.xuexiang.xupdate.proxy.IUpdateDownLoader;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateParser;
 import com.xuexiang.xupdate.proxy.IUpdatePrompter;
@@ -33,6 +34,7 @@ import com.xuexiang.xupdate.proxy.impl.DefaultUpdateChecker;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdatePrompter;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 
+import java.io.File;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -46,7 +48,7 @@ import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_WIFI;
  * @author xuexiang
  * @since 2018/7/1 下午9:49
  */
-public class UpdateManager implements IUpdateProxy {
+public class UpdateManager implements IUpdateProxy, IUpdateHttpService.DownLoadCallback {
     /**
      * 版本更新代理
      */
@@ -82,7 +84,7 @@ public class UpdateManager implements IUpdateProxy {
      */
     private boolean mIsGet;
     /**
-     * 是否是自动版本更新模式【无人干预】
+     * 是否是自动版本更新模式【无人干预,自动下载，自动更新】
      */
     private boolean mIsAutoMode;
     //===========更新组件===============//
@@ -98,6 +100,10 @@ public class UpdateManager implements IUpdateProxy {
      * 版本更新解析器
      */
     private IUpdateParser mIUpdateParser;
+    /**
+     * 版本更新下载器
+     */
+    private IUpdateDownLoader mIUpdateDownLoader;
     /**
      * 版本更新提示器
      */
@@ -120,9 +126,11 @@ public class UpdateManager implements IUpdateProxy {
         mIsAutoMode = builder.isAutoMode;
 
         mIUpdateHttpService = builder.updateHttpService;
-        mIUpdateParser = builder.updateParser;
 
         mIUpdateChecker = builder.updateChecker;
+        mIUpdateParser = builder.updateParser;
+        mIUpdateDownLoader = builder.updateDownLoader;
+
         mIUpdatePrompter = builder.updatePrompter;
     }
 
@@ -211,11 +219,15 @@ public class UpdateManager implements IUpdateProxy {
      * @return
      */
     @Override
-    public UpdateEntity parseJson(@NonNull String json) {
+    public UpdateEntity parseJson(@NonNull String json) throws Exception{
         if (mIUpdateProxy != null) {
             mUpdateEntity = mIUpdateProxy.parseJson(json);
         } else {
             mUpdateEntity = mIUpdateParser.parseJson(json);
+        }
+        if (mUpdateEntity != null) {
+            mUpdateEntity.setApkCacheDir(mApkCacheDir);
+            mUpdateEntity.setIsAutoMode(mIsAutoMode);
         }
         return mUpdateEntity;
     }
@@ -238,10 +250,14 @@ public class UpdateManager implements IUpdateProxy {
      */
     @Override
     public void findNewVersion(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy) {
-        if (mIUpdateProxy != null) {
-            mIUpdateProxy.findNewVersion(updateEntity, updateProxy);
+        if (updateEntity.isSilent()) { //静默下载，发现新版本后，直接下载更新
+            startDownload(updateEntity, this);
         } else {
-            mIUpdatePrompter.showPrompt(updateEntity, updateProxy);
+            if (mIUpdateProxy != null) { //否则显示版本更新提示
+                mIUpdateProxy.findNewVersion(updateEntity, updateProxy);
+            } else {
+                mIUpdatePrompter.showPrompt(updateEntity, updateProxy);
+            }
         }
     }
 
@@ -257,6 +273,35 @@ public class UpdateManager implements IUpdateProxy {
         } else {
             XUpdate.onUpdateError(CHECK_NO_NEW_VERSION, throwable.getMessage());
         }
+    }
+
+    @Override
+    public void startDownload(@NonNull UpdateEntity updateEntity, @NonNull IUpdateHttpService.DownLoadCallback callback) {
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.startDownload(updateEntity, callback);
+        } else {
+            mIUpdateDownLoader.startDownload(updateEntity, callback);
+        }
+    }
+
+    @Override
+    public void onStart() {
+
+    }
+
+    @Override
+    public void onProgress(float progress, long total) {
+
+    }
+
+    @Override
+    public void onSuccess(File file) {
+
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+
     }
 
     //============================构建者===============================//
@@ -307,6 +352,10 @@ public class UpdateManager implements IUpdateProxy {
          */
         IUpdatePrompter updatePrompter;
         /**
+         * 下载器
+         */
+        IUpdateDownLoader updateDownLoader;
+        /**
          * 主题颜色
          */
         int themeColor;
@@ -333,9 +382,10 @@ public class UpdateManager implements IUpdateProxy {
             }
 
             updateHttpService = XUpdate.getIUpdateHttpService();
-            updateParser = XUpdate.getIUpdateParser();
 
-            updateChecker = new DefaultUpdateChecker();
+            updateChecker = XUpdate.getIUpdateChecker();
+            updateParser = XUpdate.getIUpdateParser();
+            updateDownLoader = XUpdate.getIUpdateDownLoader();
 
             isGet = XUpdate.isGet();
             isWifiOnly = XUpdate.isWifiOnly();
@@ -433,6 +483,17 @@ public class UpdateManager implements IUpdateProxy {
         }
 
         /**
+         * 设置版本更新检查器
+         *
+         * @param updateChecker
+         * @return
+         */
+        public Builder updateChecker(@NonNull IUpdateChecker updateChecker) {
+            this.updateChecker = updateChecker;
+            return this;
+        }
+
+        /**
          * 设置版本更新的解析器
          *
          * @param updateParser
@@ -455,17 +516,6 @@ public class UpdateManager implements IUpdateProxy {
         }
 
         /**
-         * 设置版本更新检查器
-         *
-         * @param updateChecker
-         * @return
-         */
-        public Builder updateChecker(@NonNull IUpdateChecker updateChecker) {
-            this.updateChecker = updateChecker;
-            return this;
-        }
-
-        /**
          * 设置主题颜色
          *
          * @param themeColor
@@ -484,6 +534,17 @@ public class UpdateManager implements IUpdateProxy {
          */
         public Builder topResId(@DrawableRes int topResId) {
             this.topResId = topResId;
+            return this;
+        }
+
+        /**
+         * 设备版本更新下载器
+         *
+         * @param updateDownLoader
+         * @return
+         */
+        public Builder updateDownLoader(@NonNull IUpdateDownLoader updateDownLoader) {
+            this.updateDownLoader = updateDownLoader;
             return this;
         }
 

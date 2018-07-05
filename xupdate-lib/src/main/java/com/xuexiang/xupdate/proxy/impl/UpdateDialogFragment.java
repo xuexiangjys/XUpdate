@@ -135,8 +135,8 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         if (topResId != 0) {
             args.putInt(KEY_UPDATE_TOP_PICTURE, topResId);
         }
-        fragment.setArguments(args);
-        fragment.setIUpdateProxy(updateProxy);
+        fragment.setIUpdateProxy(updateProxy)
+                .setArguments(args);
         return fragment;
     }
 

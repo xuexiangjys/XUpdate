@@ -19,6 +19,7 @@ package com.xuexiang.xupdate.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -27,6 +28,8 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 
 import java.io.File;
@@ -75,9 +78,41 @@ public final class UpdateUtils {
         return null;
     }
 
+
+    /**
+     * 判断更新的安装包是否已下载完成【比较md5值】
+     *
+     * @param updateEntity 更新信息
+     * @return
+     */
+    public static boolean isApkDownloaded(UpdateEntity updateEntity) {
+        File appFile = getApkFileByUpdateEntity(updateEntity);
+        return !TextUtils.isEmpty(updateEntity.getMd5())
+                && appFile.exists()
+                && Md5Utils.getFileMD5(appFile).equalsIgnoreCase(updateEntity.getMd5());
+    }
+
+    /**
+     * 根据更新信息获取apk安装文件
+     *
+     * @param updateEntity 更新信息
+     * @return
+     */
+    public static File getApkFileByUpdateEntity(UpdateEntity updateEntity) {
+        String appName = getApkNameByDownloadUrl(updateEntity.getDownloadUrl());
+        return new File(updateEntity.getApkCacheDir()
+                .concat(File.separator + updateEntity.getVersionName())
+                .concat(File.separator + appName));
+    }
+
+    /**
+     * 根据下载地址获取文件名
+     *
+     * @param downloadUrl
+     * @return
+     */
     @NonNull
-    public static String getApkNameByUpdateEntity(UpdateEntity updateEntity) {
-        String downloadUrl = updateEntity.getDownloadUrl();
+    public static String getApkNameByDownloadUrl(String downloadUrl) {
         if (TextUtils.isEmpty(downloadUrl)) {
             return "temp.apk";
         } else {
@@ -178,5 +213,60 @@ public final class UpdateUtils {
     public static boolean isIgnoreVersion(Context context, String newVersion) {
         return getSP(context).getString(IGNORE_VERSION, "").equals(newVersion);
     }
+
+
+    /**
+     * 比较两个版本号
+     *
+     * @param versionName1
+     * @param versionName2
+     * @return [> 0 versionName1 > versionName2] [= 0 versionName1 = versionName2]  [< 0 versionName1 < versionName2]
+     */
+    public static int compareVersionName(@NonNull String versionName1, @NonNull String versionName2) {
+        if (versionName1.equals(versionName2)) {
+            return 0;
+        }
+        String[] versionArray1 = versionName1.split("\\.");//注意此处为正则匹配，不能用"."；
+        String[] versionArray2 = versionName2.split("\\.");
+        int idx = 0;
+        int minLength = Math.min(versionArray1.length, versionArray2.length);//取最小长度值
+        int diff = 0;
+        while (idx < minLength
+                && (diff = versionArray1[idx].length() - versionArray2[idx].length()) == 0//先比较长度
+                && (diff = versionArray1[idx].compareTo(versionArray2[idx])) == 0) {//再比较字符
+            ++idx;
+        }
+        //如果已经分出大小，则直接返回，如果未分出大小，则再比较位数，有子版本的为大；
+        diff = (diff != 0) ? diff : versionArray1.length - versionArray2.length;
+        return diff;
+    }
+
+    /**
+     * 把 JSON 字符串 转换为 单个指定类型的对象
+     *
+     * @param json
+     *            包含了单个对象数据的JSON字符串
+     * @param classOfT
+     *            指定类型对象的Class
+     * @return 指定类型对象
+     */
+    public static <T> T fromJson(String json, Class<T> classOfT) {
+        try {
+            return new Gson().fromJson(json, classOfT);
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static int getVersionCode(Context context) {
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            return info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            return 0;
+        }
+    }
+
 
 }

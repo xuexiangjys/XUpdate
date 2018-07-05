@@ -16,6 +16,8 @@
 
 package com.xuexiang.xupdate.entity;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 
 /**
@@ -40,18 +42,6 @@ public class UpdateEntity implements Serializable {
      * 是否可忽略该版本
      */
     private boolean mIsIgnorable;
-
-    //============升级行为============//
-
-    /**
-     * 是否静默下载：有新版本时不提示直接下载
-     */
-    private boolean mIsSilent;
-
-    /**
-     * 是否下载完成后自动安装
-     */
-    private boolean mIsAutoInstall;
 
     //===========升级的信息=============//
     /**
@@ -80,6 +70,20 @@ public class UpdateEntity implements Serializable {
      * app大小【单位：KB】
      */
     private long mSize;
+
+    //============升级行为============//
+    /**
+     * 是否静默下载：有新版本时不提示直接下载
+     */
+    private boolean mIsSilent;
+    /**
+     * 是否下载完成后自动安装
+     */
+    private boolean mIsAutoInstall;
+    /**
+     * apk下载的目录
+     */
+    private String mApkCacheDir;
 
     public boolean isHasUpdate() {
         return mHasUpdate;
@@ -124,6 +128,30 @@ public class UpdateEntity implements Serializable {
     public UpdateEntity setIsAutoInstall(boolean isAutoInstall) {
         mIsAutoInstall = isAutoInstall;
         return this;
+    }
+
+    /**
+     * 设置apk的缓存地址，只支持设置一次
+     *
+     * @param apkCacheDir
+     * @return
+     */
+    public UpdateEntity setApkCacheDir(String apkCacheDir) {
+        if (!TextUtils.isEmpty(apkCacheDir) && TextUtils.isEmpty(mApkCacheDir)) {
+            mApkCacheDir = apkCacheDir;
+        }
+        return this;
+    }
+
+    /**
+     * 设置是否是自动模式【自动静默下载，自动安装】
+     * @param isAutoMode
+     */
+    public void setIsAutoMode(boolean isAutoMode) {
+        if (isAutoMode) {
+            mIsSilent = true;  //自动下载
+            mIsAutoInstall = true; //自动安装
+        }
     }
 
     public int getVersionCode() {
@@ -178,5 +206,9 @@ public class UpdateEntity implements Serializable {
     public UpdateEntity setSize(long size) {
         mSize = size;
         return this;
+    }
+
+    public String getApkCacheDir() {
+        return mApkCacheDir;
     }
 }

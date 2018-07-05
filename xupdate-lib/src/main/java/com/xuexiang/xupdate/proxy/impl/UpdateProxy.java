@@ -77,4 +77,9 @@ public class UpdateProxy implements IUpdateProxy {
     public void noNewVersion(@NonNull Throwable throwable) {
 
     }
+
+    @Override
+    public void startDownload(@NonNull UpdateEntity updateEntity, @NonNull IUpdateHttpService.DownLoadCallback callback) {
+
+    }
 }

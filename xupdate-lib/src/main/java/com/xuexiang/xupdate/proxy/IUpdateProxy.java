@@ -67,7 +67,7 @@ public interface IUpdateProxy {
      * @param json
      * @return
      */
-    UpdateEntity parseJson(@NonNull String json);
+    UpdateEntity parseJson(@NonNull String json) throws Exception;
 
     /**
      * 发现新版本
@@ -83,5 +83,13 @@ public interface IUpdateProxy {
      * @param throwable 未发现的原因
      */
     void noNewVersion(@NonNull Throwable throwable);
+
+    /**
+     * 开始下载更新
+     *
+     * @param updateEntity 更新信息
+     * @param callback     下载的回调
+     */
+    void startDownload(@NonNull UpdateEntity updateEntity, @NonNull IUpdateHttpService.DownLoadCallback callback);
 
 }

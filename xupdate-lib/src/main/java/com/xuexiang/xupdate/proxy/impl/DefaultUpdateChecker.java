@@ -100,14 +100,18 @@ public class DefaultUpdateChecker implements IUpdateChecker {
     public void processCheckResult(@NonNull String result, @NonNull IUpdateProxy updateProxy) {
         try {
             UpdateEntity updateEntity = updateProxy.parseJson(result);
-            if (updateEntity.isHasUpdate()) {
-                if (UpdateUtils.isIgnoreVersion(updateProxy.getContext(), updateEntity.getVersionName())) {
-                    XUpdate.onUpdateError(CHECK_IGNORED_VERSION);
+            if (updateEntity != null) {
+                if (updateEntity.isHasUpdate()) {
+                    if (UpdateUtils.isIgnoreVersion(updateProxy.getContext(), updateEntity.getVersionName())) {
+                        XUpdate.onUpdateError(CHECK_IGNORED_VERSION);
+                    } else {
+                        updateProxy.findNewVersion(updateEntity, updateProxy);
+                    }
                 } else {
-                    updateProxy.findNewVersion(updateEntity, updateProxy);
+                    XUpdate.onUpdateError(CHECK_NO_NEW_VERSION);
                 }
             } else {
-                XUpdate.onUpdateError(CHECK_NO_NEW_VERSION);
+                XUpdate.onUpdateError(CHECK_PARSE, "json:" + result);
             }
         } catch (Exception e) {
             XUpdate.onUpdateError(CHECK_PARSE, e.getMessage());
