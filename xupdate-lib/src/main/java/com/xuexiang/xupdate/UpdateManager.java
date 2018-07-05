@@ -213,6 +213,16 @@ public class UpdateManager implements IUpdateProxy, IUpdateHttpService.DownLoadC
     }
 
     /**
+     * 版本检查之后
+     */
+    @Override
+    public void onAfterCheck() {
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.onAfterCheck();
+        }
+    }
+
+    /**
      * 将请求的json结果解析为版本更新信息实体
      *
      * @param json
@@ -230,16 +240,6 @@ public class UpdateManager implements IUpdateProxy, IUpdateHttpService.DownLoadC
             mUpdateEntity.setIsAutoMode(mIsAutoMode);
         }
         return mUpdateEntity;
-    }
-
-    /**
-     * 版本检查之后
-     */
-    @Override
-    public void onAfterCheck() {
-        if (mIUpdateProxy != null) {
-            mIUpdateProxy.onAfterCheck();
-        }
     }
 
     /**

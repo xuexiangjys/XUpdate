@@ -259,6 +259,11 @@ public final class UpdateUtils {
         return null;
     }
 
+    /**
+     * 获取应用的VersionCode
+     * @param context
+     * @return
+     */
     public static int getVersionCode(Context context) {
         try {
             PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_META_DATA);

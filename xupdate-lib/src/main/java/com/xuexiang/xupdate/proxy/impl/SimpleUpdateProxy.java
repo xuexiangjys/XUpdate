@@ -25,13 +25,12 @@ import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
 
 /**
- * 版本更新代理
+ * 简单的版本更新代理
  *
  * @author xuexiang
  * @since 2018/7/1 下午9:47
  */
-public class UpdateProxy implements IUpdateProxy {
-
+public class SimpleUpdateProxy implements IUpdateProxy {
 
     @Override
     public Context getContext() {

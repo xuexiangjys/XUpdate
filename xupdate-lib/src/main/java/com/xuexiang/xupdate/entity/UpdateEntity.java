@@ -99,6 +99,9 @@ public class UpdateEntity implements Serializable {
     }
 
     public UpdateEntity setForce(boolean force) {
+        if (force) {
+            mIsIgnorable = false; //强制更新，不可以忽略
+        }
         mIsForce = force;
         return this;
     }
@@ -108,6 +111,9 @@ public class UpdateEntity implements Serializable {
     }
 
     public UpdateEntity setIsIgnorable(boolean isIgnorable) {
+        if (isIgnorable) {
+            mIsForce = false;  //可忽略的，不能是强制更新
+        }
         mIsIgnorable = isIgnorable;
         return this;
     }
