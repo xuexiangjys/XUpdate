@@ -19,6 +19,7 @@ package com.xuexiang.xupdate.entity;
 import com.xuexiang.xupdate.utils.Md5Utils;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * 下载信息实体
@@ -26,7 +27,7 @@ import java.io.File;
  * @author xuexiang
  * @since 2018/7/9 上午11:41
  */
-public class DownloadEntity {
+public class DownloadEntity implements Serializable {
     /**
      * 下载地址
      */

@@ -19,6 +19,7 @@ package com.xuexiang.xupdate.proxy;
 import android.support.annotation.NonNull;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -27,7 +28,7 @@ import java.util.Map;
  * @author xuexiang
  * @since 2018/6/29 下午8:44
  */
-public interface IUpdateHttpService {
+public interface IUpdateHttpService extends Serializable {
 
     /**
      * 异步get
