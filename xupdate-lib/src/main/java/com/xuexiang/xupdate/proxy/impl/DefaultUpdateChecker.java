@@ -28,10 +28,12 @@ import com.xuexiang.xupdate.utils.UpdateUtils;
 
 import java.util.Map;
 
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_APK_CACHE_DIR_EMPTY;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_IGNORED_VERSION;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_JSON_EMPTY;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_PARSE;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_UNKNOWN;
 
 /**
  * 默认版本更新检查者
@@ -93,7 +95,7 @@ public class DefaultUpdateChecker implements IUpdateChecker {
      */
     private void onCheckError(@NonNull IUpdateProxy updateProxy, Throwable error) {
         updateProxy.onAfterCheck();
-        updateProxy.noNewVersion(error);
+        XUpdate.onUpdateError(CHECK_UNKNOWN, error.getMessage());
     }
 
     @Override
@@ -102,8 +104,12 @@ public class DefaultUpdateChecker implements IUpdateChecker {
             UpdateEntity updateEntity = updateProxy.parseJson(result);
             if (updateEntity != null) {
                 if (updateEntity.isHasUpdate()) {
+                    //校验是否是已忽略版本
                     if (UpdateUtils.isIgnoreVersion(updateProxy.getContext(), updateEntity.getVersionName())) {
                         XUpdate.onUpdateError(CHECK_IGNORED_VERSION);
+                    //校验apk下载缓存目录是否为空
+                    } else if (TextUtils.isEmpty(updateEntity.getApkCacheDir())) {
+                        XUpdate.onUpdateError(CHECK_APK_CACHE_DIR_EMPTY);
                     } else {
                         updateProxy.findNewVersion(updateEntity, updateProxy);
                     }
@@ -117,4 +123,5 @@ public class DefaultUpdateChecker implements IUpdateChecker {
             XUpdate.onUpdateError(CHECK_PARSE, e.getMessage());
         }
     }
+
 }

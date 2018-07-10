@@ -17,7 +17,9 @@
 package com.xuexiang.xupdate.listener;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
+import com.xuexiang.xupdate.entity.DownloadEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 
 import java.io.File;
@@ -33,8 +35,8 @@ public interface OnInstallListener {
     /**
      * 开始安装apk的监听
      *
-     * @param apkFile      安装的apk文件
-     * @param updateEntity 版本更新信息实体
+     * @param apkFile        安装的apk文件
+     * @param downloadEntity 文件下载信息
      */
-    void onInstallApk(Context context, File apkFile, UpdateEntity updateEntity);
+    boolean onInstallApk(@NonNull Context context, @NonNull File apkFile, @NonNull DownloadEntity downloadEntity);
 }

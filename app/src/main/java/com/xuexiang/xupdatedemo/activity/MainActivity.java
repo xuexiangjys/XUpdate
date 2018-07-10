@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-package com.xuexiang.xupdate.proxy.impl;
+package com.xuexiang.xupdatedemo.activity;
 
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 
-import com.xuexiang.xupdate.entity.UpdateEntity;
-import com.xuexiang.xupdate.proxy.IUpdateDownLoader;
-import com.xuexiang.xupdate.proxy.IUpdateHttpService;
+import com.xuexiang.xpage.base.XPageActivity;
+import com.xuexiang.xupdatedemo.fragment.MainFragment;
 
-/**
- * 默认版本更新下载器
- *
- * @author xuexiang
- * @since 2018/7/5 下午5:06
- */
-public class DefaultUpdateDownLoader implements IUpdateDownLoader {
+public class MainActivity extends XPageActivity {
+
     @Override
-    public void startDownload(@NonNull UpdateEntity updateEntity, @NonNull IUpdateHttpService.DownLoadCallback callback) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+        openPage(MainFragment.class);
     }
 }

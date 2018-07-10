@@ -16,11 +16,17 @@
 
 package com.xuexiang.xupdate.utils;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
@@ -33,6 +39,7 @@ import com.google.gson.JsonParseException;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * 更新工具类
@@ -89,7 +96,7 @@ public final class UpdateUtils {
         File appFile = getApkFileByUpdateEntity(updateEntity);
         return !TextUtils.isEmpty(updateEntity.getMd5())
                 && appFile.exists()
-                && Md5Utils.getFileMD5(appFile).equalsIgnoreCase(updateEntity.getMd5());
+                && Md5Utils.getFileMD5(appFile).equals(updateEntity.getMd5());
     }
 
     /**
@@ -244,10 +251,8 @@ public final class UpdateUtils {
     /**
      * 把 JSON 字符串 转换为 单个指定类型的对象
      *
-     * @param json
-     *            包含了单个对象数据的JSON字符串
-     * @param classOfT
-     *            指定类型对象的Class
+     * @param json     包含了单个对象数据的JSON字符串
+     * @param classOfT 指定类型对象的Class
      * @return 指定类型对象
      */
     public static <T> T fromJson(String json, Class<T> classOfT) {
@@ -261,17 +266,78 @@ public final class UpdateUtils {
 
     /**
      * 获取应用的VersionCode
+     *
      * @param context
      * @return
      */
     public static int getVersionCode(Context context) {
-        try {
-            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-            return info.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            return 0;
-        }
+        PackageInfo packageInfo = getPackageInfo(context);
+        return packageInfo != null ? packageInfo.versionCode : -1;
     }
 
+    private static PackageInfo getPackageInfo(Context context) {
+        try {
+            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getAppName(Context context) {
+        PackageInfo packageInfo = getPackageInfo(context);
+        return packageInfo != null ? packageInfo.applicationInfo.loadLabel(context.getPackageManager()).toString() : "";
+    }
+
+    public static Drawable getAppIcon(Context context) {
+        PackageInfo packageInfo = getPackageInfo(context);
+        return packageInfo != null ? packageInfo.applicationInfo.loadIcon(context.getPackageManager()) : null;
+    }
+
+    /**
+     * Drawable to bitmap.
+     *
+     * @param drawable The drawable.
+     * @return bitmap
+     */
+    public static Bitmap drawable2Bitmap(final Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+        Bitmap bitmap;
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1,
+                    drawable.getOpacity() != PixelFormat.OPAQUE
+                            ? Bitmap.Config.ARGB_8888
+                            : Bitmap.Config.RGB_565);
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                    drawable.getIntrinsicHeight(),
+                    drawable.getOpacity() != PixelFormat.OPAQUE
+                            ? Bitmap.Config.ARGB_8888
+                            : Bitmap.Config.RGB_565);
+        }
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+    public static boolean isAppOnForeground(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        String packageName = context.getPackageName();
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null)
+            return false;
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.processName.equals(packageName) && appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

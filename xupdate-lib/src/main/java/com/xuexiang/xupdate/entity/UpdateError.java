@@ -79,24 +79,16 @@ public class UpdateError extends Throwable {
         public static final int CHECK_NO_WIFI = CHECK_UNKNOWN + 1;
         public static final int CHECK_NO_NETWORK = CHECK_NO_WIFI + 1;
         public static final int CHECK_NO_NEW_VERSION = CHECK_NO_NETWORK + 1;
-        public static final int CHECK_NETWORK_IO = CHECK_NO_NEW_VERSION + 1;
-        public static final int CHECK_HTTP_STATUS = CHECK_NETWORK_IO + 1;
-        public static final int CHECK_JSON_EMPTY = CHECK_HTTP_STATUS + 1;
+        public static final int CHECK_JSON_EMPTY = CHECK_NO_NEW_VERSION + 1;
         public static final int CHECK_PARSE = CHECK_JSON_EMPTY + 1;
         public static final int CHECK_IGNORED_VERSION = CHECK_PARSE + 1;
+        public static final int CHECK_APK_CACHE_DIR_EMPTY = CHECK_IGNORED_VERSION + 1;
 
-        public static final int PROMPT_SHOW = 3000;
+        public static final int PROMPT_UNKNOWN = 3000;
+        public static final int PROMPT_ACTIVITY_DESTROY = PROMPT_UNKNOWN + 1;
 
-        public static final int DOWNLOAD_UNKNOWN = 4000;
-        public static final int DOWNLOAD_CANCELLED = DOWNLOAD_UNKNOWN + 1;
-        public static final int DOWNLOAD_DISK_NO_SPACE = DOWNLOAD_CANCELLED + 1;
-        public static final int DOWNLOAD_DISK_IO = DOWNLOAD_DISK_NO_SPACE + 1;
-        public static final int DOWNLOAD_NETWORK_IO = DOWNLOAD_DISK_IO + 1;
-        public static final int DOWNLOAD_NETWORK_BLOCKED = DOWNLOAD_NETWORK_IO +1;
-        public static final int DOWNLOAD_NETWORK_TIMEOUT = DOWNLOAD_NETWORK_BLOCKED + 1;
-        public static final int DOWNLOAD_HTTP_STATUS = DOWNLOAD_NETWORK_TIMEOUT + 1;
-        public static final int DOWNLOAD_INCOMPLETE = DOWNLOAD_HTTP_STATUS + 1;
-        public static final int DOWNLOAD_VERIFY = DOWNLOAD_INCOMPLETE + 1;
+        public static final int DOWNLOAD_FAILED = 4000;
+        public static final int DOWNLOAD_PERMISSION_DENIED = DOWNLOAD_FAILED + 1;
 
         /**
          * apk安装错误
@@ -116,22 +108,17 @@ public class UpdateError extends Throwable {
         sMessages.append(ERROR.CHECK_NO_WIFI, "查询更新失败：没有WIFI");
         sMessages.append(ERROR.CHECK_NO_NETWORK, "查询更新失败：没有网络");
         sMessages.append(ERROR.CHECK_NO_NEW_VERSION, "查询更新：没有新版本");
-        sMessages.append(ERROR.CHECK_NETWORK_IO, "查询更新失败：网络异常");
-        sMessages.append(ERROR.CHECK_HTTP_STATUS, "查询更新失败：错误的HTTP状态");
         sMessages.append(ERROR.CHECK_JSON_EMPTY, "查询更新失败：Json 为空");
         sMessages.append(ERROR.CHECK_PARSE, "查询更新失败：解析Json错误");
         sMessages.append(ERROR.CHECK_IGNORED_VERSION, "查询更新失败：已经被忽略的版本");
+        sMessages.append(ERROR.CHECK_APK_CACHE_DIR_EMPTY, "查询更新失败：apk的下载缓存目录为空");
 
-        sMessages.append(ERROR.DOWNLOAD_UNKNOWN, "下载失败：未知错误");
-        sMessages.append(ERROR.DOWNLOAD_CANCELLED, "下载失败：下载被取消");
-        sMessages.append(ERROR.DOWNLOAD_DISK_NO_SPACE, "下载失败：磁盘空间不足");
-        sMessages.append(ERROR.DOWNLOAD_DISK_IO, "下载失败：磁盘读写错误");
-        sMessages.append(ERROR.DOWNLOAD_NETWORK_IO, "下载失败：网络异常");
-        sMessages.append(ERROR.DOWNLOAD_NETWORK_BLOCKED, "下载失败：网络中断");
-        sMessages.append(ERROR.DOWNLOAD_NETWORK_TIMEOUT, "下载失败：网络超时");
-        sMessages.append(ERROR.DOWNLOAD_HTTP_STATUS, "下载失败：错误的HTTP状态");
-        sMessages.append(ERROR.DOWNLOAD_INCOMPLETE, "下载失败：下载不完整");
-        sMessages.append(ERROR.DOWNLOAD_VERIFY, "下载失败：校验错误");
+        sMessages.append(ERROR.PROMPT_UNKNOWN, "提示失败：未知错误");
+        sMessages.append(ERROR.PROMPT_ACTIVITY_DESTROY, "提示失败：activity已被销毁");
+
+        sMessages.append(ERROR.DOWNLOAD_FAILED, "下载失败");
+        sMessages.append(ERROR.DOWNLOAD_PERMISSION_DENIED, "无法下载：存储权限申请被拒绝！");
+
 
         sMessages.append(ERROR.INSTALL_FAILED, "安装APK失败！");
     }

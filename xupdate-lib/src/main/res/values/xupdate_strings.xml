@@ -19,4 +19,7 @@
     <string name="xupdate_lab_update">升级</string>
     <string name="xupdate_lab_ignore">忽略此版本</string>
     <string name="xupdate_tip_permissions_reject">请授权访问存储空间权限，否则App无法更新！</string>
+    <string name="xupdate_connecting_service">正在连接服务器</string>
+    <string name="xupdate_start_download">开始下载</string>
+    <string name="xupdate_download_complete">下载完成，请点击安装</string>
 </resources>

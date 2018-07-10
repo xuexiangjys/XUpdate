@@ -18,11 +18,12 @@ package com.xuexiang.xupdate.proxy.impl;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.xuexiang.xupdate.entity.UpdateEntity;
-import com.xuexiang.xupdate.entity.UpdateError;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
+import com.xuexiang.xupdate.service.OnFileDownloadListener;
 
 /**
  * 简单的版本更新代理
@@ -78,7 +79,12 @@ public class SimpleUpdateProxy implements IUpdateProxy {
     }
 
     @Override
-    public void startDownload(@NonNull UpdateEntity updateEntity, @NonNull IUpdateHttpService.DownLoadCallback callback) {
+    public void startDownload(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener) {
+
+    }
+
+    @Override
+    public void cancelDownload() {
 
     }
 }

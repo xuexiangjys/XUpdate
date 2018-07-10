@@ -185,7 +185,7 @@ public final class ApkInstallUtils {
      * @param appFile
      * @return
      */
-    private static Intent getInstallAppIntent(Context context, File appFile) {
+    public static Intent getInstallAppIntent(Context context, File appFile) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -16,8 +16,13 @@
 
 package com.xuexiang.xupdate.entity;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.xuexiang.xupdate.proxy.IUpdateHttpService;
+import com.xuexiang.xupdate.utils.Md5Utils;
+
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -59,17 +64,9 @@ public class UpdateEntity implements Serializable {
     private String mUpdateContent;
 
     /**
-     * app下载地址
+     * 下载信息实体
      */
-    private String mDownloadUrl;
-    /**
-     * 下载文件的md5值，用于校验，防止下载的apk文件被替换
-     */
-    private String mMd5;
-    /**
-     * app大小【单位：KB】
-     */
-    private long mSize;
+    private DownloadEntity mDownloadEntity = new DownloadEntity();
 
     //============升级行为============//
     /**
@@ -77,13 +74,9 @@ public class UpdateEntity implements Serializable {
      */
     private boolean mIsSilent;
     /**
-     * 是否下载完成后自动安装
+     * 是否下载完成后自动安装[默认是true]
      */
-    private boolean mIsAutoInstall;
-    /**
-     * apk下载的目录
-     */
-    private String mApkCacheDir;
+    private boolean mIsAutoInstall = true;
 
     public boolean isHasUpdate() {
         return mHasUpdate;
@@ -143,14 +136,15 @@ public class UpdateEntity implements Serializable {
      * @return
      */
     public UpdateEntity setApkCacheDir(String apkCacheDir) {
-        if (!TextUtils.isEmpty(apkCacheDir) && TextUtils.isEmpty(mApkCacheDir)) {
-            mApkCacheDir = apkCacheDir;
+        if (!TextUtils.isEmpty(apkCacheDir) && TextUtils.isEmpty(mDownloadEntity.getCacheDir())) {
+            mDownloadEntity.setCacheDir(apkCacheDir);
         }
         return this;
     }
 
     /**
      * 设置是否是自动模式【自动静默下载，自动安装】
+     *
      * @param isAutoMode
      */
     public void setIsAutoMode(boolean isAutoMode) {
@@ -188,33 +182,55 @@ public class UpdateEntity implements Serializable {
     }
 
     public String getDownloadUrl() {
-        return mDownloadUrl;
+        return mDownloadEntity.getDownloadUrl();
     }
 
     public UpdateEntity setDownloadUrl(String downloadUrl) {
-        mDownloadUrl = downloadUrl;
+        mDownloadEntity.setDownloadUrl(downloadUrl);
         return this;
     }
 
     public String getMd5() {
-        return mMd5;
+        return mDownloadEntity.getMd5();
     }
 
     public UpdateEntity setMd5(String md5) {
-        mMd5 = md5;
+        mDownloadEntity.setMd5(md5);
         return this;
     }
 
     public long getSize() {
-        return mSize;
+        return mDownloadEntity.getSize();
     }
 
     public UpdateEntity setSize(long size) {
-        mSize = size;
+        mDownloadEntity.setSize(size);
         return this;
     }
 
     public String getApkCacheDir() {
-        return mApkCacheDir;
+        return mDownloadEntity.getCacheDir();
+    }
+
+    public UpdateEntity setDownLoadEntity(@NonNull DownloadEntity downloadEntity) {
+        mDownloadEntity = downloadEntity;
+        return this;
+    }
+
+    @NonNull
+    public DownloadEntity getDownLoadEntity() {
+        return mDownloadEntity;
+    }
+
+    //======临时变量=====//
+    private IUpdateHttpService mIUpdateHttpService;
+
+    public UpdateEntity setIUpdateHttpService(IUpdateHttpService updateHttpService) {
+        mIUpdateHttpService = updateHttpService;
+        return this;
+    }
+
+    public IUpdateHttpService getIUpdateHttpService() {
+        return mIUpdateHttpService;
     }
 }

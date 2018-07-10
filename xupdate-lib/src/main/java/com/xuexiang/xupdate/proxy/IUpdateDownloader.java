@@ -17,8 +17,11 @@
 package com.xuexiang.xupdate.proxy;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import com.xuexiang.xupdate.entity.DownloadEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
+import com.xuexiang.xupdate.service.OnFileDownloadListener;
 
 /**
  * 版本更新下载器
@@ -26,13 +29,18 @@ import com.xuexiang.xupdate.entity.UpdateEntity;
  * @author xuexiang
  * @since 2018/6/29 下午8:31
  */
-public interface IUpdateDownLoader {
+public interface IUpdateDownloader {
 
     /**
      * 开始下载更新
      *
-     * @param updateEntity 更新信息
-     * @param callback     下载的回调
+     * @param updateEntity     更新信息
+     * @param downloadListener 文件下载监听
      */
-    void startDownload(@NonNull UpdateEntity updateEntity, @NonNull IUpdateHttpService.DownLoadCallback callback);
+    void startDownload(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener);
+
+    /**
+     * 取消下载
+     */
+    void cancelDownload();
 }

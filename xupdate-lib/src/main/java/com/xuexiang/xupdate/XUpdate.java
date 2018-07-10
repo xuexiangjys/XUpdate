@@ -20,6 +20,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.xuexiang.xupdate.entity.DownloadEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.entity.UpdateError;
 import com.xuexiang.xupdate.listener.OnInstallListener;
@@ -27,11 +28,11 @@ import com.xuexiang.xupdate.listener.OnUpdateFailureListener;
 import com.xuexiang.xupdate.listener.impl.DefaultInstallListener;
 import com.xuexiang.xupdate.listener.impl.DefaultUpdateFailureListener;
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
-import com.xuexiang.xupdate.proxy.IUpdateDownLoader;
+import com.xuexiang.xupdate.proxy.IUpdateDownloader;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateParser;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateChecker;
-import com.xuexiang.xupdate.proxy.impl.DefaultUpdateDownLoader;
+import com.xuexiang.xupdate.proxy.impl.DefaultUpdateDownloader;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateParser;
 import com.xuexiang.xupdate.utils.ApkInstallUtils;
 
@@ -87,7 +88,7 @@ public class XUpdate {
     /**
      * 版本更新下载器
      */
-    private IUpdateDownLoader mIUpdateDownLoader;
+    private IUpdateDownloader mIUpdateDownloader;
     /**
      * APK安装监听
      */
@@ -104,7 +105,7 @@ public class XUpdate {
 
         mIUpdateChecker = new DefaultUpdateChecker();
         mIUpdateParser = new DefaultUpdateParser();
-        mIUpdateDownLoader = new DefaultUpdateDownLoader();
+        mIUpdateDownloader = new DefaultUpdateDownloader();
         mOnInstallListener = new DefaultInstallListener();
         mOnUpdateFailureListener = new DefaultUpdateFailureListener();
     }
@@ -128,6 +129,7 @@ public class XUpdate {
 
     /**
      * 初始化
+     *
      * @param application
      */
     public void init(Application application) {
@@ -231,13 +233,13 @@ public class XUpdate {
      * @param updateDownLoader
      * @return
      */
-    public XUpdate setIUpdateDownLoader(IUpdateDownLoader updateDownLoader) {
-        mIUpdateDownLoader = updateDownLoader;
+    public XUpdate setIUpdateDownLoader(IUpdateDownloader updateDownLoader) {
+        mIUpdateDownloader = updateDownLoader;
         return this;
     }
 
-    public static IUpdateDownLoader getIUpdateDownLoader() {
-        return get().mIUpdateDownLoader;
+    public static IUpdateDownloader getIUpdateDownLoader() {
+        return get().mIUpdateDownloader;
     }
 
     /**
@@ -320,15 +322,15 @@ public class XUpdate {
     /**
      * 安装apk
      *
-     * @param context      传activity可以获取安装的返回值，详见{@link ApkInstallUtils#REQUEST_CODE_INSTALL_APP}
-     * @param apkFile      apk文件
-     * @param updateEntity 更新信息
+     * @param context        传activity可以获取安装的返回值，详见{@link ApkInstallUtils#REQUEST_CODE_INSTALL_APP}
+     * @param apkFile        apk文件
+     * @param downloadEntity 文件下载信息
      */
-    public static void onInstallApk(Context context, File apkFile, UpdateEntity updateEntity) {
+    public static boolean onInstallApk(Context context, File apkFile, DownloadEntity downloadEntity) {
         if (get().mOnInstallListener == null) {
             get().mOnInstallListener = new DefaultInstallListener();
         }
-        get().mOnInstallListener.onInstallApk(context, apkFile, updateEntity);
+        return get().mOnInstallListener.onInstallApk(context, apkFile, downloadEntity);
     }
 
     //===========================更新出错===================================//

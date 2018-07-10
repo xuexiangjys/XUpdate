@@ -18,8 +18,6 @@ package com.xuexiang.xupdate.proxy;
 
 import android.support.annotation.NonNull;
 
-import com.xuexiang.xupdate.entity.UpdateError;
-
 import java.io.File;
 import java.util.Map;
 
@@ -58,7 +56,7 @@ public interface IUpdateHttpService {
      * @param fileName 文件名称
      * @param callback 文件下载回调
      */
-    void download(@NonNull String url, @NonNull String path, @NonNull String fileName, @NonNull DownLoadCallback callback);
+    void download(@NonNull String url, @NonNull String path, @NonNull String fileName, @NonNull DownloadCallback callback);
 
 
     /**
@@ -83,7 +81,7 @@ public interface IUpdateHttpService {
     /**
      * 下载回调
      */
-    interface DownLoadCallback {
+    interface DownloadCallback {
         /**
          * 下载之前
          */

@@ -20,27 +20,28 @@ import android.content.Context;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
-import com.xuexiang.xupdate.proxy.IUpdateDownLoader;
+import com.xuexiang.xupdate.proxy.IUpdateDownloader;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateParser;
 import com.xuexiang.xupdate.proxy.IUpdatePrompter;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
-import com.xuexiang.xupdate.proxy.impl.DefaultUpdateChecker;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdatePrompter;
+import com.xuexiang.xupdate.service.OnFileDownloadListener;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 
-import java.io.File;
 import java.util.Map;
 import java.util.TreeMap;
 
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NETWORK;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_WIFI;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.PROMPT_ACTIVITY_DESTROY;
 
 /**
  * 版本更新管理者
@@ -48,7 +49,7 @@ import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_WIFI;
  * @author xuexiang
  * @since 2018/7/1 下午9:49
  */
-public class UpdateManager implements IUpdateProxy, IUpdateHttpService.DownLoadCallback {
+public class UpdateManager implements IUpdateProxy {
     /**
      * 版本更新代理
      */
@@ -103,7 +104,11 @@ public class UpdateManager implements IUpdateProxy, IUpdateHttpService.DownLoadC
     /**
      * 版本更新下载器
      */
-    private IUpdateDownLoader mIUpdateDownLoader;
+    private IUpdateDownloader mIUpdateDownloader;
+    /**
+     * 文件下载监听
+     */
+    private OnFileDownloadListener mOnFileDownloadListener;
     /**
      * 版本更新提示器
      */
@@ -129,7 +134,7 @@ public class UpdateManager implements IUpdateProxy, IUpdateHttpService.DownLoadC
 
         mIUpdateChecker = builder.updateChecker;
         mIUpdateParser = builder.updateParser;
-        mIUpdateDownLoader = builder.updateDownLoader;
+        mIUpdateDownloader = builder.updateDownLoader;
 
         mIUpdatePrompter = builder.updatePrompter;
     }
@@ -229,15 +234,16 @@ public class UpdateManager implements IUpdateProxy, IUpdateHttpService.DownLoadC
      * @return
      */
     @Override
-    public UpdateEntity parseJson(@NonNull String json) throws Exception{
+    public UpdateEntity parseJson(@NonNull String json) throws Exception {
         if (mIUpdateProxy != null) {
             mUpdateEntity = mIUpdateProxy.parseJson(json);
         } else {
             mUpdateEntity = mIUpdateParser.parseJson(json);
         }
-        if (mUpdateEntity != null) {
+        if (mUpdateEntity != null) {  //更新信息（本地信息）
             mUpdateEntity.setApkCacheDir(mApkCacheDir);
             mUpdateEntity.setIsAutoMode(mIsAutoMode);
+            mUpdateEntity.setIUpdateHttpService(mIUpdateHttpService);
         }
         return mUpdateEntity;
     }
@@ -251,12 +257,20 @@ public class UpdateManager implements IUpdateProxy, IUpdateHttpService.DownLoadC
     @Override
     public void findNewVersion(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy) {
         if (updateEntity.isSilent()) { //静默下载，发现新版本后，直接下载更新
-            startDownload(updateEntity, this);
+            startDownload(updateEntity, mOnFileDownloadListener);
         } else {
             if (mIUpdateProxy != null) { //否则显示版本更新提示
                 mIUpdateProxy.findNewVersion(updateEntity, updateProxy);
             } else {
-                mIUpdatePrompter.showPrompt(updateEntity, updateProxy);
+                if (mIUpdatePrompter instanceof DefaultUpdatePrompter) {
+                    if (mContext != null && !((FragmentActivity) mContext).isFinishing()) {
+                        mIUpdatePrompter.showPrompt(updateEntity, updateProxy);
+                    } else {
+                        XUpdate.onUpdateError(PROMPT_ACTIVITY_DESTROY);
+                    }
+                } else {
+                    mIUpdatePrompter.showPrompt(updateEntity, updateProxy);
+                }
             }
         }
     }
@@ -276,32 +290,21 @@ public class UpdateManager implements IUpdateProxy, IUpdateHttpService.DownLoadC
     }
 
     @Override
-    public void startDownload(@NonNull UpdateEntity updateEntity, @NonNull IUpdateHttpService.DownLoadCallback callback) {
+    public void startDownload(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener) {
         if (mIUpdateProxy != null) {
-            mIUpdateProxy.startDownload(updateEntity, callback);
+            mIUpdateProxy.startDownload(updateEntity, downloadListener);
         } else {
-            mIUpdateDownLoader.startDownload(updateEntity, callback);
+            mIUpdateDownloader.startDownload(updateEntity, downloadListener);
         }
     }
 
     @Override
-    public void onStart() {
-
-    }
-
-    @Override
-    public void onProgress(float progress, long total) {
-
-    }
-
-    @Override
-    public void onSuccess(File file) {
-
-    }
-
-    @Override
-    public void onError(Throwable throwable) {
-
+    public void cancelDownload() {
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.cancelDownload();
+        } else {
+            mIUpdateDownloader.cancelDownload();
+        }
     }
 
     //============================构建者===============================//
@@ -354,7 +357,11 @@ public class UpdateManager implements IUpdateProxy, IUpdateHttpService.DownLoadC
         /**
          * 下载器
          */
-        IUpdateDownLoader updateDownLoader;
+        IUpdateDownloader updateDownLoader;
+        /**
+         * 下载监听
+         */
+        OnFileDownloadListener onFileDownloadListener;
         /**
          * 主题颜色
          */
@@ -516,6 +523,17 @@ public class UpdateManager implements IUpdateProxy, IUpdateHttpService.DownLoadC
         }
 
         /**
+         * 设置文件的下载监听
+         *
+         * @param onFileDownloadListener
+         * @return
+         */
+        public Builder setOnFileDownloadListener(OnFileDownloadListener onFileDownloadListener) {
+            this.onFileDownloadListener = onFileDownloadListener;
+            return this;
+        }
+
+        /**
          * 设置主题颜色
          *
          * @param themeColor
@@ -543,7 +561,7 @@ public class UpdateManager implements IUpdateProxy, IUpdateHttpService.DownLoadC
          * @param updateDownLoader
          * @return
          */
-        public Builder updateDownLoader(@NonNull IUpdateDownLoader updateDownLoader) {
+        public Builder updateDownLoader(@NonNull IUpdateDownloader updateDownLoader) {
             this.updateDownLoader = updateDownLoader;
             return this;
         }

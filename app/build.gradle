@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.xuexiang.xaop' //引用xaop插件
 
 android {
     compileSdkVersion build_versions.target_sdk
@@ -59,4 +60,18 @@ dependencies {
     androidTestImplementation deps.runner
     androidTestImplementation deps.espresso.core
     implementation project(':xupdate-lib')
+
+    implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.3'
+    implementation 'com.github.xuexiangjys.XAOP:xaop-runtime:1.0.1'  //添加依赖
+
+    //XPage
+    implementation 'com.github.xuexiangjys.XPage:xpage-lib:2.2.2'
+    annotationProcessor 'com.github.xuexiangjys.XPage:xpage-compiler:2.2.2'
+    //butterknife的sdk
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //如果开启了内存泄漏监测leak,就需要加上这个依赖
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }

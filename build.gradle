@@ -6,6 +6,9 @@ buildscript {
     dependencies {
         classpath deps.android_gradle_plugin
         classpath deps.android_maven_gradle_plugin
+
+        classpath 'com.github.xuexiangjys.XAOP:xaop-plugin:1.0.1'
+
     }
 }
 

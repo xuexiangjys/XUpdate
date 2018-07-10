@@ -18,7 +18,6 @@ package com.xuexiang.xupdate.proxy.impl;
 
 import android.Manifest;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -44,12 +43,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.xuexiang.xupdate.R;
 import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
+import com.xuexiang.xupdate.service.OnFileDownloadListener;
 import com.xuexiang.xupdate.utils.ColorUtils;
 import com.xuexiang.xupdate.utils.DrawableUtils;
 import com.xuexiang.xupdate.utils.UpdateUtils;
@@ -57,7 +56,8 @@ import com.xuexiang.xupdate.widget.NumberProgressBar;
 
 import java.io.File;
 
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.PROMPT_SHOW;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.DOWNLOAD_PERMISSION_DENIED;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.PROMPT_UNKNOWN;
 
 /**
  * 版本更新提示器【DialogFragment实现】
@@ -69,6 +69,8 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     public final static String KEY_UPDATE_ENTITY = "key_update_entity";
     public final static String KEY_UPDATE_THEME_COLOR = "key_update_theme_color";
     public final static String KEY_UPDATE_TOP_PICTURE = "key_update_top_picture";
+
+    public final static int REQUEST_CODE_REQUEST_PERMISSIONS = 111;
     /**
      * 标志当前更新提示是否已显示
      */
@@ -234,23 +236,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
             initTheme(themeColor, topResId);
             mUpdateEntity = (UpdateEntity) bundle.getSerializable(KEY_UPDATE_ENTITY);
             if (mUpdateEntity != null) {
-                //弹出对话框
-                final String newVersion = mUpdateEntity.getVersionName();
-                String targetSize = Formatter.formatShortFileSize(getContext(), mUpdateEntity.getSize() * 1024);
-                final String updateContent = mUpdateEntity.getUpdateContent();
-
-                String updateInfo = "";
-                if (!TextUtils.isEmpty(targetSize)) {
-                    updateInfo = "新版本大小：" + targetSize + "\n\n";
-                }
-                if (!TextUtils.isEmpty(updateContent)) {
-                    updateInfo += updateContent;
-                }
-
-                //更新内容
-                mTvUpdateInfo.setText(updateInfo);
-                mTvTitle.setText(String.format("是否升级到%s版本？", newVersion));
-
+                initUpdateInfo();
                 //强制更新,不显示关闭按钮
                 if (mUpdateEntity.isForce()) {
                     mLlClose.setVisibility(View.GONE);
@@ -263,6 +249,28 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
                 initListeners();
             }
         }
+    }
+
+    /**
+     * 初始化更新信息
+     */
+    private void initUpdateInfo() {
+        //弹出对话框
+        final String newVersion = mUpdateEntity.getVersionName();
+        String targetSize = Formatter.formatShortFileSize(getContext(), mUpdateEntity.getSize() * 1024);
+        final String updateContent = mUpdateEntity.getUpdateContent();
+
+        String updateInfo = "";
+        if (!TextUtils.isEmpty(targetSize)) {
+            updateInfo = "新版本大小：" + targetSize + "\n\n";
+        }
+        if (!TextUtils.isEmpty(updateContent)) {
+            updateInfo += updateContent;
+        }
+
+        //更新内容
+        mTvUpdateInfo.setText(updateInfo);
+        mTvTitle.setText(String.format("是否升级到%s版本？", newVersion));
     }
 
     /**
@@ -303,19 +311,101 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     public void onClick(View view) {
         int i = view.getId();
         if (i == R.id.btn_update) { //点击版本升级按钮【下载apk】
-
+            //权限判断是否有访问外部存储空间权限
+            int flag = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (flag != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    // 用户拒绝过这个权限了，应该提示用户，为什么需要这个权限。
+                    XUpdate.onUpdateError(DOWNLOAD_PERMISSION_DENIED);
+                } else {
+                    // 申请授权。
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_REQUEST_PERMISSIONS);
+                }
+            } else {
+                installApp();
+            }
         } else if (i == R.id.iv_close) { //点击关闭按钮
-
+            mIUpdateProxy.cancelDownload();
+            dismiss();
         } else if (i == R.id.tv_ignore) { //点击忽略按钮
             UpdateUtils.saveIgnoreVersion(getActivity(), mUpdateEntity.getVersionName());
             dismiss();
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_REQUEST_PERMISSIONS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //升级
+                installApp();
+            } else {
+                XUpdate.onUpdateError(DOWNLOAD_PERMISSION_DENIED);
+                dismiss();
+            }
+        }
+
+    }
+
+    private void installApp() {
+        if (UpdateUtils.isApkDownloaded(mUpdateEntity)) {
+            onInstallApk();
+            //安装完自杀
+            //如果上次是强制更新，但是用户在下载完，强制杀掉后台，重新启动app后，则会走到这一步，所以要进行强制更新的判断。
+            if (!mUpdateEntity.isForce()) {
+                dismiss();
+            } else {
+                showInstallButton(UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity));
+            }
+        } else {
+            mIUpdateProxy.startDownload(mUpdateEntity, mOnFileDownloadListener);
+        }
+    }
+
+    /**
+     * 文件下载监听
+     */
+    private OnFileDownloadListener mOnFileDownloadListener = new OnFileDownloadListener() {
+        @Override
+        public void onStart() {
+            if (!UpdateDialogFragment.this.isRemoving()) {
+                mNumberProgressBar.setVisibility(View.VISIBLE);
+                mBtnUpdate.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public void onProgress(float progress, long total) {
+            if (!UpdateDialogFragment.this.isRemoving()) {
+                mNumberProgressBar.setProgress(Math.round(progress * 100));
+                mNumberProgressBar.setMax(100);
+            }
+        }
+
+        @Override
+        public boolean onCompleted(File file) {
+            if (!UpdateDialogFragment.this.isRemoving()) {
+                if (mUpdateEntity.isForce()) {
+                    showInstallButton(file);
+                } else {
+                    dismissAllowingStateLoss();
+                }
+            }
+            //返回true，自动进行apk安装
+            return true;
+        }
+
+        @Override
+        public void onError(Throwable throwable) {
+            if (!UpdateDialogFragment.this.isRemoving()) {
+                dismissAllowingStateLoss();
+            }
+        }
+    };
+
     /**
      * 显示安装的按钮
-     *
-     * @param apkFile
      */
     private void showInstallButton(final File apkFile) {
         mNumberProgressBar.setVisibility(View.GONE);
@@ -324,9 +414,17 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         mBtnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                XUpdate.onInstallApk(getActivity(), apkFile, mUpdateEntity);
+                onInstallApk(apkFile);
             }
         });
+    }
+
+    private void onInstallApk() {
+        XUpdate.onInstallApk(getContext(), UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity), mUpdateEntity.getDownLoadEntity());
+    }
+
+    private void onInstallApk(File apkFile) {
+        XUpdate.onInstallApk(getContext(), apkFile, mUpdateEntity.getDownLoadEntity());
     }
 
     @Override
@@ -339,7 +437,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         try {
             super.show(manager, tag);
         } catch (Exception e) {
-            XUpdate.onUpdateError(PROMPT_SHOW, e.getMessage());
+            XUpdate.onUpdateError(PROMPT_UNKNOWN, e.getMessage());
         }
     }
 

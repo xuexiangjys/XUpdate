@@ -16,6 +16,8 @@
 
 package com.xuexiang.xupdate.utils;
 
+import android.text.TextUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -30,7 +32,7 @@ import java.security.NoSuchAlgorithmException;
  * @author xuexiang
  * @since 2018/7/2 下午3:14
  */
-final class Md5Utils {
+public final class Md5Utils {
 
     private Md5Utils() {
         throw new UnsupportedOperationException("cannot be instantiated");
@@ -59,6 +61,17 @@ final class Md5Utils {
             }
         }
         return "";
+    }
+
+    /**
+     * 验证文件是否有效【通过MD5值比较】
+     *
+     * @param md5  如果md5值为空，则不进行校验，直接为true
+     * @param file 需要校验的文件
+     * @return 文件是否有效
+     */
+    public static boolean isFileValid(String md5, File file) {
+        return TextUtils.isEmpty(md5) || md5.equals(Md5Utils.getFileMD5(file));
     }
 
     /**
