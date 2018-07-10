@@ -46,6 +46,11 @@ import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_UPDATING;
 public class DefaultUpdateChecker implements IUpdateChecker {
 
     @Override
+    public void onBeforeCheck() {
+
+    }
+
+    @Override
     public void checkVersion(boolean isGet, @NonNull String url, @NonNull Map<String, Object> params, final @NonNull IUpdateProxy updateProxy) {
         if (DownloadService.isRunning() || UpdateDialogFragment.isShow()) {
             updateProxy.onAfterCheck();
@@ -78,6 +83,11 @@ public class DefaultUpdateChecker implements IUpdateChecker {
                 }
             });
         }
+    }
+
+    @Override
+    public void onAfterCheck() {
+
     }
 
     /**

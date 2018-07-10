@@ -203,6 +203,8 @@ public class UpdateManager implements IUpdateProxy {
     public void onBeforeCheck() {
         if (mIUpdateProxy != null) {
             mIUpdateProxy.onBeforeCheck();
+        } else {
+            mIUpdateChecker.onBeforeCheck();
         }
     }
 
@@ -225,6 +227,8 @@ public class UpdateManager implements IUpdateProxy {
     public void onAfterCheck() {
         if (mIUpdateProxy != null) {
             mIUpdateProxy.onAfterCheck();
+        } else {
+            mIUpdateChecker.onAfterCheck();
         }
     }
 

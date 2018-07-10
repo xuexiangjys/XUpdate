@@ -16,14 +16,12 @@
 
 package com.xuexiang.xupdate.proxy.impl;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import com.xuexiang.xupdate.entity.UpdateEntity;
-import com.xuexiang.xupdate.proxy.IUpdateHttpService;
+import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
-import com.xuexiang.xupdate.service.OnFileDownloadListener;
+
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 
 /**
  * 简单的版本更新代理
@@ -31,36 +29,11 @@ import com.xuexiang.xupdate.service.OnFileDownloadListener;
  * @author xuexiang
  * @since 2018/7/1 下午9:47
  */
-public class SimpleUpdateProxy implements IUpdateProxy {
-
-    @Override
-    public Context getContext() {
-        return null;
-    }
-
-    @Override
-    public IUpdateHttpService getIUpdateHttpService() {
-        return null;
-    }
-
-    @Override
-    public void update() {
-
-    }
+public abstract class AbstractUpdateProxy implements IUpdateProxy {
 
     @Override
     public void onBeforeCheck() {
 
-    }
-
-    @Override
-    public void checkVersion() {
-
-    }
-
-    @Override
-    public UpdateEntity parseJson(@NonNull String json) {
-        return null;
     }
 
     @Override
@@ -69,22 +42,8 @@ public class SimpleUpdateProxy implements IUpdateProxy {
     }
 
     @Override
-    public void findNewVersion(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy) {
-
-    }
-
-    @Override
     public void noNewVersion(@NonNull Throwable throwable) {
-
+        _XUpdate.onUpdateError(CHECK_NO_NEW_VERSION, throwable.getMessage());
     }
 
-    @Override
-    public void startDownload(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener) {
-
-    }
-
-    @Override
-    public void cancelDownload() {
-
-    }
 }

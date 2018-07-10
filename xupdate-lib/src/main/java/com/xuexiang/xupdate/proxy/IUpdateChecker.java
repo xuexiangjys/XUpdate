@@ -29,6 +29,11 @@ import java.util.Map;
 public interface IUpdateChecker {
 
     /**
+     * 版本检查之前
+     */
+    void onBeforeCheck();
+
+    /**
      * 检查应用的版本信息
      *
      * @param isGet       是否是get请求
@@ -37,6 +42,11 @@ public interface IUpdateChecker {
      * @param updateProxy 版本更新代理
      */
     void checkVersion(boolean isGet, @NonNull String url, @NonNull Map<String, Object> params, @NonNull IUpdateProxy updateProxy);
+
+    /**
+     * 版本检查之后
+     */
+    void onAfterCheck();
 
     /**
      * 处理版本检查的结果
