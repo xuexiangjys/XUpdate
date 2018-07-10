@@ -315,13 +315,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
             //权限判断是否有访问外部存储空间权限
             int flag = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (flag != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    // 用户拒绝过这个权限了，应该提示用户，为什么需要这个权限。
-                    _XUpdate.onUpdateError(DOWNLOAD_PERMISSION_DENIED);
-                } else {
-                    // 申请授权。
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_REQUEST_PERMISSIONS);
-                }
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_REQUEST_PERMISSIONS);
             } else {
                 installApp();
             }
