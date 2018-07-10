@@ -46,6 +46,7 @@ import android.widget.TextView;
 
 import com.xuexiang.xupdate.R;
 import com.xuexiang.xupdate.XUpdate;
+import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
 import com.xuexiang.xupdate.service.OnFileDownloadListener;
@@ -316,7 +317,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
             if (flag != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     // 用户拒绝过这个权限了，应该提示用户，为什么需要这个权限。
-                    XUpdate.onUpdateError(DOWNLOAD_PERMISSION_DENIED);
+                    _XUpdate.onUpdateError(DOWNLOAD_PERMISSION_DENIED);
                 } else {
                     // 申请授权。
                     requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_REQUEST_PERMISSIONS);
@@ -341,7 +342,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
                 //升级
                 installApp();
             } else {
-                XUpdate.onUpdateError(DOWNLOAD_PERMISSION_DENIED);
+                _XUpdate.onUpdateError(DOWNLOAD_PERMISSION_DENIED);
                 dismiss();
             }
         }
@@ -420,11 +421,11 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     }
 
     private void onInstallApk() {
-        XUpdate.onInstallApk(getContext(), UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity), mUpdateEntity.getDownLoadEntity());
+        _XUpdate.onInstallApk(getContext(), UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity), mUpdateEntity.getDownLoadEntity());
     }
 
     private void onInstallApk(File apkFile) {
-        XUpdate.onInstallApk(getContext(), apkFile, mUpdateEntity.getDownLoadEntity());
+        _XUpdate.onInstallApk(getContext(), apkFile, mUpdateEntity.getDownLoadEntity());
     }
 
     @Override
@@ -437,7 +438,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         try {
             super.show(manager, tag);
         } catch (Exception e) {
-            XUpdate.onUpdateError(PROMPT_UNKNOWN, e.getMessage());
+            _XUpdate.onUpdateError(PROMPT_UNKNOWN, e.getMessage());
         }
     }
 

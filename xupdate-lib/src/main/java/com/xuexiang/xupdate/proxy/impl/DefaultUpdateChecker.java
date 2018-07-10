@@ -19,7 +19,7 @@ package com.xuexiang.xupdate.proxy.impl;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.xuexiang.xupdate.XUpdate;
+import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
@@ -83,7 +83,7 @@ public class DefaultUpdateChecker implements IUpdateChecker {
         if (!TextUtils.isEmpty(result)) {
             processCheckResult(result, updateProxy);
         } else {
-            XUpdate.onUpdateError(CHECK_JSON_EMPTY);
+            _XUpdate.onUpdateError(CHECK_JSON_EMPTY);
         }
     }
 
@@ -95,7 +95,7 @@ public class DefaultUpdateChecker implements IUpdateChecker {
      */
     private void onCheckError(@NonNull IUpdateProxy updateProxy, Throwable error) {
         updateProxy.onAfterCheck();
-        XUpdate.onUpdateError(CHECK_UNKNOWN, error.getMessage());
+        _XUpdate.onUpdateError(CHECK_UNKNOWN, error.getMessage());
     }
 
     @Override
@@ -106,21 +106,21 @@ public class DefaultUpdateChecker implements IUpdateChecker {
                 if (updateEntity.isHasUpdate()) {
                     //校验是否是已忽略版本
                     if (UpdateUtils.isIgnoreVersion(updateProxy.getContext(), updateEntity.getVersionName())) {
-                        XUpdate.onUpdateError(CHECK_IGNORED_VERSION);
+                        _XUpdate.onUpdateError(CHECK_IGNORED_VERSION);
                     //校验apk下载缓存目录是否为空
                     } else if (TextUtils.isEmpty(updateEntity.getApkCacheDir())) {
-                        XUpdate.onUpdateError(CHECK_APK_CACHE_DIR_EMPTY);
+                        _XUpdate.onUpdateError(CHECK_APK_CACHE_DIR_EMPTY);
                     } else {
                         updateProxy.findNewVersion(updateEntity, updateProxy);
                     }
                 } else {
-                    XUpdate.onUpdateError(CHECK_NO_NEW_VERSION);
+                    _XUpdate.onUpdateError(CHECK_NO_NEW_VERSION);
                 }
             } else {
-                XUpdate.onUpdateError(CHECK_PARSE, "json:" + result);
+                _XUpdate.onUpdateError(CHECK_PARSE, "json:" + result);
             }
         } catch (Exception e) {
-            XUpdate.onUpdateError(CHECK_PARSE, e.getMessage());
+            _XUpdate.onUpdateError(CHECK_PARSE, e.getMessage());
         }
     }
 

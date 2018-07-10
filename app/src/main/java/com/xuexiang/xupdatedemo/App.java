@@ -19,11 +19,20 @@ package com.xuexiang.xupdatedemo;
 import android.app.Application;
 import android.content.Context;
 
+import com.xuexiang.xaop.XAOP;
+import com.xuexiang.xaop.util.PermissionUtils;
 import com.xuexiang.xpage.AppPageConfig;
 import com.xuexiang.xpage.PageConfig;
 import com.xuexiang.xpage.PageConfiguration;
 import com.xuexiang.xpage.model.PageInfo;
+import com.xuexiang.xupdate.XUpdate;
+import com.xuexiang.xupdate.entity.UpdateError;
+import com.xuexiang.xupdate.listener.OnUpdateFailureListener;
+import com.xuexiang.xupdate.utils.UpdateUtils;
+import com.xuexiang.xupdatedemo.http.OKHttpUpdateHttpService;
 import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.common.StringUtils;
+import com.xuexiang.xutil.tip.ToastUtils;
 
 import java.util.List;
 
@@ -46,5 +55,37 @@ public class App extends Application {
                 return AppPageConfig.getInstance().getPages(); //自动注册页面
             }
         }).debug("PageLog").enableWatcher(true).init(this);
+
+        XAOP.init(this); //初始化插件
+        XAOP.debug(true); //日志打印切片开启
+        //设置动态申请权限切片 申请权限被拒绝的事件响应监听
+        XAOP.setOnPermissionDeniedListener(new PermissionUtils.OnPermissionDeniedListener() {
+            @Override
+            public void onDenied(List<String> permissionsDenied) {
+                ToastUtils.toast("权限申请被拒绝:" + StringUtils.listToString(permissionsDenied, ","));
+            }
+
+        });
+
+        initUpdate();
+    }
+
+
+    private void initUpdate() {
+        XUpdate.get()
+                .isWifiOnly(true)
+                .isGet(false)
+                .isAutoMode(false)
+                .param("VersionCode", UpdateUtils.getVersionCode(this))
+                .param("AppKey", getPackageName())
+                .setOnUpdateFailureListener(new OnUpdateFailureListener() {
+                    @Override
+                    public void onFailure(UpdateError error) {
+                        ToastUtils.toast(error.toString());
+                    }
+                })
+                .setIUpdateHttpService(new OKHttpUpdateHttpService()) //这个必须设置
+                .init(this);
+
     }
 }

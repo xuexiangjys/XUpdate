@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.xuexiang.xupdate.XUpdate;
+import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.DownloadEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.listener.OnInstallListener;
@@ -45,7 +46,7 @@ public class DefaultInstallListener implements OnInstallListener {
         try {
             return downloadEntity.isApkFileValid(apkFile) && ApkInstallUtils.install(context, apkFile);
         } catch (IOException e) {
-            XUpdate.onUpdateError(INSTALL_FAILED, "获取apk的路径出错！");
+            _XUpdate.onUpdateError(INSTALL_FAILED, "获取apk的路径出错！");
         }
         return false;
     }

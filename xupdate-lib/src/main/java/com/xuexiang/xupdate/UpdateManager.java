@@ -135,6 +135,7 @@ public class UpdateManager implements IUpdateProxy {
         mIUpdateChecker = builder.updateChecker;
         mIUpdateParser = builder.updateParser;
         mIUpdateDownloader = builder.updateDownLoader;
+        mOnFileDownloadListener = builder.onFileDownloadListener;
 
         mIUpdatePrompter = builder.updatePrompter;
     }
@@ -183,14 +184,14 @@ public class UpdateManager implements IUpdateProxy {
                 checkVersion();
             } else {
                 onAfterCheck();
-                XUpdate.onUpdateError(CHECK_NO_WIFI);
+                _XUpdate.onUpdateError(CHECK_NO_WIFI);
             }
         } else {
             if (UpdateUtils.checkNetwork(mContext)) {
                 checkVersion();
             } else {
                 onAfterCheck();
-                XUpdate.onUpdateError(CHECK_NO_NETWORK);
+                _XUpdate.onUpdateError(CHECK_NO_NETWORK);
             }
         }
     }
@@ -266,7 +267,7 @@ public class UpdateManager implements IUpdateProxy {
                     if (mContext != null && !((FragmentActivity) mContext).isFinishing()) {
                         mIUpdatePrompter.showPrompt(updateEntity, updateProxy);
                     } else {
-                        XUpdate.onUpdateError(PROMPT_ACTIVITY_DESTROY);
+                        _XUpdate.onUpdateError(PROMPT_ACTIVITY_DESTROY);
                     }
                 } else {
                     mIUpdatePrompter.showPrompt(updateEntity, updateProxy);
@@ -285,7 +286,7 @@ public class UpdateManager implements IUpdateProxy {
         if (mIUpdateProxy != null) {
             mIUpdateProxy.noNewVersion(throwable);
         } else {
-            XUpdate.onUpdateError(CHECK_NO_NEW_VERSION, throwable.getMessage());
+            _XUpdate.onUpdateError(CHECK_NO_NEW_VERSION, throwable.getMessage());
         }
     }
 
@@ -384,20 +385,20 @@ public class UpdateManager implements IUpdateProxy {
             this.context = context;
 
             params = new TreeMap<>();
-            if (XUpdate.getParams() != null) {
-                params.putAll(XUpdate.getParams());
+            if (_XUpdate.getParams() != null) {
+                params.putAll(_XUpdate.getParams());
             }
 
-            updateHttpService = XUpdate.getIUpdateHttpService();
+            updateHttpService = _XUpdate.getIUpdateHttpService();
 
-            updateChecker = XUpdate.getIUpdateChecker();
-            updateParser = XUpdate.getIUpdateParser();
-            updateDownLoader = XUpdate.getIUpdateDownLoader();
+            updateChecker = _XUpdate.getIUpdateChecker();
+            updateParser = _XUpdate.getIUpdateParser();
+            updateDownLoader = _XUpdate.getIUpdateDownLoader();
 
-            isGet = XUpdate.isGet();
-            isWifiOnly = XUpdate.isWifiOnly();
-            isAutoMode = XUpdate.isAutoMode();
-            apkCacheDir = XUpdate.getApkCacheDir();
+            isGet = _XUpdate.isGet();
+            isWifiOnly = _XUpdate.isWifiOnly();
+            isAutoMode = _XUpdate.isAutoMode();
+            apkCacheDir = _XUpdate.getApkCacheDir();
         }
 
         /**

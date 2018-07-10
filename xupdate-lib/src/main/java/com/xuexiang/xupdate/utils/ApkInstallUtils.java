@@ -27,6 +27,7 @@ import android.support.annotation.RequiresPermission;
 import android.support.v4.content.FileProvider;
 
 import com.xuexiang.xupdate.XUpdate;
+import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.utils.ShellUtils.CommandResult;
 
 import java.io.File;
@@ -173,7 +174,7 @@ public final class ApkInstallUtils {
                 return true;
             }
         } catch (Exception e) {
-            XUpdate.onUpdateError(INSTALL_FAILED, "使用系统的意图进行apk安装失败！");
+            _XUpdate.onUpdateError(INSTALL_FAILED, "使用系统的意图进行apk安装失败！");
         }
         return false;
     }
@@ -199,7 +200,7 @@ public final class ApkInstallUtils {
             }
             return intent;
         } catch (Exception e) {
-            XUpdate.onUpdateError(INSTALL_FAILED, "获取安装的意图失败！");
+            _XUpdate.onUpdateError(INSTALL_FAILED, "获取安装的意图失败！");
         }
         return null;
     }

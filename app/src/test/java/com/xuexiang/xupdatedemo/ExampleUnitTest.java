@@ -24,7 +24,7 @@ public class ExampleUnitTest {
                 .setMsg("")
                 .setRequireUpgrade(CheckVersionResult.HAVE_NEW_VERSION)
 //                .setApkMd5(Md5Utils.getFileMD5())
-//                .setApkSize()
+                .setApkSize(12 * 1024) //12M = 12 * 1024 K
                 .setVersionCode(3)
                 .setVersionName("1.0.2")
                 .setDownloadUrl("https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/apk/xupdate_demo_1.0.2.apk")

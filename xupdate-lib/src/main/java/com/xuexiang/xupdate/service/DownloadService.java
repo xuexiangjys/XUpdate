@@ -33,6 +33,7 @@ import android.text.TextUtils;
 
 import com.xuexiang.xupdate.R;
 import com.xuexiang.xupdate.XUpdate;
+import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.DownloadEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
@@ -300,7 +301,7 @@ public class DownloadService extends Service {
                     mNotificationManager.cancel(DOWNLOAD_NOTIFY_ID);
 
                     if (mIsAutoInstall) {
-                        XUpdate.onInstallApk(DownloadService.this, file, mDownloadEntity);
+                        _XUpdate.onInstallApk(DownloadService.this, file, mDownloadEntity);
                     } else {
                         showDownloadCompleteNotification(file);
                     }
@@ -318,7 +319,7 @@ public class DownloadService extends Service {
 
         @Override
         public void onError(Throwable throwable) {
-            XUpdate.onUpdateError(DOWNLOAD_FAILED, throwable.getMessage());
+            _XUpdate.onUpdateError(DOWNLOAD_FAILED, throwable.getMessage());
             //App前台运行
             if (mOnFileDownloadListener != null) {
                 mOnFileDownloadListener.onError(throwable);

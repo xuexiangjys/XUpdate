@@ -55,48 +55,50 @@ public class XUpdate {
     /**
      * 请求参数【比如apk-key或者versionCode等】
      */
-    private Map<String, Object> mParams;
+    Map<String, Object> mParams;
     /**
      * 是否使用的是Get请求
      */
-    private boolean mIsGet;
+    boolean mIsGet;
     /**
      * 是否只在wifi下进行版本更新检查
      */
-    private boolean mIsWifiOnly;
+    boolean mIsWifiOnly;
     /**
      * 是否是自动版本更新模式【无人干预,有版本更新直接下载、安装】
      */
-    private boolean mIsAutoMode;
+    boolean mIsAutoMode;
     /**
      * 下载的apk文件缓存目录
      */
-    private String mApkCacheDir;
+    String mApkCacheDir;
     //========全局更新实现接口==========//
     /**
      * 版本更新网络请求服务API
      */
-    private IUpdateHttpService mIUpdateHttpService;
+    IUpdateHttpService mIUpdateHttpService;
     /**
-     * 版本更新检查器
+     * 版本更新检查器【有默认】
      */
-    private IUpdateChecker mIUpdateChecker;
+    IUpdateChecker mIUpdateChecker;
     /**
-     * 版本更新解析器
+     * 版本更新解析器【有默认】
      */
-    private IUpdateParser mIUpdateParser;
+    IUpdateParser mIUpdateParser;
     /**
-     * 版本更新下载器
+     * 版本更新下载器【有默认】
      */
-    private IUpdateDownloader mIUpdateDownloader;
+    IUpdateDownloader mIUpdateDownloader;
     /**
-     * APK安装监听
+     * APK安装监听【有默认】
      */
-    private OnInstallListener mOnInstallListener;
+    OnInstallListener mOnInstallListener;
     /**
-     * 更新出错监听
+     * 更新出错监听【有默认】
      */
-    private OnUpdateFailureListener mOnUpdateFailureListener;
+    OnUpdateFailureListener mOnUpdateFailureListener;
+
+    //===========================初始化===================================//
 
     private XUpdate() {
         mIsGet = false;
@@ -150,6 +152,17 @@ public class XUpdate {
         return get().getApplication();
     }
 
+    //===========================对外版本更新api===================================//
+    /**
+     * 获取版本更新构建者
+     *
+     * @param context
+     * @return
+     */
+    public static UpdateManager.Builder newBuild(@NonNull Context context) {
+        return new UpdateManager.Builder(context);
+    }
+
     //===========================属性设置===================================//
 
     /**
@@ -178,9 +191,6 @@ public class XUpdate {
         return this;
     }
 
-    public static Map<String, Object> getParams() {
-        return get().mParams;
-    }
 
     /**
      * 设置版本更新网络请求服务API
@@ -191,10 +201,6 @@ public class XUpdate {
     public XUpdate setIUpdateHttpService(IUpdateHttpService updateHttpService) {
         mIUpdateHttpService = updateHttpService;
         return this;
-    }
-
-    public static IUpdateHttpService getIUpdateHttpService() {
-        return get().mIUpdateHttpService;
     }
 
     /**
@@ -208,10 +214,6 @@ public class XUpdate {
         return this;
     }
 
-    public static IUpdateChecker getIUpdateChecker() {
-        return get().mIUpdateChecker;
-    }
-
     /**
      * 设置版本更新的解析器
      *
@@ -221,10 +223,6 @@ public class XUpdate {
     public XUpdate setIUpdateParser(IUpdateParser updateParser) {
         mIUpdateParser = updateParser;
         return this;
-    }
-
-    public static IUpdateParser getIUpdateParser() {
-        return get().mIUpdateParser;
     }
 
     /**
@@ -238,10 +236,6 @@ public class XUpdate {
         return this;
     }
 
-    public static IUpdateDownloader getIUpdateDownLoader() {
-        return get().mIUpdateDownloader;
-    }
-
     /**
      * 是否使用的是Get请求
      *
@@ -251,10 +245,6 @@ public class XUpdate {
     public XUpdate isGet(boolean isGet) {
         mIsGet = isGet;
         return this;
-    }
-
-    public static boolean isGet() {
-        return get().mIsGet;
     }
 
     /**
@@ -268,10 +258,6 @@ public class XUpdate {
         return this;
     }
 
-    public static boolean isWifiOnly() {
-        return get().mIsWifiOnly;
-    }
-
     /**
      * 是否是自动版本更新模式【无人干预,有版本更新直接下载、安装】
      *
@@ -281,10 +267,6 @@ public class XUpdate {
     public XUpdate isAutoMode(boolean isAutoMode) {
         mIsAutoMode = isAutoMode;
         return this;
-    }
-
-    public static boolean isAutoMode() {
-        return get().mIsAutoMode;
     }
 
     /**
@@ -298,12 +280,7 @@ public class XUpdate {
         return this;
     }
 
-    public static String getApkCacheDir() {
-        return get().mApkCacheDir;
-    }
-
     //===========================apk安装监听===================================//
-
     /**
      * 设置安装监听
      *
@@ -313,24 +290,6 @@ public class XUpdate {
     public XUpdate setOnInstallListener(OnInstallListener onInstallListener) {
         mOnInstallListener = onInstallListener;
         return this;
-    }
-
-    public static OnInstallListener getOnInstallListener() {
-        return get().mOnInstallListener;
-    }
-
-    /**
-     * 安装apk
-     *
-     * @param context        传activity可以获取安装的返回值，详见{@link ApkInstallUtils#REQUEST_CODE_INSTALL_APP}
-     * @param apkFile        apk文件
-     * @param downloadEntity 文件下载信息
-     */
-    public static boolean onInstallApk(Context context, File apkFile, DownloadEntity downloadEntity) {
-        if (get().mOnInstallListener == null) {
-            get().mOnInstallListener = new DefaultInstallListener();
-        }
-        return get().mOnInstallListener.onInstallApk(context, apkFile, downloadEntity);
     }
 
     //===========================更新出错===================================//
@@ -346,38 +305,5 @@ public class XUpdate {
         return this;
     }
 
-    public static OnUpdateFailureListener getOnUpdateFailureListener() {
-        return get().mOnUpdateFailureListener;
-    }
 
-    /**
-     * 更新出现错误
-     *
-     * @param errorCode
-     */
-    public static void onUpdateError(int errorCode) {
-        onUpdateError(new UpdateError(errorCode));
-    }
-
-    /**
-     * 更新出现错误
-     *
-     * @param errorCode
-     * @param message
-     */
-    public static void onUpdateError(int errorCode, String message) {
-        onUpdateError(new UpdateError(errorCode, message));
-    }
-
-    /**
-     * 更新出现错误
-     *
-     * @param updateError
-     */
-    public static void onUpdateError(@NonNull UpdateError updateError) {
-        if (get().mOnUpdateFailureListener == null) {
-            get().mOnUpdateFailureListener = new DefaultUpdateFailureListener();
-        }
-        get().mOnUpdateFailureListener.onFailure(updateError);
-    }
 }

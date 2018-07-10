@@ -22,6 +22,7 @@ import android.view.View;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.base.XPageSimpleListFragment;
 import com.xuexiang.xpage.utils.TitleBar;
+import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xutil.common.ClickUtils;
 
 import java.util.List;
@@ -33,8 +34,12 @@ import java.util.List;
 @Page(name = "XUpdate 版本更新")
 public class MainFragment extends XPageSimpleListFragment {
 
+    private String mUpdateUrl = "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/jsonapi/update_test.json";
+
+
     @Override
     protected List<String> initSimpleData(List<String> lists) {
+        lists.add("默认App更新");
         return lists;
     }
 
@@ -42,7 +47,10 @@ public class MainFragment extends XPageSimpleListFragment {
     protected void onItemClick(int position) {
         switch (position) {
             case 0:
-
+                XUpdate.newBuild(getActivity())
+                        .updateUrl(mUpdateUrl)
+                        .isGet(true)
+                        .update();
                 break;
             case 1:
 

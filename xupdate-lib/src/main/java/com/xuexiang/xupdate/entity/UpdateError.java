@@ -68,6 +68,15 @@ public class UpdateError extends Throwable {
     }
 
     /**
+     * 获取详细的错误信息
+     *
+     * @return
+     */
+    public String getDetailMsg() {
+        return "Code:" + mCode + ", msg:" + getMessage();
+    }
+
+    /**
      * 版本更新错误码
      */
     public final static class ERROR {
