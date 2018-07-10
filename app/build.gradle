@@ -39,16 +39,13 @@ android {
         applicationVariants.all { variant ->
             variant.outputs.all {
                 if (variant.buildType.name.equals('release')) {
-                    outputFileName = "xupdate_demo.apk"
+                    outputFileName = "xupdate_demo_${defaultConfig.versionName}.apk"
                 }
             }
         }
     }
 
-    aaptOptions { cruncherEnabled = false }
-
     lintOptions {
-        checkReleaseBuilds false
         abortOnError false
     }
 }
