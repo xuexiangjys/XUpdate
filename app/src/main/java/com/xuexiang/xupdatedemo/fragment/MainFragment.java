@@ -36,11 +36,13 @@ public class MainFragment extends XPageSimpleListFragment {
 
     private String mUpdateUrl = "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/jsonapi/update_test.json";
 
+    private String mUpdateUrl2 = "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/jsonapi/update_forced.json";
 
     @Override
     protected List<String> initSimpleData(List<String> lists) {
         lists.add("默认App更新");
-        lists.add("版本自动更新");
+        lists.add("版本更新(自动模式)");
+        lists.add("强制版本更新");
         return lists;
     }
 
@@ -58,6 +60,12 @@ public class MainFragment extends XPageSimpleListFragment {
                         .updateUrl(mUpdateUrl)
                         .isGet(true)
                         .isAutoMode(true) //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
+                        .update();
+                break;
+            case 2:
+                XUpdate.newBuild(getActivity())
+                        .updateUrl(mUpdateUrl2)
+                        .isGet(true)
                         .update();
                 break;
             default:
