@@ -75,7 +75,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     /**
      * 标志当前更新提示是否已显示
      */
-    public static boolean sIsShow = false;
+    private static boolean sIsShow = false;
     //======顶部========//
     /**
      * 顶部图片
@@ -152,6 +152,10 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     public UpdateDialogFragment setIUpdateProxy(IUpdateProxy updateProxy) {
         mIUpdateProxy = updateProxy;
         return this;
+    }
+
+    public static boolean isShow() {
+        return sIsShow;
     }
 
     @Override

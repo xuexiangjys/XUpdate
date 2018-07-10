@@ -27,6 +27,7 @@ import com.xuexiang.xupdate.listener.OnInstallListener;
 import com.xuexiang.xupdate.listener.OnUpdateFailureListener;
 import com.xuexiang.xupdate.listener.impl.DefaultInstallListener;
 import com.xuexiang.xupdate.listener.impl.DefaultUpdateFailureListener;
+import com.xuexiang.xupdate.logs.UpdateLog;
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
 import com.xuexiang.xupdate.proxy.IUpdateDownloader;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
@@ -277,6 +278,17 @@ public class XUpdate {
      */
     public XUpdate setApkCacheDir(String apkCacheDir) {
         mApkCacheDir = apkCacheDir;
+        return this;
+    }
+
+    /**
+     * 设置是否是debug模式
+     *
+     * @param isDebug
+     * @return
+     */
+    public XUpdate debug(boolean isDebug) {
+        UpdateLog.debug(isDebug);
         return this;
     }
 

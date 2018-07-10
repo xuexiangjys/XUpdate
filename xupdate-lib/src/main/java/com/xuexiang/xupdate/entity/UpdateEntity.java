@@ -151,6 +151,7 @@ public class UpdateEntity implements Serializable {
         if (isAutoMode) {
             mIsSilent = true;  //自动下载
             mIsAutoInstall = true; //自动安装
+            mDownloadEntity.setShowNotification(true); //自动模式下，默认下载进度条在通知栏显示
         }
     }
 

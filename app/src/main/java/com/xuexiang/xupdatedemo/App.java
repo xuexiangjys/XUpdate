@@ -78,6 +78,7 @@ public class App extends Application {
                 .isAutoMode(false)
                 .param("VersionCode", UpdateUtils.getVersionCode(this))
                 .param("AppKey", getPackageName())
+//                .debug(true)
                 .setOnUpdateFailureListener(new OnUpdateFailureListener() {
                     @Override
                     public void onFailure(UpdateError error) {

@@ -110,7 +110,6 @@ public class DownloadService extends Service {
         return mIsRunning;
     }
 
-
     @Override
     public void onCreate() {
         super.onCreate();

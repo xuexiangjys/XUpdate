@@ -469,7 +469,7 @@ public class UpdateManager implements IUpdateProxy {
         }
 
         /**
-         * 是否是自动版本更新模式【无人干预,有版本更新直接下载、安装】
+         * 是否是自动版本更新模式【无人干预,有版本更新直接下载、安装，需要root权限】
          *
          * @param isAutoMode
          * @return

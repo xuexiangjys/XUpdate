@@ -87,7 +87,8 @@ public class UpdateError extends Throwable {
         public static final int CHECK_UNKNOWN = 2000;
         public static final int CHECK_NO_WIFI = CHECK_UNKNOWN + 1;
         public static final int CHECK_NO_NETWORK = CHECK_NO_WIFI + 1;
-        public static final int CHECK_NO_NEW_VERSION = CHECK_NO_NETWORK + 1;
+        public static final int CHECK_UPDATING = CHECK_NO_NETWORK + 1;
+        public static final int CHECK_NO_NEW_VERSION = CHECK_UPDATING + 1;
         public static final int CHECK_JSON_EMPTY = CHECK_NO_NEW_VERSION + 1;
         public static final int CHECK_PARSE = CHECK_JSON_EMPTY + 1;
         public static final int CHECK_IGNORED_VERSION = CHECK_PARSE + 1;
@@ -116,6 +117,7 @@ public class UpdateError extends Throwable {
         sMessages.append(ERROR.CHECK_UNKNOWN, "查询更新失败：未知错误");
         sMessages.append(ERROR.CHECK_NO_WIFI, "查询更新失败：没有WIFI");
         sMessages.append(ERROR.CHECK_NO_NETWORK, "查询更新失败：没有网络");
+        sMessages.append(ERROR.CHECK_UPDATING, "程序正在进行版本更新！");
         sMessages.append(ERROR.CHECK_NO_NEW_VERSION, "查询更新：没有新版本");
         sMessages.append(ERROR.CHECK_JSON_EMPTY, "查询更新失败：Json 为空");
         sMessages.append(ERROR.CHECK_PARSE, "查询更新失败：解析Json错误");

@@ -24,6 +24,7 @@ import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
+import com.xuexiang.xupdate.service.DownloadService;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 
 import java.util.Map;
@@ -34,6 +35,7 @@ import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_JSON_EMPTY;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_PARSE;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_UNKNOWN;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_UPDATING;
 
 /**
  * 默认版本更新检查者
@@ -45,6 +47,12 @@ public class DefaultUpdateChecker implements IUpdateChecker {
 
     @Override
     public void checkVersion(boolean isGet, @NonNull String url, @NonNull Map<String, Object> params, final @NonNull IUpdateProxy updateProxy) {
+        if (DownloadService.isRunning() || UpdateDialogFragment.isShow()) {
+            updateProxy.onAfterCheck();
+            _XUpdate.onUpdateError(CHECK_UPDATING);
+            return;
+        }
+
         if (isGet) {
             updateProxy.getIUpdateHttpService().asyncGet(url, params, new IUpdateHttpService.Callback() {
                 @Override

@@ -40,6 +40,7 @@ public class MainFragment extends XPageSimpleListFragment {
     @Override
     protected List<String> initSimpleData(List<String> lists) {
         lists.add("默认App更新");
+        lists.add("版本自动更新");
         return lists;
     }
 
@@ -53,7 +54,11 @@ public class MainFragment extends XPageSimpleListFragment {
                         .update();
                 break;
             case 1:
-
+                XUpdate.newBuild(getActivity())
+                        .updateUrl(mUpdateUrl)
+                        .isGet(true)
+                        .isAutoMode(true) //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
+                        .update();
                 break;
             default:
                 break;
