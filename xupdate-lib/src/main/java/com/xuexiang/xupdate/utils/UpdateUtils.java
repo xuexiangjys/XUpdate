@@ -58,6 +58,107 @@ public final class UpdateUtils {
         throw new UnsupportedOperationException("cannot be instantiated");
     }
 
+    //=======================检查========================//
+
+    /**
+     * 不能为null
+     *
+     * @param object
+     * @param message
+     * @param <T>
+     * @return
+     */
+    public static <T> T requireNonNull(final T object, final String message) {
+        if (object == null) {
+            throw new NullPointerException(message);
+        }
+        return object;
+    }
+
+    /**
+     * 检测当前网络是否是wifi
+     *
+     * @param context
+     * @return
+     */
+    public static boolean checkWifi(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity == null) {
+            return false;
+        }
+        NetworkInfo info = connectivity.getActiveNetworkInfo();
+        return info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
+    /**
+     * 检查当前是否有网
+     *
+     * @param context
+     * @return
+     */
+    public static boolean checkNetwork(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity == null) {
+            return false;
+        }
+        NetworkInfo info = connectivity.getActiveNetworkInfo();
+        return info != null && info.isConnected();
+    }
+
+    /**
+     * 获取应用的VersionCode
+     *
+     * @param context
+     * @return
+     */
+    public static int getVersionCode(Context context) {
+        PackageInfo packageInfo = getPackageInfo(context);
+        return packageInfo != null ? packageInfo.versionCode : -1;
+    }
+
+    /**
+     * 比较两个版本号
+     *
+     * @param versionName1
+     * @param versionName2
+     * @return [> 0 versionName1 > versionName2] [= 0 versionName1 = versionName2]  [< 0 versionName1 < versionName2]
+     */
+    public static int compareVersionName(@NonNull String versionName1, @NonNull String versionName2) {
+        if (versionName1.equals(versionName2)) {
+            return 0;
+        }
+        String[] versionArray1 = versionName1.split("\\.");//注意此处为正则匹配，不能用"."；
+        String[] versionArray2 = versionName2.split("\\.");
+        int idx = 0;
+        int minLength = Math.min(versionArray1.length, versionArray2.length);//取最小长度值
+        int diff = 0;
+        while (idx < minLength
+                && (diff = versionArray1[idx].length() - versionArray2[idx].length()) == 0//先比较长度
+                && (diff = versionArray1[idx].compareTo(versionArray2[idx])) == 0) {//再比较字符
+            ++idx;
+        }
+        //如果已经分出大小，则直接返回，如果未分出大小，则再比较位数，有子版本的为大；
+        diff = (diff != 0) ? diff : versionArray1.length - versionArray2.length;
+        return diff;
+    }
+
+    /**
+     * 把 JSON 字符串 转换为 单个指定类型的对象
+     *
+     * @param json     包含了单个对象数据的JSON字符串
+     * @param classOfT 指定类型对象的Class
+     * @return 指定类型对象
+     */
+    public static <T> T fromJson(String json, Class<T> classOfT) {
+        try {
+            return new Gson().fromJson(json, classOfT);
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //=============显示====================//
     public static int dip2px(int dip, Context context) {
         return (int) (dip * getDensity(context) + 0.5f);
     }
@@ -71,22 +172,84 @@ public final class UpdateUtils {
     }
 
     /**
-     * 获取Manifest中注册的MetaData
+     * Drawable to bitmap.
      *
-     * @param context
-     * @param name
-     * @return
+     * @param drawable The drawable.
+     * @return bitmap
      */
-    public static String getManifestMetaData(Context context, String name) {
-        try {
-            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-            return appInfo.metaData.getString(name);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static Bitmap drawable2Bitmap(final Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
         }
-        return null;
+        Bitmap bitmap;
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1,
+                    drawable.getOpacity() != PixelFormat.OPAQUE
+                            ? Bitmap.Config.ARGB_8888
+                            : Bitmap.Config.RGB_565);
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                    drawable.getIntrinsicHeight(),
+                    drawable.getOpacity() != PixelFormat.OPAQUE
+                            ? Bitmap.Config.ARGB_8888
+                            : Bitmap.Config.RGB_565);
+        }
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
+    private static SharedPreferences getSP(Context context) {
+        return context.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
+    }
+
+    /**
+     * 保存忽略的版本信息
+     *
+     * @param context
+     * @param newVersion
+     */
+    public static void saveIgnoreVersion(Context context, String newVersion) {
+        getSP(context).edit().putString(IGNORE_VERSION, newVersion).apply();
+    }
+
+    /**
+     * 是否是忽略版本
+     *
+     * @param context
+     * @param newVersion
+     * @return
+     */
+    public static boolean isIgnoreVersion(Context context, String newVersion) {
+        return getSP(context).getString(IGNORE_VERSION, "").equals(newVersion);
+    }
+
+    /**
+     * 获取版本更新展示信息
+     *
+     * @param updateEntity
+     * @return
+     */
+    @NonNull
+    public static String getDisplayUpdateInfo(@NonNull UpdateEntity updateEntity) {
+        String targetSize = Formatter.formatShortFileSize(XUpdate.getContext(), updateEntity.getSize() * 1024);
+        final String updateContent = updateEntity.getUpdateContent();
+
+        String updateInfo = "";
+        if (!TextUtils.isEmpty(targetSize)) {
+            updateInfo = "新版本大小：" + targetSize + "\n\n";
+        }
+        if (!TextUtils.isEmpty(updateContent)) {
+            updateInfo += updateContent;
+        }
+        return updateInfo;
+    }
+
+    //=============下载====================//
 
     /**
      * 判断更新的安装包是否已下载完成【比较md5值】
@@ -133,22 +296,6 @@ public final class UpdateUtils {
         }
     }
 
-
-    /**
-     * 不能为null
-     *
-     * @param object
-     * @param message
-     * @param <T>
-     * @return
-     */
-    public static <T> T requireNonNull(final T object, final String message) {
-        if (object == null) {
-            throw new NullPointerException(message);
-        }
-        return object;
-    }
-
     /**
      * 获取应用的缓存目录
      *
@@ -166,115 +313,6 @@ public final class UpdateUtils {
             cacheDir = context.getCacheDir();
         }
         return cacheDir.getPath() + File.separator + uniqueName;
-    }
-
-    /**
-     * 检测当前网络是否是wifi
-     *
-     * @param context
-     * @return
-     */
-    public static boolean checkWifi(Context context) {
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity == null) {
-            return false;
-        }
-        NetworkInfo info = connectivity.getActiveNetworkInfo();
-        return info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_WIFI;
-    }
-
-    /**
-     * 检查当前是否有网
-     *
-     * @param context
-     * @return
-     */
-    public static boolean checkNetwork(Context context) {
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity == null) {
-            return false;
-        }
-        NetworkInfo info = connectivity.getActiveNetworkInfo();
-        return info != null && info.isConnected();
-    }
-
-    private static SharedPreferences getSP(Context context) {
-        return context.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
-    }
-
-    /**
-     * 保存忽略的版本信息
-     *
-     * @param context
-     * @param newVersion
-     */
-    public static void saveIgnoreVersion(Context context, String newVersion) {
-        getSP(context).edit().putString(IGNORE_VERSION, newVersion).apply();
-    }
-
-    /**
-     * 是否是忽略版本
-     *
-     * @param context
-     * @param newVersion
-     * @return
-     */
-    public static boolean isIgnoreVersion(Context context, String newVersion) {
-        return getSP(context).getString(IGNORE_VERSION, "").equals(newVersion);
-    }
-
-
-    /**
-     * 比较两个版本号
-     *
-     * @param versionName1
-     * @param versionName2
-     * @return [> 0 versionName1 > versionName2] [= 0 versionName1 = versionName2]  [< 0 versionName1 < versionName2]
-     */
-    public static int compareVersionName(@NonNull String versionName1, @NonNull String versionName2) {
-        if (versionName1.equals(versionName2)) {
-            return 0;
-        }
-        String[] versionArray1 = versionName1.split("\\.");//注意此处为正则匹配，不能用"."；
-        String[] versionArray2 = versionName2.split("\\.");
-        int idx = 0;
-        int minLength = Math.min(versionArray1.length, versionArray2.length);//取最小长度值
-        int diff = 0;
-        while (idx < minLength
-                && (diff = versionArray1[idx].length() - versionArray2[idx].length()) == 0//先比较长度
-                && (diff = versionArray1[idx].compareTo(versionArray2[idx])) == 0) {//再比较字符
-            ++idx;
-        }
-        //如果已经分出大小，则直接返回，如果未分出大小，则再比较位数，有子版本的为大；
-        diff = (diff != 0) ? diff : versionArray1.length - versionArray2.length;
-        return diff;
-    }
-
-    /**
-     * 把 JSON 字符串 转换为 单个指定类型的对象
-     *
-     * @param json     包含了单个对象数据的JSON字符串
-     * @param classOfT 指定类型对象的Class
-     * @return 指定类型对象
-     */
-    public static <T> T fromJson(String json, Class<T> classOfT) {
-        try {
-            return new Gson().fromJson(json, classOfT);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * 获取应用的VersionCode
-     *
-     * @param context
-     * @return
-     */
-    public static int getVersionCode(Context context) {
-        PackageInfo packageInfo = getPackageInfo(context);
-        return packageInfo != null ? packageInfo.versionCode : -1;
     }
 
     private static PackageInfo getPackageInfo(Context context) {
@@ -297,37 +335,11 @@ public final class UpdateUtils {
     }
 
     /**
-     * Drawable to bitmap.
+     * 应用是否在前台
      *
-     * @param drawable The drawable.
-     * @return bitmap
+     * @param context
+     * @return
      */
-    public static Bitmap drawable2Bitmap(final Drawable drawable) {
-        if (drawable instanceof BitmapDrawable) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if (bitmapDrawable.getBitmap() != null) {
-                return bitmapDrawable.getBitmap();
-            }
-        }
-        Bitmap bitmap;
-        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            bitmap = Bitmap.createBitmap(1, 1,
-                    drawable.getOpacity() != PixelFormat.OPAQUE
-                            ? Bitmap.Config.ARGB_8888
-                            : Bitmap.Config.RGB_565);
-        } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
-                    drawable.getIntrinsicHeight(),
-                    drawable.getOpacity() != PixelFormat.OPAQUE
-                            ? Bitmap.Config.ARGB_8888
-                            : Bitmap.Config.RGB_565);
-        }
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
-    }
-
     public static boolean isAppOnForeground(Context context) {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         String packageName = context.getPackageName();
@@ -340,27 +352,6 @@ public final class UpdateUtils {
             }
         }
         return false;
-    }
-
-    /**
-     * 获取版本更新展示信息
-     *
-     * @param updateEntity
-     * @return
-     */
-    @NonNull
-    public static String getDisplayUpdateInfo(@NonNull UpdateEntity updateEntity) {
-        String targetSize = Formatter.formatShortFileSize(XUpdate.getContext(), updateEntity.getSize() * 1024);
-        final String updateContent = updateEntity.getUpdateContent();
-
-        String updateInfo = "";
-        if (!TextUtils.isEmpty(targetSize)) {
-            updateInfo = "新版本大小：" + targetSize + "\n\n";
-        }
-        if (!TextUtils.isEmpty(updateContent)) {
-            updateInfo += updateContent;
-        }
-        return updateInfo;
     }
 
 }
