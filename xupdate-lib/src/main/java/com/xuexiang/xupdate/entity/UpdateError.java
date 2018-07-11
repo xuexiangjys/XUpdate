@@ -84,8 +84,8 @@ public class UpdateError extends Throwable {
         /**
          * 查询更新失败
          */
-        public static final int CHECK_UNKNOWN = 2000;
-        public static final int CHECK_NO_WIFI = CHECK_UNKNOWN + 1;
+        public static final int CHECK_NET_REQUEST = 2000;
+        public static final int CHECK_NO_WIFI = CHECK_NET_REQUEST + 1;
         public static final int CHECK_NO_NETWORK = CHECK_NO_WIFI + 1;
         public static final int CHECK_UPDATING = CHECK_NO_NETWORK + 1;
         public static final int CHECK_NO_NEW_VERSION = CHECK_UPDATING + 1;
@@ -114,15 +114,15 @@ public class UpdateError extends Throwable {
     private static final SparseArray<String> sMessages = new SparseArray<String>();
 
     static {
-        sMessages.append(ERROR.CHECK_UNKNOWN, "查询更新失败：未知错误");
-        sMessages.append(ERROR.CHECK_NO_WIFI, "查询更新失败：没有WIFI");
-        sMessages.append(ERROR.CHECK_NO_NETWORK, "查询更新失败：没有网络");
+        sMessages.append(ERROR.CHECK_NET_REQUEST, "查询失败：网络请求错误");
+        sMessages.append(ERROR.CHECK_NO_WIFI, "查询失败：没有WIFI");
+        sMessages.append(ERROR.CHECK_NO_NETWORK, "查询失败：没有网络");
         sMessages.append(ERROR.CHECK_UPDATING, "程序正在进行版本更新！");
         sMessages.append(ERROR.CHECK_NO_NEW_VERSION, "查询更新：没有新版本");
-        sMessages.append(ERROR.CHECK_JSON_EMPTY, "查询更新失败：Json 为空");
-        sMessages.append(ERROR.CHECK_PARSE, "查询更新失败：解析Json错误");
-        sMessages.append(ERROR.CHECK_IGNORED_VERSION, "查询更新失败：已经被忽略的版本");
-        sMessages.append(ERROR.CHECK_APK_CACHE_DIR_EMPTY, "查询更新失败：apk的下载缓存目录为空");
+        sMessages.append(ERROR.CHECK_JSON_EMPTY, "查询失败：Json 为空");
+        sMessages.append(ERROR.CHECK_PARSE, "查询失败：解析Json错误");
+        sMessages.append(ERROR.CHECK_IGNORED_VERSION, "更新失败：已经被忽略的版本");
+        sMessages.append(ERROR.CHECK_APK_CACHE_DIR_EMPTY, "更新失败：apk的下载缓存目录为空");
 
         sMessages.append(ERROR.PROMPT_UNKNOWN, "提示失败：未知错误");
         sMessages.append(ERROR.PROMPT_ACTIVITY_DESTROY, "提示失败：activity已被销毁");

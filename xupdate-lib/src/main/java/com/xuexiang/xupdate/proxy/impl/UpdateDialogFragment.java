@@ -45,7 +45,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xuexiang.xupdate.R;
-import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
@@ -262,19 +261,10 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     private void initUpdateInfo() {
         //弹出对话框
         final String newVersion = mUpdateEntity.getVersionName();
-        String targetSize = Formatter.formatShortFileSize(getContext(), mUpdateEntity.getSize() * 1024);
-        final String updateContent = mUpdateEntity.getUpdateContent();
-
-        String updateInfo = "";
-        if (!TextUtils.isEmpty(targetSize)) {
-            updateInfo = "新版本大小：" + targetSize + "\n\n";
-        }
-        if (!TextUtils.isEmpty(updateContent)) {
-            updateInfo += updateContent;
-        }
-
+        String updateInfo = UpdateUtils.getDisplayUpdateInfo(mUpdateEntity);
         //更新内容
         mTvUpdateInfo.setText(updateInfo);
+
         mTvTitle.setText(String.format("是否升级到%s版本？", newVersion));
     }
 

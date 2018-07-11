@@ -34,7 +34,7 @@ import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_IGNORED_VERSIO
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_JSON_EMPTY;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_PARSE;
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_UNKNOWN;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NET_REQUEST;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_UPDATING;
 
 /**
@@ -113,7 +113,7 @@ public class DefaultUpdateChecker implements IUpdateChecker {
      */
     private void onCheckError(@NonNull IUpdateProxy updateProxy, Throwable error) {
         updateProxy.onAfterCheck();
-        _XUpdate.onUpdateError(CHECK_UNKNOWN, error.getMessage());
+        _XUpdate.onUpdateError(CHECK_NET_REQUEST, error.getMessage());
     }
 
     @Override

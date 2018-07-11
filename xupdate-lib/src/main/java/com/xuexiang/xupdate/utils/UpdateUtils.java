@@ -32,10 +32,12 @@ import android.net.NetworkInfo;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 
 import java.io.File;
@@ -338,6 +340,27 @@ public final class UpdateUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * 获取版本更新展示信息
+     *
+     * @param updateEntity
+     * @return
+     */
+    @NonNull
+    public static String getDisplayUpdateInfo(@NonNull UpdateEntity updateEntity) {
+        String targetSize = Formatter.formatShortFileSize(XUpdate.getContext(), updateEntity.getSize() * 1024);
+        final String updateContent = updateEntity.getUpdateContent();
+
+        String updateInfo = "";
+        if (!TextUtils.isEmpty(targetSize)) {
+            updateInfo = "新版本大小：" + targetSize + "\n\n";
+        }
+        if (!TextUtils.isEmpty(updateContent)) {
+            updateInfo += updateContent;
+        }
+        return updateInfo;
     }
 
 }
