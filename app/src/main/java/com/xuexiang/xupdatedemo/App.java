@@ -74,7 +74,7 @@ public class App extends Application {
     private void initUpdate() {
         XUpdate.get()
                 .isWifiOnly(true)
-                .isGet(false)
+                .isGet(true)
                 .isAutoMode(false)
                 .param("VersionCode", UpdateUtils.getVersionCode(this))
                 .param("AppKey", getPackageName())

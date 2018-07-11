@@ -19,6 +19,7 @@ package com.xuexiang.xupdate.utils;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 
 import java.util.Random;
@@ -68,13 +69,19 @@ public final class ColorUtils {
     }
 
     /**
-     * @param color 背景颜色
-     * @return 前景色是否深色
+     * 是否是深色的颜色
+     *
+     * @param color
+     * @return
      */
-    public static boolean isTextColorDark(int color) {
-        float a = (Color.red(color) * 0.299f + Color.green(color) * 0.587f + Color.blue(color) * 0.114f);
-        return a > 180;
+    public static boolean isColorDark(@ColorInt int color) {
+        double darkness =
+                1
+                        - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color))
+                        / 255;
+        return darkness >= 0.5;
     }
+
 
     /**
      * 按条件的到随机颜色

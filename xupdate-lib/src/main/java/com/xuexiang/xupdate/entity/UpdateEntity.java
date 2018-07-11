@@ -223,7 +223,7 @@ public class UpdateEntity implements Serializable {
         return mDownloadEntity;
     }
 
-    //======临时变量=====//
+    //======内部变量，请勿设置=====//
     private IUpdateHttpService mIUpdateHttpService;
 
     public UpdateEntity setIUpdateHttpService(IUpdateHttpService updateHttpService) {

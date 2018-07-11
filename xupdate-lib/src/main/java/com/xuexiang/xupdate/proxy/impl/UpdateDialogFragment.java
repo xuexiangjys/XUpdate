@@ -303,7 +303,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         mNumberProgressBar.setProgressTextColor(color);
         mNumberProgressBar.setReachedBarColor(color);
         //随背景颜色变化
-        mBtnUpdate.setTextColor(ColorUtils.isTextColorDark(color) ? Color.BLACK : Color.WHITE);
+        mBtnUpdate.setTextColor(ColorUtils.isColorDark(color) ? Color.WHITE : Color.BLACK);
     }
 
     private void initListeners() {
