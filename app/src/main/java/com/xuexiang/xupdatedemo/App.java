@@ -73,20 +73,20 @@ public class App extends Application {
 
     private void initUpdate() {
         XUpdate.get()
-                .isWifiOnly(true)
-                .isGet(true)
-                .isAutoMode(false)
-                .param("VersionCode", UpdateUtils.getVersionCode(this))
+                .isWifiOnly(true)     //默认设置只在wifi下检查版本更新
+                .isGet(true)          //默认设置使用get请求检查版本
+                .isAutoMode(false)    //默认设置非自动模式，可根据具体使用配置
+                .param("VersionCode", UpdateUtils.getVersionCode(this)) //设置默认公共请求参数
                 .param("AppKey", getPackageName())
 //                .debug(true)
-                .setOnUpdateFailureListener(new OnUpdateFailureListener() {
+                .setOnUpdateFailureListener(new OnUpdateFailureListener() { //设置版本更新出错的监听
                     @Override
                     public void onFailure(UpdateError error) {
                         ToastUtils.toast(error.toString());
                     }
                 })
-                .setIUpdateHttpService(new OKHttpUpdateHttpService()) //这个必须设置
-                .init(this);
+                .setIUpdateHttpService(new OKHttpUpdateHttpService()) //这个必须设置！实现网络请求功能。
+                .init(this);   //这个必须初始化
 
     }
 }
