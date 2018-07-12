@@ -216,12 +216,12 @@ public class DownloadService extends Service {
         }
         String appName = UpdateUtils.getApkNameByDownloadUrl(apkUrl);
 
-        File appDir = new File(updateEntity.getApkCacheDir());
-        if (!appDir.exists()) {
-            appDir.mkdirs();
+        File apkCacheDir = new File(updateEntity.getApkCacheDir());
+        if (!apkCacheDir.exists()) {
+            apkCacheDir.mkdirs();
         }
 
-        String target = appDir + File.separator + updateEntity.getVersionName();
+        String target = apkCacheDir + File.separator + updateEntity.getVersionName();
 
         updateEntity.getIUpdateHttpService().download(apkUrl, target, appName, new FileDownloadCallBack(updateEntity, downloadListener));
     }

@@ -56,7 +56,7 @@ public class UpdateEntity implements Serializable {
     /**
      * 版本名称
      */
-    private String mVersionName;
+    private String mVersionName = "unknown_version";
 
     /**
      * 更新内容

@@ -40,6 +40,7 @@ import com.xuexiang.xutil.app.PathUtils;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.file.FileUtils;
 import com.xuexiang.xutil.resource.ResUtils;
+import com.xuexiang.xutil.tip.ToastUtils;
 
 import java.io.File;
 import java.util.List;
@@ -144,6 +145,7 @@ public class MainFragment extends XPageSimpleListFragment {
                             @Override
                             public boolean onCompleted(File file) {
                                 HProgressDialogUtils.cancel();
+                                ToastUtils.toast("apk下载完毕，文件路径：" + file.getPath());
                                 return false;
                             }
 
