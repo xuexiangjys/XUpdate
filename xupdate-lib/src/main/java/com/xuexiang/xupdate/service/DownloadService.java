@@ -300,7 +300,7 @@ public class DownloadService extends Service {
                     mNotificationManager.cancel(DOWNLOAD_NOTIFY_ID);
 
                     if (mIsAutoInstall) {
-                        _XUpdate.onInstallApk(DownloadService.this, file, mDownloadEntity);
+                        _XUpdate.startInstallApk(DownloadService.this, file, mDownloadEntity);
                     } else {
                         showDownloadCompleteNotification(file);
                     }

@@ -43,7 +43,9 @@ import static com.xuexiang.xupdate.entity.UpdateError.ERROR.INSTALL_FAILED;
  * @since 2018/7/2 上午1:18
  */
 public final class ApkInstallUtils {
-
+    private static final int APP_INSTALL_AUTO = 0;
+    private static final int APP_INSTALL_INTERNAL = 1;
+    private static final int APP_INSTALL_EXTERNAL = 2;
     /**
      * apk安装的请求码
      */
@@ -54,7 +56,7 @@ public final class ApkInstallUtils {
     }
 
     /**
-     * apk安装
+     * 自适应apk安装（如果设备有root权限就自动静默安装）
      *
      * @param context
      * @param apkFile apk文件
@@ -66,7 +68,7 @@ public final class ApkInstallUtils {
 
 
     /**
-     * apk安装
+     * 自适应apk安装（如果设备有root权限就自动静默安装）
      *
      * @param context
      * @param filePath apk文件的路径
@@ -80,7 +82,6 @@ public final class ApkInstallUtils {
         return installNormal(context, filePath);
     }
 
-
     /**
      * 静默安装 App
      * <p>非 root 需添加权限
@@ -92,7 +93,7 @@ public final class ApkInstallUtils {
     @RequiresPermission(INSTALL_PACKAGES)
     public static boolean installAppSilent(Context context, String filePath) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            return installAppSilentBelow24(filePath);
+            return installAppSilentBelow24(context, filePath);
         } else {
             return installAppSilentAbove24(context.getPackageName(), filePath);
         }
@@ -107,23 +108,69 @@ public final class ApkInstallUtils {
      * @return {@code true}: 安装成功<br>{@code false}: 安装失败
      */
     @RequiresPermission(INSTALL_PACKAGES)
-    private static boolean installAppSilentBelow24(String filePath) {
+    private static boolean installAppSilentBelow24(Context context, String filePath) {
         File file = getFileByPath(filePath);
         if (!isFileExists(file)) return false;
-        boolean isRoot = isDeviceRooted();
-        String command = "LD_LIBRARY_PATH=/vendor/lib:/system/lib pm install " + filePath;
-        CommandResult commandResult = ShellUtils.execCommand(command, isRoot);
-        if (commandResult.successMsg != null
-                && commandResult.successMsg.toLowerCase().contains("success")) {
-            return true;
-        } else {
-            command = "LD_LIBRARY_PATH=/vendor/lib:/system/lib64 pm install " + filePath;
-            commandResult = ShellUtils.execCommand(command, isRoot);
-            return commandResult.successMsg != null
-                    && commandResult.successMsg.toLowerCase().contains("success");
-        }
+
+        String pmParams = " -r " + getInstallLocationParams();
+
+        StringBuilder command = new StringBuilder()
+                .append("LD_LIBRARY_PATH=/vendor/lib:/system/lib pm install ")
+                .append(pmParams).append(" ")
+                .append(filePath.replace(" ", "\\ "));
+        CommandResult commandResult = ShellUtils.execCommand(
+                command.toString(), !isSystemApplication(context), true);
+        return commandResult.successMsg != null
+                && (commandResult.successMsg.contains("Success") || commandResult.successMsg
+                .contains("success"));
     }
 
+    /**
+     * get params for pm install location
+     *
+     * @return
+     */
+    private static String getInstallLocationParams() {
+        int location = getInstallLocation();
+        switch (location) {
+            case APP_INSTALL_INTERNAL:
+                return "-f";
+            case APP_INSTALL_EXTERNAL:
+                return "-s";
+        }
+        return "";
+    }
+
+    /**
+     * get system install location<br/>
+     * can be set by System Menu Setting->Storage->Prefered install location
+     *
+     * @return
+     */
+    public static int getInstallLocation() {
+        CommandResult commandResult = ShellUtils
+                .execCommand(
+                        "LD_LIBRARY_PATH=/vendor/lib:/system/lib pm get-install-location",
+                        false, true);
+        if (commandResult.result == 0 && commandResult.successMsg != null
+                && commandResult.successMsg.length() > 0) {
+            try {
+                int location = Integer.parseInt(commandResult.successMsg
+                        .substring(0, 1));
+                switch (location) {
+                    case APP_INSTALL_INTERNAL:
+                        return APP_INSTALL_INTERNAL;
+                    case APP_INSTALL_EXTERNAL:
+                        return APP_INSTALL_EXTERNAL;
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        return APP_INSTALL_AUTO;
+    }
+
+    //===============================//
     /**
      * 静默安装 App 在Android7.0及以上起作用
      * <p>非 root 需添加权限
@@ -144,7 +191,7 @@ public final class ApkInstallUtils {
     }
 
     /**
-     * install package normal by system intent
+     * 使用系统的意图安装
      *
      * @param context
      * @param filePath file path of package

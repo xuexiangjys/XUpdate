@@ -16,17 +16,22 @@
 
 package com.xuexiang.xupdatedemo.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.xuexiang.xaop.annotation.Permission;
+import com.xuexiang.xaop.consts.PermissionConsts;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.base.XPageSimpleListFragment;
 import com.xuexiang.xpage.utils.TitleBar;
 import com.xuexiang.xupdate.XUpdate;
+import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdateParser;
 import com.xuexiang.xupdate.proxy.IUpdatePrompter;
@@ -39,12 +44,17 @@ import com.xuexiang.xupdatedemo.R;
 import com.xuexiang.xupdatedemo.entity.CustomResult;
 import com.xuexiang.xupdatedemo.utils.CProgressDialogUtils;
 import com.xuexiang.xupdatedemo.utils.HProgressDialogUtils;
+import com.xuexiang.xutil.app.IntentUtils;
+import com.xuexiang.xutil.app.PathUtils;
 import com.xuexiang.xutil.common.ClickUtils;
+import com.xuexiang.xutil.file.FileUtils;
 import com.xuexiang.xutil.net.JsonUtil;
 import com.xuexiang.xutil.resource.ResUtils;
 
 import java.io.File;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * @author xuexiang
@@ -59,6 +69,7 @@ public class MainFragment extends XPageSimpleListFragment {
 
     private String mUpdateUrl3 = "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/jsonapi/update_custom.json";
 
+    private final static int REQUEST_CODE_SELECT_APK_FILE = 1000;
     @Override
     protected List<String> initSimpleData(List<String> lists) {
         lists.add("默认App更新");
@@ -67,6 +78,7 @@ public class MainFragment extends XPageSimpleListFragment {
         lists.add("默认App更新 + 自定义提示弹窗主题");
         lists.add("默认App更新 + 自定义Api");
         lists.add("默认App更新 + 自定义Api + 自定义提示弹窗(系统）");
+        lists.add("使用apk安装功能");
         return lists;
     }
 
@@ -159,8 +171,27 @@ public class MainFragment extends XPageSimpleListFragment {
                         })
                         .update();
                 break;
+            case 6:
+                selectAPKFile();
+                break;
             default:
                 break;
+        }
+    }
+
+    @Permission(PermissionConsts.STORAGE)
+    private void selectAPKFile() {
+        startActivityForResult(IntentUtils.getDocumentPickerIntent(IntentUtils.DocumentType.ANY), REQUEST_CODE_SELECT_APK_FILE);
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_SELECT_APK_FILE) {
+                _XUpdate.startInstallApk(getContext(), FileUtils.getFileByPath(PathUtils.getFilePathByUri(getContext(), data.getData())));
+            }
         }
     }
 

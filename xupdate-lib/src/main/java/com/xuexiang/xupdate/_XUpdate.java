@@ -34,6 +34,8 @@ import com.xuexiang.xupdate.utils.ApkInstallUtils;
 import java.io.File;
 import java.util.Map;
 
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.INSTALL_FAILED;
+
 /**
  * 内部版本更新参数的获取
  *
@@ -87,17 +89,52 @@ public final class _XUpdate {
     }
 
     /**
+     * 开始安装apk文件
+     *
+     * @param context        传activity可以获取安装的返回值，详见{@link ApkInstallUtils#REQUEST_CODE_INSTALL_APP}
+     * @param apkFile        apk文件
+     */
+    public static void startInstallApk(@NonNull Context context, @NonNull File apkFile) {
+        startInstallApk(context, apkFile, new DownloadEntity());
+    }
+
+    /**
+     * 开始安装apk文件
+     *
+     * @param context        传activity可以获取安装的返回值，详见{@link ApkInstallUtils#REQUEST_CODE_INSTALL_APP}
+     * @param apkFile        apk文件
+     * @param downloadEntity 文件下载信息
+     */
+    public static void startInstallApk(@NonNull Context context, @NonNull File apkFile, @NonNull DownloadEntity downloadEntity) {
+        if (onInstallApk(context, apkFile, downloadEntity)) {
+            onApkInstallSuccess(); //静默安装的话，不会回调到这里
+        } else {
+            onUpdateError(INSTALL_FAILED);
+        }
+    }
+
+    /**
      * 安装apk
      *
      * @param context        传activity可以获取安装的返回值，详见{@link ApkInstallUtils#REQUEST_CODE_INSTALL_APP}
      * @param apkFile        apk文件
      * @param downloadEntity 文件下载信息
      */
-    public static boolean onInstallApk(Context context, File apkFile, DownloadEntity downloadEntity) {
+    private static boolean onInstallApk(Context context, File apkFile, DownloadEntity downloadEntity) {
         if (XUpdate.get().mOnInstallListener == null) {
             XUpdate.get().mOnInstallListener = new DefaultInstallListener();
         }
         return XUpdate.get().mOnInstallListener.onInstallApk(context, apkFile, downloadEntity);
+    }
+
+    /**
+     * apk安装完毕
+     */
+    private static void onApkInstallSuccess() {
+        if (XUpdate.get().mOnInstallListener == null) {
+            XUpdate.get().mOnInstallListener = new DefaultInstallListener();
+        }
+        XUpdate.get().mOnInstallListener.onInstallApkSuccess();
     }
 
     //===========================更新出错===================================//

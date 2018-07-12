@@ -40,6 +40,10 @@ import okhttp3.Response;
  */
 public class OKHttpUpdateHttpService implements IUpdateHttpService {
 
+    public OKHttpUpdateHttpService() {
+        OkHttpUtils.getInstance().timeout(20000);
+    }
+
     @Override
     public void asyncGet(@NonNull String url, @NonNull Map<String, Object> params, final @NonNull Callback callBack) {
         OkHttpUtils.get()

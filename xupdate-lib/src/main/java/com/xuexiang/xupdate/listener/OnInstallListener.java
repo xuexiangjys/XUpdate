@@ -39,4 +39,9 @@ public interface OnInstallListener {
      * @param downloadEntity 文件下载信息
      */
     boolean onInstallApk(@NonNull Context context, @NonNull File apkFile, @NonNull DownloadEntity downloadEntity);
+
+    /**
+     * apk安装完毕
+     */
+    void onInstallApkSuccess();
 }

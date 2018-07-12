@@ -18,15 +18,11 @@ package com.xuexiang.xupdate.listener.impl;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
-import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.DownloadEntity;
-import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.listener.OnInstallListener;
 import com.xuexiang.xupdate.utils.ApkInstallUtils;
-import com.xuexiang.xupdate.utils.Md5Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,5 +45,10 @@ public class DefaultInstallListener implements OnInstallListener {
             _XUpdate.onUpdateError(INSTALL_FAILED, "获取apk的路径出错！");
         }
         return false;
+    }
+
+    @Override
+    public void onInstallApkSuccess() {
+
     }
 }

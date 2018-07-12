@@ -409,11 +409,11 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     }
 
     private void onInstallApk() {
-        _XUpdate.onInstallApk(getContext(), UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity), mUpdateEntity.getDownLoadEntity());
+        _XUpdate.startInstallApk(getContext(), UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity), mUpdateEntity.getDownLoadEntity());
     }
 
     private void onInstallApk(File apkFile) {
-        _XUpdate.onInstallApk(getContext(), apkFile, mUpdateEntity.getDownLoadEntity());
+        _XUpdate.startInstallApk(getContext(), apkFile, mUpdateEntity.getDownLoadEntity());
     }
 
     @Override
