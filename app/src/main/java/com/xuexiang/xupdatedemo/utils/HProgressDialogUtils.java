@@ -17,8 +17,8 @@
 package com.xuexiang.xupdatedemo.utils;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.text.TextUtils;
 
 /**
@@ -32,7 +32,7 @@ public class HProgressDialogUtils {
     }
 
     @SuppressLint("NewApi")
-    public static void showHorizontalProgressDialog(Activity context, String msg, boolean isShowSize) {
+    public static void showHorizontalProgressDialog(Context context, String msg, boolean isShowSize) {
         cancel();
 
         if (sHorizontalProgressDialog == null) {

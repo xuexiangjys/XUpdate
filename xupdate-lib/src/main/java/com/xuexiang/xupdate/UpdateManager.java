@@ -216,6 +216,9 @@ public class UpdateManager implements IUpdateProxy {
         if (mIUpdateProxy != null) {
             mIUpdateProxy.checkVersion();
         } else {
+            if (TextUtils.isEmpty(mUpdateUrl)) {
+                throw new NullPointerException("[UpdateManager] : mUpdateUrl 不能为空");
+            }
             mIUpdateChecker.checkVersion(mIsGet, mUpdateUrl, mParams, this);
         }
     }
@@ -245,12 +248,22 @@ public class UpdateManager implements IUpdateProxy {
         } else {
             mUpdateEntity = mIUpdateParser.parseJson(json);
         }
-        if (mUpdateEntity != null) {  //更新信息（本地信息）
-            mUpdateEntity.setApkCacheDir(mApkCacheDir);
-            mUpdateEntity.setIsAutoMode(mIsAutoMode);
-            mUpdateEntity.setIUpdateHttpService(mIUpdateHttpService);
-        }
+        mUpdateEntity = refreshParams(mUpdateEntity);
         return mUpdateEntity;
+    }
+
+    /**
+     * 刷新本地参数
+     *
+     * @param updateEntity
+     */
+    private UpdateEntity refreshParams(UpdateEntity updateEntity) {
+        if (updateEntity != null) {  //更新信息（本地信息）
+            updateEntity.setApkCacheDir(mApkCacheDir);
+            updateEntity.setIsAutoMode(mIsAutoMode);
+            updateEntity.setIUpdateHttpService(mIUpdateHttpService);
+        }
+        return updateEntity;
     }
 
     /**
@@ -301,6 +314,16 @@ public class UpdateManager implements IUpdateProxy {
         } else {
             mIUpdateDownloader.startDownload(updateEntity, downloadListener);
         }
+    }
+
+    /**
+     * 为外部提供简单的下载功能
+     *
+     * @param downloadUrl      下载地址
+     * @param downloadListener 下载监听
+     */
+    public void download(String downloadUrl, @Nullable OnFileDownloadListener downloadListener) {
+        startDownload(refreshParams(new UpdateEntity().setDownloadUrl(downloadUrl)), downloadListener);
     }
 
     @Override
@@ -579,9 +602,6 @@ public class UpdateManager implements IUpdateProxy {
         public UpdateManager build() {
             UpdateUtils.requireNonNull(this.context, "[UpdateManager.Builder] : context == null");
             UpdateUtils.requireNonNull(this.updateHttpService, "[UpdateManager.Builder] : updateHttpService == null");
-            if (TextUtils.isEmpty(this.updateUrl)) {
-                throw new NullPointerException("[UpdateManager.Builder] : updateUrl 不能为空");
-            }
 
             if (this.updatePrompter == null) {
                 if (context instanceof FragmentActivity) {

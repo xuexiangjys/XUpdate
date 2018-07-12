@@ -17,13 +17,9 @@
 package com.xuexiang.xupdatedemo.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.xuexiang.xaop.annotation.Permission;
 import com.xuexiang.xaop.consts.PermissionConsts;
@@ -32,23 +28,17 @@ import com.xuexiang.xpage.base.XPageSimpleListFragment;
 import com.xuexiang.xpage.utils.TitleBar;
 import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate._XUpdate;
-import com.xuexiang.xupdate.entity.UpdateEntity;
-import com.xuexiang.xupdate.proxy.IUpdateParser;
-import com.xuexiang.xupdate.proxy.IUpdatePrompter;
-import com.xuexiang.xupdate.proxy.IUpdateProxy;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateChecker;
-import com.xuexiang.xupdate.proxy.impl.DefaultUpdatePrompter;
 import com.xuexiang.xupdate.service.OnFileDownloadListener;
-import com.xuexiang.xupdate.utils.UpdateUtils;
 import com.xuexiang.xupdatedemo.R;
-import com.xuexiang.xupdatedemo.entity.CustomResult;
+import com.xuexiang.xupdatedemo.custom.CustomUpdateParser;
+import com.xuexiang.xupdatedemo.custom.CustomUpdatePrompter;
 import com.xuexiang.xupdatedemo.utils.CProgressDialogUtils;
 import com.xuexiang.xupdatedemo.utils.HProgressDialogUtils;
 import com.xuexiang.xutil.app.IntentUtils;
 import com.xuexiang.xutil.app.PathUtils;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.file.FileUtils;
-import com.xuexiang.xutil.net.JsonUtil;
 import com.xuexiang.xutil.resource.ResUtils;
 
 import java.io.File;
@@ -69,6 +59,8 @@ public class MainFragment extends XPageSimpleListFragment {
 
     private String mUpdateUrl3 = "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/jsonapi/update_custom.json";
 
+    private String mDownloadUrl = "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/apk/xupdate_demo_1.0.2.apk";
+
     private final static int REQUEST_CODE_SELECT_APK_FILE = 1000;
     @Override
     protected List<String> initSimpleData(List<String> lists) {
@@ -78,6 +70,7 @@ public class MainFragment extends XPageSimpleListFragment {
         lists.add("默认App更新 + 自定义提示弹窗主题");
         lists.add("默认App更新 + 自定义Api");
         lists.add("默认App更新 + 自定义Api + 自定义提示弹窗(系统）");
+        lists.add("使用apk下载功能");
         lists.add("使用apk安装功能");
         return lists;
     }
@@ -111,23 +104,7 @@ public class MainFragment extends XPageSimpleListFragment {
             case 4:
                 XUpdate.newBuild(getActivity())
                         .updateUrl(mUpdateUrl3)
-                        .updateParser(new IUpdateParser() {
-                            @Override
-                            public UpdateEntity parseJson(String json) throws Exception {
-                                CustomResult result = JsonUtil.fromJson(json, CustomResult.class);
-                                if (result != null) {
-                                    return new UpdateEntity()
-                                            .setHasUpdate(result.hasUpdate)
-                                            .setIsIgnorable(result.isIgnorable)
-                                            .setVersionCode(result.versionCode)
-                                            .setVersionName(result.versionName)
-                                            .setUpdateContent(result.updateLog)
-                                            .setDownloadUrl(result.apkUrl)
-                                            .setSize(result.apkSize);
-                                }
-                                return null;
-                            }
-                        })
+                        .updateParser(new CustomUpdateParser())
                         .update();
                 break;
             case 5:
@@ -139,39 +116,44 @@ public class MainFragment extends XPageSimpleListFragment {
                                 super.onBeforeCheck();
                                 CProgressDialogUtils.showProgressDialog(getActivity(), "查询中...");
                             }
-
                             @Override
                             public void onAfterCheck() {
                                 super.onAfterCheck();
                                 CProgressDialogUtils.cancelProgressDialog(getActivity());
                             }
                         })
-                        .updateParser(new IUpdateParser() {
-                            @Override
-                            public UpdateEntity parseJson(String json) throws Exception {
-                                CustomResult result = JsonUtil.fromJson(json, CustomResult.class);
-                                if (result != null) {
-                                    return new UpdateEntity()
-                                            .setHasUpdate(result.hasUpdate)
-                                            .setIsIgnorable(result.isIgnorable)
-                                            .setVersionCode(result.versionCode)
-                                            .setVersionName(result.versionName)
-                                            .setUpdateContent(result.updateLog)
-                                            .setDownloadUrl(result.apkUrl)
-                                            .setSize(result.apkSize);
-                                }
-                                return null;
-                            }
-                        })
-                        .updatePrompter(new IUpdatePrompter() {
-                            @Override
-                            public void showPrompt(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy) {
-                                showUpdatePrompt(updateEntity, updateProxy);
-                            }
-                        })
+                        .updateParser(new CustomUpdateParser())
+                        .updatePrompter(new CustomUpdatePrompter(getActivity()))
                         .update();
                 break;
             case 6:
+                XUpdate.newBuild(getActivity())
+                        .apkCacheDir(PathUtils.getExtDownloadsPath())
+                        .build()
+                        .download(mDownloadUrl, new OnFileDownloadListener() {
+                            @Override
+                            public void onStart() {
+                                HProgressDialogUtils.showHorizontalProgressDialog(getContext(), "下载进度", false);
+                            }
+
+                            @Override
+                            public void onProgress(float progress, long total) {
+                                HProgressDialogUtils.setProgress(Math.round(progress * 100));
+                            }
+
+                            @Override
+                            public boolean onCompleted(File file) {
+                                HProgressDialogUtils.cancel();
+                                return false;
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                HProgressDialogUtils.cancel();
+                            }
+                        });
+                break;
+            case 7:
                 selectAPKFile();
                 break;
             default:
@@ -195,50 +177,7 @@ public class MainFragment extends XPageSimpleListFragment {
         }
     }
 
-    /**
-     * 显示自定义提示
-     *
-     * @param updateEntity
-     * @param updateProxy
-     */
-    private void showUpdatePrompt(final @NonNull UpdateEntity updateEntity, final @NonNull IUpdateProxy updateProxy) {
-        String updateInfo = UpdateUtils.getDisplayUpdateInfo(updateEntity);
 
-        new AlertDialog.Builder(getActivity())
-                .setTitle(String.format("是否升级到%s版本？", updateEntity.getVersionName()))
-                .setMessage(updateInfo)
-                .setPositiveButton("升级", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        updateProxy.startDownload(updateEntity, new OnFileDownloadListener() {
-                            @Override
-                            public void onStart() {
-                                HProgressDialogUtils.showHorizontalProgressDialog(getActivity(), "下载进度", false);
-                            }
-
-                            @Override
-                            public void onProgress(float progress, long total) {
-                                HProgressDialogUtils.setProgress(Math.round(progress * 100));
-                            }
-
-                            @Override
-                            public boolean onCompleted(File file) {
-                                HProgressDialogUtils.cancel();
-                                return true;
-                            }
-
-                            @Override
-                            public void onError(Throwable throwable) {
-                                HProgressDialogUtils.cancel();
-                            }
-                        });
-                    }
-                })
-                .setNegativeButton("暂不升级", null)
-                .setCancelable(false)
-                .create()
-                .show();
-    }
 
     @Override
     protected TitleBar initTitleBar() {

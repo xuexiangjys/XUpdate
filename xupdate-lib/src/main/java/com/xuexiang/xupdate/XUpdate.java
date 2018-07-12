@@ -154,6 +154,7 @@ public class XUpdate {
     }
 
     //===========================对外版本更新api===================================//
+
     /**
      * 获取版本更新构建者
      *
@@ -162,6 +163,18 @@ public class XUpdate {
      */
     public static UpdateManager.Builder newBuild(@NonNull Context context) {
         return new UpdateManager.Builder(context);
+    }
+
+    /**
+     * 获取版本更新构建者
+     *
+     * @param context
+     * @param updateUrl 版本更新检查的地址
+     * @return
+     */
+    public static UpdateManager.Builder newBuild(@NonNull Context context, String updateUrl) {
+        return new UpdateManager.Builder(context)
+                .updateUrl(updateUrl);
     }
 
     //===========================属性设置===================================//
@@ -293,6 +306,7 @@ public class XUpdate {
     }
 
     //===========================apk安装监听===================================//
+
     /**
      * 设置安装监听
      *

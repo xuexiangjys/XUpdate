@@ -20,10 +20,11 @@ import java.io.Serializable;
 
 /**
  * 自定义版本检查的结果
+ *
  * @author xuexiang
  * @since 2018/7/11 上午1:03
  */
-public class CustomResult implements Serializable{
+public class CustomResult implements Serializable {
 
     public boolean hasUpdate;
 
