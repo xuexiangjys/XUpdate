@@ -1,7 +1,7 @@
 # XUpdate
 [![xu][xusvg]][xu]  [![api][apisvg]][api]
 
-一个轻量级、高灵活性的版本更新框架
+一个轻量级、高可用性的Android版本更新框架
 
 ## 关于我
 
