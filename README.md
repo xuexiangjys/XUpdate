@@ -23,7 +23,45 @@
 
 * 支持自定义请求API接口。
 
+## 组成结构
+
+本框架借鉴了[AppUpdate](https://github.com/WVector/AppUpdate)中的部分思想和UI界面，将版本更新中的各部分环节抽离出来，形成了如下几个部分：
+
+* 版本更新检查器`IUpdateChecker`：检查是否有最新版本。
+
+* 版本更新解析器`IUpdateParser`：解析服务端返回的数据结果。
+
+* 版本更新提示器`IUpdatePrompter`：展示最新的版本信息。
+
+* 版本更新下载器`IUpdateDownloader`：下载最新的版本APK安装包。
+
+* 网络请求服务接口`IUpdateHttpService`：定义了进行网络请求的相关接口。
+
+除此之外，还有两个监听器：
+
+* 版本更新失败的监听器`OnUpdateFailureListener`。
+
+* 版本更新apk安装的监听器`OnInstallListener`。
+
 ## 1、演示（请star支持）
+
+* 默认版本更新
+![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_1.png)
+
+* 强制版本更新
+![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_2.png)
+
+* 自定义提示弹窗主题
+![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_3.png)
+
+* 使用系统弹窗提示
+![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_4.png)
+
+### Demo下载
+
+[![downloads](https://img.shields.io/badge/downloads-1.7M-blue.svg)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
+
+![](https://github.com/xuexiangjys/XUpdate/blob/master/img/download.png)
 
 
 ## 2、如何使用
@@ -190,11 +228,11 @@ public class CustomUpdateParser implements IUpdateParser {
 
 ### 3.6、自定义版本更新检查器+版本更新解析器+版本更新提示器
 
-* 实现IUpdateChecker接口即可实现检查器的自定义。
+* 实现`IUpdateChecker`接口即可实现检查器的自定义。
 
-* 实现IUpdateParser接口即可实现解析器的自定义。
+* 实现`IUpdateParser`接口即可实现解析器的自定义。
 
-* 实现IUpdatePrompter接口即可实现提示器的自定义。
+* 实现`IUpdatePrompter`接口即可实现提示器的自定义。
 
 ```
 XUpdate.newBuild(getActivity())
@@ -310,7 +348,6 @@ XUpdate.newBuild(getActivity())
 
 ```
 _XUpdate.startInstallApk(getContext(), FileUtils.getFileByPath(PathUtils.getFilePathByUri(getContext(), data.getData()))); //填写文件所在的路径
-
 ```
 
 如果你的apk安装与众不同，你可以实现自己的apk安装器。你只需要实现OnInstallListener接口，并通过`XUpdate.setOnInstallListener`进行设置即可生效。
