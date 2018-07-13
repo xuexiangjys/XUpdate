@@ -46,15 +46,19 @@
 ## 1、演示（请star支持）
 
 * 默认版本更新
+
 ![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_1.png)
 
 * 强制版本更新
+
 ![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_2.png)
 
 * 自定义提示弹窗主题
+
 ![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_3.png)
 
 * 使用系统弹窗提示
+
 ![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_4.png)
 
 ### Demo下载
