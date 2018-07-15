@@ -374,5 +374,5 @@ https://github.com/WVector/AppUpdate
 
 [xusvg]: https://img.shields.io/badge/XUpdate-v1.0.0-brightgreen.svg
 [xu]: https://github.com/xuexiangjys/XUpdate
-[apisvg]: https://img.shields.io/badge/API-19+-brightgreen.svg
-[api]: https://android-arsenal.com/api?level=19
+[apisvg]: https://img.shields.io/badge/API-14+-brightgreen.svg
+[api]: https://android-arsenal.com/api?level=14
