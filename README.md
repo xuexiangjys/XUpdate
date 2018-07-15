@@ -7,7 +7,7 @@
 
 [![github](https://img.shields.io/badge/GitHub-xuexiangjys-blue.svg)](https://github.com/xuexiangjys)   [![csdn](https://img.shields.io/badge/CSDN-xuexiangjys-green.svg)](http://blog.csdn.net/xuexiangjys)
 
-## 特点
+## 特征
 
 * 支持post和get两种版本检查方式，支持自定义网络请求。
 
