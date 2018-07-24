@@ -44,6 +44,19 @@ import static com.xuexiang.xupdate.entity.UpdateError.ERROR.INSTALL_FAILED;
  */
 public final class _XUpdate {
 
+    /**
+     * 标志当前更新提示是否已显示
+     */
+    private static boolean sIsShowUpdatePrompter = false;
+
+    public static void setIsShowUpdatePrompter(boolean isShowUpdatePrompter) {
+        _XUpdate.sIsShowUpdatePrompter = isShowUpdatePrompter;
+    }
+
+    public static boolean isShowUpdatePrompter() {
+        return _XUpdate.sIsShowUpdatePrompter;
+    }
+
     //===========================属性设置===================================//
 
     public static Map<String, Object> getParams() {

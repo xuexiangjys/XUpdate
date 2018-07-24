@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xuexiang.xupdate.proxy.impl;
+package com.xuexiang.xupdate.widget;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -29,8 +29,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.text.TextUtils;
-import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -52,7 +50,6 @@ import com.xuexiang.xupdate.service.OnFileDownloadListener;
 import com.xuexiang.xupdate.utils.ColorUtils;
 import com.xuexiang.xupdate.utils.DrawableUtils;
 import com.xuexiang.xupdate.utils.UpdateUtils;
-import com.xuexiang.xupdate.widget.NumberProgressBar;
 
 import java.io.File;
 
@@ -71,10 +68,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     public final static String KEY_UPDATE_TOP_PICTURE = "key_update_top_picture";
 
     public final static int REQUEST_CODE_REQUEST_PERMISSIONS = 111;
-    /**
-     * 标志当前更新提示是否已显示
-     */
-    private static boolean sIsShow = false;
+
     //======顶部========//
     /**
      * 顶部图片
@@ -153,15 +147,11 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         return this;
     }
 
-    public static boolean isShow() {
-        return sIsShow;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sIsShow = true;
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.XUpdate_Dialog);
+        _XUpdate.setIsShowUpdatePrompter(true);
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.XUpdate_Fragment_Dialog);
     }
 
     @Override
@@ -240,16 +230,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
             initTheme(themeColor, topResId);
             mUpdateEntity = (UpdateEntity) bundle.getSerializable(KEY_UPDATE_ENTITY);
             if (mUpdateEntity != null) {
-                initUpdateInfo();
-                //强制更新,不显示关闭按钮
-                if (mUpdateEntity.isForce()) {
-                    mLlClose.setVisibility(View.GONE);
-                } else {
-                    //不是强制更新时，才生效
-                    if (mUpdateEntity.isIgnorable()) {
-                        mTvIgnore.setVisibility(View.VISIBLE);
-                    }
-                }
+                initUpdateInfo(mUpdateEntity);
                 initListeners();
             }
         }
@@ -257,15 +238,25 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
 
     /**
      * 初始化更新信息
+     * @param updateEntity
      */
-    private void initUpdateInfo() {
+    private void initUpdateInfo(UpdateEntity updateEntity) {
         //弹出对话框
-        final String newVersion = mUpdateEntity.getVersionName();
-        String updateInfo = UpdateUtils.getDisplayUpdateInfo(mUpdateEntity);
+        final String newVersion = updateEntity.getVersionName();
+        String updateInfo = UpdateUtils.getDisplayUpdateInfo(updateEntity);
         //更新内容
         mTvUpdateInfo.setText(updateInfo);
-
         mTvTitle.setText(String.format("是否升级到%s版本？", newVersion));
+
+        //强制更新,不显示关闭按钮
+        if (updateEntity.isForce()) {
+            mLlClose.setVisibility(View.GONE);
+        } else {
+            //不是强制更新时，才生效
+            if (updateEntity.isIgnorable()) {
+                mTvIgnore.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     /**
@@ -441,7 +432,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
 
     @Override
     public void onDestroyView() {
-        sIsShow = false;
+        _XUpdate.setIsShowUpdatePrompter(false);
         super.onDestroyView();
     }
 }

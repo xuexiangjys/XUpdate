@@ -32,9 +32,9 @@ import java.util.Map;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_APK_CACHE_DIR_EMPTY;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_IGNORED_VERSION;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_JSON_EMPTY;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NET_REQUEST;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_PARSE;
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NET_REQUEST;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_UPDATING;
 
 /**
@@ -52,7 +52,7 @@ public class DefaultUpdateChecker implements IUpdateChecker {
 
     @Override
     public void checkVersion(boolean isGet, @NonNull String url, @NonNull Map<String, Object> params, final @NonNull IUpdateProxy updateProxy) {
-        if (DownloadService.isRunning() || UpdateDialogFragment.isShow()) {
+        if (DownloadService.isRunning() || _XUpdate.isShowUpdatePrompter()) {
             updateProxy.onAfterCheck();
             _XUpdate.onUpdateError(CHECK_UPDATING);
             return;
@@ -138,6 +138,7 @@ public class DefaultUpdateChecker implements IUpdateChecker {
                 _XUpdate.onUpdateError(CHECK_PARSE, "json:" + result);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             _XUpdate.onUpdateError(CHECK_PARSE, e.getMessage());
         }
     }

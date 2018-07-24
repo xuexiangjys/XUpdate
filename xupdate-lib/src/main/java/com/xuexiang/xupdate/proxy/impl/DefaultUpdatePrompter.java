@@ -24,6 +24,8 @@ import android.support.v4.app.FragmentManager;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdatePrompter;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
+import com.xuexiang.xupdate.widget.UpdateDialog;
+import com.xuexiang.xupdate.widget.UpdateDialogFragment;
 
 /**
  * 默认的更新提示器
@@ -39,10 +41,24 @@ public class DefaultUpdatePrompter implements IUpdatePrompter {
     @DrawableRes
     private int mTopResId;
 
-    public DefaultUpdatePrompter(@NonNull FragmentManager manager) {
-        mFragmentManager = manager;
+    /**
+     * 使用默认Dialog
+     *
+     * @param themeColor
+     * @param topResId
+     */
+    public DefaultUpdatePrompter(@ColorInt int themeColor, @DrawableRes int topResId) {
+        mThemeColor = themeColor;
+        mTopResId = topResId;
     }
 
+    /**
+     * 使用FragmentDialog
+     *
+     * @param manager
+     * @param themeColor
+     * @param topResId
+     */
     public DefaultUpdatePrompter(@NonNull FragmentManager manager, @ColorInt int themeColor, @DrawableRes int topResId) {
         mFragmentManager = manager;
         mThemeColor = themeColor;
@@ -51,7 +67,13 @@ public class DefaultUpdatePrompter implements IUpdatePrompter {
 
     @Override
     public void showPrompt(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy) {
-        UpdateDialogFragment.newInstance(updateEntity, updateProxy, mThemeColor, mTopResId)
-                .show(mFragmentManager);
+        if (mFragmentManager != null) {
+            UpdateDialogFragment.newInstance(updateEntity, updateProxy, mThemeColor, mTopResId)
+                    .show(mFragmentManager);
+        } else {
+            UpdateDialog.newInstance(updateEntity, updateProxy, mThemeColor, mTopResId)
+                    .show();
+        }
+
     }
 }

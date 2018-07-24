@@ -16,6 +16,7 @@
 
 package com.xuexiang.xupdate;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -113,7 +114,6 @@ public class UpdateManager implements IUpdateProxy {
      * 版本更新提示器
      */
     private IUpdatePrompter mIUpdatePrompter;
-
 
     /**
      * 构造函数
@@ -281,7 +281,7 @@ public class UpdateManager implements IUpdateProxy {
                 mIUpdateProxy.findNewVersion(updateEntity, updateProxy);
             } else {
                 if (mIUpdatePrompter instanceof DefaultUpdatePrompter) {
-                    if (mContext != null && !((FragmentActivity) mContext).isFinishing()) {
+                    if (mContext != null && !((Activity) mContext).isFinishing()) {
                         mIUpdatePrompter.showPrompt(updateEntity, updateProxy);
                     } else {
                         _XUpdate.onUpdateError(PROMPT_ACTIVITY_DESTROY);
@@ -393,11 +393,11 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 主题颜色
          */
-        int themeColor;
+        int themeColor = -1;
         /**
          * 顶部背景图片
          */
-        int topResId;
+        int topResId = -1;
         /**
          * apk缓存的目录
          */
@@ -408,7 +408,7 @@ public class UpdateManager implements IUpdateProxy {
          *
          * @param context
          */
-        public Builder(@NonNull Context context) {
+        Builder(@NonNull Context context) {
             this.context = context;
 
             params = new TreeMap<>();
@@ -606,6 +606,8 @@ public class UpdateManager implements IUpdateProxy {
             if (this.updatePrompter == null) {
                 if (context instanceof FragmentActivity) {
                     updatePrompter = new DefaultUpdatePrompter(((FragmentActivity) context).getSupportFragmentManager(), themeColor, topResId);
+                } else if (context instanceof Activity) {
+                    updatePrompter = new DefaultUpdatePrompter(themeColor, topResId);
                 } else {
                     throw new NullPointerException("[UpdateManager.Builder] : 使用默认的版本更新提示器，context必须传FragmentActivity！");
                 }

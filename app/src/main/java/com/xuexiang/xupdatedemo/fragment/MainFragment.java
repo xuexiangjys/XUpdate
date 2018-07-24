@@ -31,6 +31,7 @@ import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateChecker;
 import com.xuexiang.xupdate.service.OnFileDownloadListener;
 import com.xuexiang.xupdatedemo.R;
+import com.xuexiang.xupdatedemo.activity.UpdateActivity;
 import com.xuexiang.xupdatedemo.custom.CustomUpdateParser;
 import com.xuexiang.xupdatedemo.custom.CustomUpdatePrompter;
 import com.xuexiang.xupdatedemo.utils.CProgressDialogUtils;
@@ -73,6 +74,7 @@ public class MainFragment extends XPageSimpleListFragment {
         lists.add("默认App更新 + 自定义Api + 自定义提示弹窗(系统）");
         lists.add("使用apk下载功能");
         lists.add("使用apk安装功能");
+        lists.add("版本更新提示框在FragmentActivity中使用UpdateDialogFragment, 在普通Activity中使用UpdateDialog");
         return lists;
     }
 
@@ -157,6 +159,9 @@ public class MainFragment extends XPageSimpleListFragment {
                 break;
             case 7:
                 selectAPKFile();
+                break;
+            case 8:
+                startActivity(new Intent(getContext(), UpdateActivity.class));
                 break;
             default:
                 break;
