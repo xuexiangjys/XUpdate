@@ -52,7 +52,7 @@ public final class ApkInstallUtils {
     public static final int REQUEST_CODE_INSTALL_APP = 999;
 
     private ApkInstallUtils() {
-        throw new Error("Do not need instantiate!");
+        throw new UnsupportedOperationException("Do not need instantiate!");
     }
 
     /**

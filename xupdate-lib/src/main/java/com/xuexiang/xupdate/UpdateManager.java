@@ -609,7 +609,7 @@ public class UpdateManager implements IUpdateProxy {
                 } else if (context instanceof Activity) {
                     updatePrompter = new DefaultUpdatePrompter(themeColor, topResId);
                 } else {
-                    throw new NullPointerException("[UpdateManager.Builder] : 使用默认的版本更新提示器，context必须传FragmentActivity！");
+                    throw new UnsupportedOperationException("[UpdateManager.Builder] : 使用默认的版本更新提示器，context必须传Activity！");
                 }
             }
 
