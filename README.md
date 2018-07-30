@@ -61,6 +61,10 @@
 
 ![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_4.png)
 
+### Demo更新后台服务
+
+由于github最近访问比较慢，如果需要更好地体验XUpdate，你可以[点击自己搭建一个简易的版本更新服务](https://github.com/xuexiangjys/XUpdateService)。
+
 ### Demo下载
 
 [![downloads](https://img.shields.io/badge/downloads-1.6M-blue.svg)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk)
