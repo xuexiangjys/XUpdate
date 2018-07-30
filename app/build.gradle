@@ -56,9 +56,12 @@ dependencies {
     testImplementation deps.junit
     androidTestImplementation deps.runner
     androidTestImplementation deps.espresso.core
-    implementation project(':xupdate-lib')
+//    implementation project(':xupdate-lib')
 
-    implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.3'
+    implementation 'com.github.xuexiangjys:XUpdate:1.0.1'
+
+    implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.4'
+    implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.4'
     implementation 'com.github.xuexiangjys.XAOP:xaop-runtime:1.0.1'  //添加依赖
 
     implementation 'com.qianwen:okhttp-utils:3.8.0'

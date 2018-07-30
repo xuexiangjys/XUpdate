@@ -75,6 +75,7 @@ public class MainFragment extends XPageSimpleListFragment {
         lists.add("使用apk下载功能");
         lists.add("使用apk安装功能");
         lists.add("版本更新提示框在FragmentActivity中使用UpdateDialogFragment, 在普通Activity中使用UpdateDialog");
+        lists.add("使用XUpdateService版本更新服务");
         return lists;
     }
 
@@ -162,6 +163,8 @@ public class MainFragment extends XPageSimpleListFragment {
                 break;
             case 8:
                 startActivity(new Intent(getContext(), UpdateActivity.class));
+            case 9:
+                openPage(XUpdateServiceFragment.class);
                 break;
             default:
                 break;
