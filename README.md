@@ -23,6 +23,8 @@
 
 * 支持自定义请求API接口。
 
+* 兼容Android6.0、7.0和8.0。
+
 ## 组成结构
 
 本框架借鉴了[AppUpdate](https://github.com/WVector/AppUpdate)中的部分思想和UI界面，将版本更新中的各部分环节抽离出来，形成了如下几个部分：
