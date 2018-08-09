@@ -37,6 +37,7 @@ import android.util.DisplayMetrics;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.xuexiang.xupdate.R;
 import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 
@@ -114,6 +115,17 @@ public final class UpdateUtils {
     public static int getVersionCode(Context context) {
         PackageInfo packageInfo = getPackageInfo(context);
         return packageInfo != null ? packageInfo.versionCode : -1;
+    }
+
+    /**
+     * 获取应用的VersionName
+     *
+     * @param context
+     * @return
+     */
+    public static String getVersionName(Context context) {
+        PackageInfo packageInfo = getPackageInfo(context);
+        return packageInfo != null ? packageInfo.versionName : "";
     }
 
     /**
@@ -235,13 +247,13 @@ public final class UpdateUtils {
      * @return
      */
     @NonNull
-    public static String getDisplayUpdateInfo(@NonNull UpdateEntity updateEntity) {
+    public static String getDisplayUpdateInfo(Context context, @NonNull UpdateEntity updateEntity) {
         String targetSize = Formatter.formatShortFileSize(XUpdate.getContext(), updateEntity.getSize() * 1024);
         final String updateContent = updateEntity.getUpdateContent();
 
         String updateInfo = "";
         if (!TextUtils.isEmpty(targetSize)) {
-            updateInfo = "新版本大小：" + targetSize + "\n\n";
+            updateInfo = context.getString(R.string.xupdate_lab_new_version_size) + targetSize + "\n\r";
         }
         if (!TextUtils.isEmpty(updateContent)) {
             updateInfo += updateContent;

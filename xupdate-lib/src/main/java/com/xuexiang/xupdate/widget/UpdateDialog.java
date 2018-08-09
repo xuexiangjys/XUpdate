@@ -176,10 +176,10 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
     private void initUpdateInfo(UpdateEntity updateEntity) {
         //弹出对话框
         final String newVersion = updateEntity.getVersionName();
-        String updateInfo = UpdateUtils.getDisplayUpdateInfo(updateEntity);
+        String updateInfo = UpdateUtils.getDisplayUpdateInfo(getContext(), updateEntity);
         //更新内容
         mTvUpdateInfo.setText(updateInfo);
-        mTvTitle.setText(String.format("是否升级到%s版本？", newVersion));
+        mTvTitle.setText(String.format(getString(R.string.xupdate_lab_ready_update), newVersion));
 
         //强制更新,不显示关闭按钮
         if (updateEntity.isForce()) {
@@ -308,7 +308,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
      */
     private void showInstallButton(final File apkFile) {
         mNumberProgressBar.setVisibility(View.GONE);
-        mBtnUpdate.setText("安装");
+        mBtnUpdate.setText(R.string.xupdate_lab_install);
         mBtnUpdate.setVisibility(View.VISIBLE);
         mBtnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override

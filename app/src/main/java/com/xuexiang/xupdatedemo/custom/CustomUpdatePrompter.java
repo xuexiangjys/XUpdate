@@ -57,7 +57,7 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
      * @param updateProxy
      */
     private void showUpdatePrompt(final @NonNull UpdateEntity updateEntity, final @NonNull IUpdateProxy updateProxy) {
-        String updateInfo = UpdateUtils.getDisplayUpdateInfo(updateEntity);
+        String updateInfo = UpdateUtils.getDisplayUpdateInfo(mContext, updateEntity);
 
         new AlertDialog.Builder(mContext)
                 .setTitle(String.format("是否升级到%s版本？", updateEntity.getVersionName()))

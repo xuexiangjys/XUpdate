@@ -210,7 +210,7 @@ public class DownloadService extends Service {
     private void startDownload(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener) {
         String apkUrl = updateEntity.getDownloadUrl();
         if (TextUtils.isEmpty(apkUrl)) {
-            String contentText = "新版本下载路径错误";
+            String contentText = getString(R.string.xupdate_tip_download_url_error);
             stop(contentText);
             return;
         }
@@ -271,7 +271,7 @@ public class DownloadService extends Service {
                 }
 
                 if (mBuilder != null) {
-                    mBuilder.setContentTitle("正在下载：" + UpdateUtils.getAppName(DownloadService.this))
+                    mBuilder.setContentTitle(getString(R.string.xupdate_lab_downloading) + UpdateUtils.getAppName(DownloadService.this))
                             .setContentText(rate + "%")
                             .setProgress(100, rate, false)
                             .setWhen(System.currentTimeMillis());

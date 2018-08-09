@@ -62,6 +62,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#666"
                     android:textSize="14sp"
+                    android:lineSpacingExtra="5dp"
                     tools:text="1、xxxxxxxx\n2、ooooooooo" />
             </ScrollView>
 

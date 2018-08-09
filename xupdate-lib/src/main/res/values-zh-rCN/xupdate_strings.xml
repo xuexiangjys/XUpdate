@@ -27,4 +27,5 @@
     <string name="xupdate_lab_new_version_size">新版本大小：</string>
     <string name="xupdate_lab_downloading">正在下载：</string>
     <string name="xupdate_tip_download_url_error">新版本下载路径错误</string>
+
 </resources>
