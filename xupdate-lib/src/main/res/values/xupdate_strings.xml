@@ -16,15 +16,15 @@
   -->
 
 <resources>
-    <string name="xupdate_lab_update">升级</string>
-    <string name="xupdate_lab_install">安装</string>
-    <string name="xupdate_lab_ignore">忽略此版本</string>
-    <string name="xupdate_tip_permissions_reject">请授权访问存储空间权限，否则App无法更新！</string>
-    <string name="xupdate_connecting_service">正在连接服务器…</string>
-    <string name="xupdate_start_download">开始下载</string>
-    <string name="xupdate_download_complete">下载完成，请点击安装</string>
-    <string name="xupdate_lab_ready_update">是否升级到%s版本？</string>
-    <string name="xupdate_lab_new_version_size">新版本大小：</string>
-    <string name="xupdate_lab_downloading">正在下载：</string>
-    <string name="xupdate_tip_download_url_error">新版本下载路径错误</string>
+    <string name="xupdate_lab_update">Upgrade</string>
+    <string name="xupdate_lab_install">Install</string>
+    <string name="xupdate_lab_ignore">Ignore</string>
+    <string name="xupdate_tip_permissions_reject">Please authorize access to storage space permissions, otherwise App can not be updated!</string>
+    <string name="xupdate_connecting_service">Connecting the server…</string>
+    <string name="xupdate_start_download">Start download</string>
+    <string name="xupdate_download_complete">Download to complete, please click Install</string>
+    <string name="xupdate_lab_ready_update">Whether to upgrade to version %s？</string>
+    <string name="xupdate_lab_new_version_size">New version size:</string>
+    <string name="xupdate_lab_downloading">Downloading：</string>
+    <string name="xupdate_tip_download_url_error">New version download path error</string>
 </resources>

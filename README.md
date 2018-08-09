@@ -25,6 +25,8 @@
 
 * 兼容Android6.0、7.0和8.0。
 
+* 支持中文和英文两种语言显示（国际化）
+
 ## 组成结构
 
 本框架借鉴了[AppUpdate](https://github.com/WVector/AppUpdate)中的部分思想和UI界面，将版本更新中的各部分环节抽离出来，形成了如下几个部分：
@@ -94,7 +96,7 @@ allprojects {
 ```
 dependencies {
   ...
-  implementation 'com.github.xuexiangjys:XUpdate:1.0.1'
+  implementation 'com.github.xuexiangjys:XUpdate:1.0.2'
 }
 ```
 
@@ -378,7 +380,7 @@ https://github.com/WVector/AppUpdate
 
 ![](https://github.com/xuexiangjys/XPage/blob/master/img/qq_group.jpg)
 
-[xusvg]: https://img.shields.io/badge/XUpdate-v1.0.1-brightgreen.svg
+[xusvg]: https://img.shields.io/badge/XUpdate-v1.0.2-brightgreen.svg
 [xu]: https://github.com/xuexiangjys/XUpdate
 [apisvg]: https://img.shields.io/badge/API-14+-brightgreen.svg
 [api]: https://android-arsenal.com/api?level=14
