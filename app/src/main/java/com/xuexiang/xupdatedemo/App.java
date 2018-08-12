@@ -21,6 +21,7 @@ import android.content.Context;
 
 import com.xuexiang.xaop.XAOP;
 import com.xuexiang.xaop.util.PermissionUtils;
+import com.xuexiang.xhttp2.XHttpSDK;
 import com.xuexiang.xpage.AppPageConfig;
 import com.xuexiang.xpage.PageConfig;
 import com.xuexiang.xpage.PageConfiguration;
@@ -67,6 +68,8 @@ public class App extends Application {
 
         });
 
+        initXHttp();
+
         initUpdate();
     }
 
@@ -88,5 +91,10 @@ public class App extends Application {
                 .setIUpdateHttpService(new OKHttpUpdateHttpService()) //这个必须设置！实现网络请求功能。
                 .init(this);   //这个必须初始化
 
+    }
+
+    private void initXHttp() {
+        XHttpSDK.init(this);   //初始化网络请求框架，必须首先执行
+        XHttpSDK.debug("XHttp");  //需要调试的时候执行
     }
 }

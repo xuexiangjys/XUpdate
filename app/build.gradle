@@ -64,8 +64,6 @@ dependencies {
     implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.4'
     implementation 'com.github.xuexiangjys.XAOP:xaop-runtime:1.0.1'  //添加依赖
 
-    implementation 'com.qianwen:okhttp-utils:3.8.0'
-
     //XPage
     implementation 'com.github.xuexiangjys.XPage:xpage-lib:2.2.2'
     annotationProcessor 'com.github.xuexiangjys.XPage:xpage-compiler:2.2.2'
@@ -76,4 +74,14 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
+    //网络请求的实现一
+    implementation 'com.qianwen:okhttp-utils:3.8.0'
+
+    //网络请求的实现二
+    implementation 'com.github.xuexiangjys:XHttp2:1.0.0'
+    implementation deps.gson
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
 }

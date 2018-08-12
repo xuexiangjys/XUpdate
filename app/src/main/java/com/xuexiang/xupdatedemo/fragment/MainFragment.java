@@ -34,6 +34,7 @@ import com.xuexiang.xupdatedemo.R;
 import com.xuexiang.xupdatedemo.activity.UpdateActivity;
 import com.xuexiang.xupdatedemo.custom.CustomUpdateParser;
 import com.xuexiang.xupdatedemo.custom.CustomUpdatePrompter;
+import com.xuexiang.xupdatedemo.http.XHttpUpdateHttpService;
 import com.xuexiang.xupdatedemo.utils.CProgressDialogUtils;
 import com.xuexiang.xupdatedemo.utils.HProgressDialogUtils;
 import com.xuexiang.xutil.app.IntentUtils;
@@ -100,7 +101,8 @@ public class MainFragment extends XPageSimpleListFragment {
                 break;
             case 3:
                 XUpdate.newBuild(getActivity())
-                        .updateUrl(mUpdateUrl)
+                        .updateHttpService(new XHttpUpdateHttpService("https://raw.githubusercontent.com"))
+                        .updateUrl("/xuexiangjys/XUpdate/master/jsonapi/update_test.json")
                         .themeColor(ResUtils.getColor(R.color.update_theme_color))
                         .topResId(R.mipmap.bg_update_top)
                         .update();
