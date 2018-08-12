@@ -21,6 +21,7 @@ import android.content.Context;
 
 import com.xuexiang.xaop.XAOP;
 import com.xuexiang.xaop.util.PermissionUtils;
+import com.xuexiang.xhttp2.XHttp;
 import com.xuexiang.xhttp2.XHttpSDK;
 import com.xuexiang.xpage.AppPageConfig;
 import com.xuexiang.xpage.PageConfig;
@@ -96,5 +97,6 @@ public class App extends Application {
     private void initXHttp() {
         XHttpSDK.init(this);   //初始化网络请求框架，必须首先执行
         XHttpSDK.debug("XHttp");  //需要调试的时候执行
+        XHttp.getInstance().setTimeout(20000);
     }
 }

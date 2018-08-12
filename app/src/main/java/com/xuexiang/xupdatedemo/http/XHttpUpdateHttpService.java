@@ -22,7 +22,6 @@ import com.xuexiang.xhttp2.XHttp;
 import com.xuexiang.xhttp2.callback.DownloadProgressCallBack;
 import com.xuexiang.xhttp2.callback.SimpleCallBack;
 import com.xuexiang.xhttp2.exception.ApiException;
-import com.xuexiang.xhttp2.model.HttpParams;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xutil.file.FileUtils;
 
@@ -44,11 +43,10 @@ public class XHttpUpdateHttpService implements IUpdateHttpService {
 
     @Override
     public void asyncGet(@NonNull String url, @NonNull Map<String, Object> params, @NonNull final Callback callBack) {
-        HttpParams httpParams = new HttpParams();
-        httpParams.put(params);
         XHttp.get(url)
                 .baseUrl(mBaseUrl)
-                .params(httpParams)
+                .params(params)
+                .keepJson(true)
                 .execute(new SimpleCallBack<String>() {
                     @Override
                     public void onSuccess(String response) throws Throwable {
@@ -64,11 +62,10 @@ public class XHttpUpdateHttpService implements IUpdateHttpService {
 
     @Override
     public void asyncPost(@NonNull String url, @NonNull Map<String, Object> params, @NonNull final Callback callBack) {
-        HttpParams httpParams = new HttpParams();
-        httpParams.put(params);
         XHttp.post(url)
                 .baseUrl(mBaseUrl)
-                .params(httpParams)
+                .params(params)
+                .keepJson(true)
                 .execute(new SimpleCallBack<String>() {
                     @Override
                     public void onSuccess(String response) throws Throwable {
@@ -87,6 +84,8 @@ public class XHttpUpdateHttpService implements IUpdateHttpService {
         XHttp.downLoad(url)
                 .savePath(path)
                 .saveName(fileName)
+                .isUseBaseUrl(false)
+                .baseUrl(mBaseUrl)
                 .execute(new DownloadProgressCallBack<String>() {
                     @Override
                     public void onStart() {
