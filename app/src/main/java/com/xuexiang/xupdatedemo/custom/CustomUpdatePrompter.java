@@ -59,7 +59,7 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
     private void showUpdatePrompt(final @NonNull UpdateEntity updateEntity, final @NonNull IUpdateProxy updateProxy) {
         String updateInfo = UpdateUtils.getDisplayUpdateInfo(mContext, updateEntity);
 
-        new AlertDialog.Builder(mContext)
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
                 .setTitle(String.format("是否升级到%s版本？", updateEntity.getVersionName()))
                 .setMessage(updateInfo)
                 .setPositiveButton("升级", new DialogInterface.OnClickListener() {
@@ -88,10 +88,17 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
                             }
                         });
                     }
-                })
-                .setNegativeButton("暂不升级", null)
-                .setCancelable(false)
-                .create()
-                .show();
+                });
+        if (updateEntity.isIgnorable()) {
+            builder.setNegativeButton("暂不升级", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    UpdateUtils.saveIgnoreVersion(mContext, updateEntity.getVersionName());
+                }
+            }).setCancelable(true);
+        } else  {
+            builder.setCancelable(false);
+        }
+        builder.create().show();
     }
 }
