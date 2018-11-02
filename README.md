@@ -47,6 +47,24 @@
 
 * 版本更新apk安装的监听器`OnInstallListener`。
 
+更新调度核心：
+
+* 版本更新业务代理`IUpdateProxy`：负责版本更新的流程控制，调用update开始进行版本更新流程。
+
+## 更新流程
+
+调用update之后的流程：
+
+```
+IUpdateChecker --->（请求服务器，获取最新版本信息）---> IUpdateParser ---> (解析服务器返回的数据，并构建UpdateEntity版本更新实体）---> IUpdateProxy ---> (如无最新版本，直接结束，否则进行下面流程）
+
+    ---自动模式---> IUpdateDownloader ---> （下载最新的应用apk） ---> 安装应用
+
+    ---非自动模式---> IUpdatePrompter ---> 给出版本更新的提示 ---> 用户点击更新 ---> IUpdateDownloader ---> （下载最新的应用apk） ---> 跳转到应用安装界面
+
+                                                        ---> 用户点击（取消或忽略） ---> 结束
+```
+
 ## 1、演示（请star支持）
 
 * 默认版本更新
