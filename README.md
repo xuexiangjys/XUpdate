@@ -56,7 +56,7 @@
 调用update之后的流程：
 
 ```
-IUpdateChecker --->（请求服务器，获取最新版本信息）---> IUpdateParser ---> (解析服务器返回的数据，并构建UpdateEntity版本更新实体）---> IUpdateProxy ---> (如无最新版本，直接结束，否则进行下面流程）
+IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，获取最新版本信息）---> IUpdateParser ---> (解析服务器返回的数据，并构建UpdateEntity版本更新实体）---> IUpdateProxy ---> (如无最新版本，直接结束，否则进行下面流程）
 
     ---自动模式---> IUpdateDownloader ---> （下载最新的应用apk） ---> 安装应用
 
