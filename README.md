@@ -60,7 +60,9 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
 
     ---自动模式---> IUpdateDownloader ---> （下载最新的应用apk） ---> 安装应用
 
-    ---非自动模式---> IUpdatePrompter ---> 给出版本更新的提示 ---> 用户点击更新 ---> IUpdateDownloader ---> （下载最新的应用apk） ---> 跳转到应用安装界面
+    ---非自动模式---> IUpdatePrompter ---> 给出版本更新的提示
+
+                                                        ---> 用户点击更新 ---> IUpdateDownloader ---> （下载最新的应用apk） ---> 跳转到应用安装界面
 
                                                         ---> 用户点击（取消或忽略） ---> 结束
 ```
