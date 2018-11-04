@@ -183,6 +183,8 @@ public class DownloadService extends Service {
      * @author user
      */
     public class DownloadBinder extends Binder {
+
+        private FileDownloadCallBack mFileDownloadCallBack;
         /**
          * 开始下载
          *
@@ -191,7 +193,7 @@ public class DownloadService extends Service {
          */
         public void start(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener) {
             //下载
-            startDownload(updateEntity, downloadListener);
+            startDownload(updateEntity, mFileDownloadCallBack = new FileDownloadCallBack(updateEntity, downloadListener));
         }
 
         /**
@@ -200,6 +202,9 @@ public class DownloadService extends Service {
          * @param msg
          */
         public void stop(String msg) {
+            if (mFileDownloadCallBack != null) {
+                mFileDownloadCallBack.onCancel();
+            }
             DownloadService.this.stop(msg);
         }
     }
@@ -207,7 +212,7 @@ public class DownloadService extends Service {
     /**
      * 下载模块
      */
-    private void startDownload(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener) {
+    private void startDownload(@NonNull UpdateEntity updateEntity, @NonNull FileDownloadCallBack fileDownloadCallBack) {
         String apkUrl = updateEntity.getDownloadUrl();
         if (TextUtils.isEmpty(apkUrl)) {
             String contentText = getString(R.string.xupdate_tip_download_url_error);
@@ -223,7 +228,7 @@ public class DownloadService extends Service {
 
         String target = apkCacheDir + File.separator + updateEntity.getVersionName();
 
-        updateEntity.getIUpdateHttpService().download(apkUrl, target, appName, new FileDownloadCallBack(updateEntity, downloadListener));
+        updateEntity.getIUpdateHttpService().download(apkUrl, target, appName, fileDownloadCallBack);
     }
 
 
@@ -236,14 +241,16 @@ public class DownloadService extends Service {
         /**
          * 文件下载监听
          */
-        private final OnFileDownloadListener mOnFileDownloadListener;
+        private OnFileDownloadListener mOnFileDownloadListener;
 
         /**
          * 是否下载完成后自动安装
          */
         private boolean mIsAutoInstall;
 
-        private int oldRate = 0;
+        private int mOldRate = 0;
+
+        private boolean mIsCancel;
 
         FileDownloadCallBack(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener listener) {
             mDownloadEntity = updateEntity.getDownLoadEntity();
@@ -251,9 +258,10 @@ public class DownloadService extends Service {
             mOnFileDownloadListener = listener;
         }
 
-
         @Override
         public void onStart() {
+            if (mIsCancel) return;
+
             //初始化通知栏
             setUpNotification(mDownloadEntity);
             if (mOnFileDownloadListener != null) {
@@ -263,9 +271,11 @@ public class DownloadService extends Service {
 
         @Override
         public void onProgress(float progress, long total) {
+            if (mIsCancel) return;
+
             //做一下判断，防止自回调过于频繁，造成更新通知栏进度过于频繁，而出现卡顿的问题。
             int rate = Math.round(progress * 100);
-            if (oldRate != rate) {
+            if (mOldRate != rate) {
                 if (mOnFileDownloadListener != null) {
                     mOnFileDownloadListener.onProgress(progress, total);
                 }
@@ -280,13 +290,14 @@ public class DownloadService extends Service {
                     mNotificationManager.notify(DOWNLOAD_NOTIFY_ID, notification);
                 }
                 //重新赋值
-                oldRate = rate;
+                mOldRate = rate;
             }
-
         }
 
         @Override
         public void onSuccess(File file) {
+            if (mIsCancel) return;
+
             if (mOnFileDownloadListener != null) {
                 if (!mOnFileDownloadListener.onCompleted(file)) {
                     close();
@@ -329,6 +340,14 @@ public class DownloadService extends Service {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        /**
+         * 取消下载
+         */
+        void onCancel() {
+            mOnFileDownloadListener = null;
+            mIsCancel = true;
         }
     }
 
