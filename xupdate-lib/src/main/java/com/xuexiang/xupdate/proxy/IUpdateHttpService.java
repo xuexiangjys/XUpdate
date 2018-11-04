@@ -59,6 +59,12 @@ public interface IUpdateHttpService extends Serializable {
      */
     void download(@NonNull String url, @NonNull String path, @NonNull String fileName, @NonNull DownloadCallback callback);
 
+    /**
+     * 取消文件下载
+     *
+     * @param url      下载地址
+     */
+    void cancelDownload(@NonNull String url);
 
     /**
      * 网络请求回调

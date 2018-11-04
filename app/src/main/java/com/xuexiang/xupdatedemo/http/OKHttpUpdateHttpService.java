@@ -111,6 +111,11 @@ public class OKHttpUpdateHttpService implements IUpdateHttpService {
                 });
     }
 
+    @Override
+    public void cancelDownload(@NonNull String url) {
+
+    }
+
     private Map<String, String> transform(Map<String, Object> params) {
         Map<String, String> map = new TreeMap<>();
         for (Map.Entry<String, Object> entry : params.entrySet()) {

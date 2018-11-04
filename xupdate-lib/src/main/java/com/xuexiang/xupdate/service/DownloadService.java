@@ -185,6 +185,8 @@ public class DownloadService extends Service {
     public class DownloadBinder extends Binder {
 
         private FileDownloadCallBack mFileDownloadCallBack;
+
+        private UpdateEntity mUpdateEntity;
         /**
          * 开始下载
          *
@@ -193,6 +195,7 @@ public class DownloadService extends Service {
          */
         public void start(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener) {
             //下载
+            mUpdateEntity = updateEntity;
             startDownload(updateEntity, mFileDownloadCallBack = new FileDownloadCallBack(updateEntity, downloadListener));
         }
 
@@ -205,6 +208,7 @@ public class DownloadService extends Service {
             if (mFileDownloadCallBack != null) {
                 mFileDownloadCallBack.onCancel();
             }
+            mUpdateEntity.getIUpdateHttpService().cancelDownload(mUpdateEntity.getDownloadUrl());
             DownloadService.this.stop(msg);
         }
     }
@@ -329,6 +333,8 @@ public class DownloadService extends Service {
 
         @Override
         public void onError(Throwable throwable) {
+            if (mIsCancel) return;
+
             _XUpdate.onUpdateError(DOWNLOAD_FAILED, throwable.getMessage());
             //App前台运行
             if (mOnFileDownloadListener != null) {

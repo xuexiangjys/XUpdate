@@ -19,13 +19,17 @@ package com.xuexiang.xupdatedemo.http;
 import android.support.annotation.NonNull;
 
 import com.xuexiang.xhttp2.XHttp;
+import com.xuexiang.xhttp2.XHttpSDK;
 import com.xuexiang.xhttp2.callback.DownloadProgressCallBack;
 import com.xuexiang.xhttp2.callback.SimpleCallBack;
 import com.xuexiang.xhttp2.exception.ApiException;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xutil.file.FileUtils;
+import com.xuexiang.xutil.tip.ToastUtils;
 
 import java.util.Map;
+
+import io.reactivex.disposables.Disposable;
 
 /**
  * XHttp2实现的请求更新
@@ -81,7 +85,7 @@ public class XHttpUpdateHttpService implements IUpdateHttpService {
 
     @Override
     public void download(@NonNull String url, @NonNull String path, @NonNull String fileName, @NonNull final DownloadCallback callback) {
-        XHttp.downLoad(url)
+        Disposable disposable = XHttp.downLoad(url)
                 .savePath(path)
                 .saveName(fileName)
                 .isUseBaseUrl(false)
@@ -107,5 +111,13 @@ public class XHttpUpdateHttpService implements IUpdateHttpService {
                         callback.onSuccess(FileUtils.getFileByPath(path));
                     }
                 });
+
+        XHttpSDK.addRequest(url, disposable);
+    }
+
+    @Override
+    public void cancelDownload(@NonNull String url) {
+        ToastUtils.toast("已取消更新！");
+        XHttpSDK.cancelRequest(url);
     }
 }
