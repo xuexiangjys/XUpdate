@@ -20,9 +20,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
-import com.xuexiang.xupdate.utils.Md5Utils;
 
-import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -234,4 +232,5 @@ public class UpdateEntity implements Serializable {
     public IUpdateHttpService getIUpdateHttpService() {
         return mIUpdateHttpService;
     }
+
 }

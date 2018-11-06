@@ -26,6 +26,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 
 import com.xuexiang.xupdate.entity.UpdateEntity;
+import com.xuexiang.xupdate.logs.UpdateLog;
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
 import com.xuexiang.xupdate.proxy.IUpdateDownloader;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
@@ -213,6 +214,7 @@ public class UpdateManager implements IUpdateProxy {
      */
     @Override
     public void checkVersion() {
+        UpdateLog.d("开始检查版本信息...");
         if (mIUpdateProxy != null) {
             mIUpdateProxy.checkVersion();
         } else {
@@ -243,6 +245,7 @@ public class UpdateManager implements IUpdateProxy {
      */
     @Override
     public UpdateEntity parseJson(@NonNull String json) throws Exception {
+        UpdateLog.i("服务端返回的最新版本信息:" + json);
         if (mIUpdateProxy != null) {
             mUpdateEntity = mIUpdateProxy.parseJson(json);
         } else {
@@ -274,6 +277,7 @@ public class UpdateManager implements IUpdateProxy {
      */
     @Override
     public void findNewVersion(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy) {
+        UpdateLog.i("发现新版本:" + UpdateUtils.toJson(updateEntity));
         if (updateEntity.isSilent()) { //静默下载，发现新版本后，直接下载更新
             startDownload(updateEntity, mOnFileDownloadListener);
         } else {
@@ -300,6 +304,7 @@ public class UpdateManager implements IUpdateProxy {
      */
     @Override
     public void noNewVersion(@NonNull Throwable throwable) {
+        UpdateLog.i("未发现新版本:" + throwable.getMessage());
         if (mIUpdateProxy != null) {
             mIUpdateProxy.noNewVersion(throwable);
         } else {
@@ -309,6 +314,7 @@ public class UpdateManager implements IUpdateProxy {
 
     @Override
     public void startDownload(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener) {
+        UpdateLog.i("开始下载更新文件:" + UpdateUtils.toJson(updateEntity));
         if (mIUpdateProxy != null) {
             mIUpdateProxy.startDownload(updateEntity, downloadListener);
         } else {
@@ -328,6 +334,7 @@ public class UpdateManager implements IUpdateProxy {
 
     @Override
     public void cancelDownload() {
+        UpdateLog.d("正在取消更新文件的下载...");
         if (mIUpdateProxy != null) {
             mIUpdateProxy.cancelDownload();
         } else {

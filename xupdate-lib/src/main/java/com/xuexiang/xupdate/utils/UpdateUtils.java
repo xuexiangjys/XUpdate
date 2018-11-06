@@ -170,6 +170,15 @@ public final class UpdateUtils {
         return null;
     }
 
+    /**
+     * 把 单个指定类型的对象 转换为 JSON 字符串
+     * @param src
+     * @return
+     */
+    public static String toJson(Object src) {
+        return new Gson().toJson(src);
+    }
+
     //=============显示====================//
     public static int dip2px(int dip, Context context) {
         return (int) (dip * getDensity(context) + 0.5f);
