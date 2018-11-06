@@ -36,6 +36,7 @@ import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.DownloadEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
+import com.xuexiang.xupdate.logs.UpdateLog;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.utils.ApkInstallUtils;
 import com.xuexiang.xupdate.utils.UpdateUtils;
@@ -223,7 +224,7 @@ public class DownloadService extends Service {
             stop(contentText);
             return;
         }
-        String appName = UpdateUtils.getApkNameByDownloadUrl(apkUrl);
+        String apkName = UpdateUtils.getApkNameByDownloadUrl(apkUrl);
 
         File apkCacheDir = new File(updateEntity.getApkCacheDir());
         if (!apkCacheDir.exists()) {
@@ -232,7 +233,8 @@ public class DownloadService extends Service {
 
         String target = apkCacheDir + File.separator + updateEntity.getVersionName();
 
-        updateEntity.getIUpdateHttpService().download(apkUrl, target, appName, fileDownloadCallBack);
+        UpdateLog.d("开始下载更新文件, 下载地址:" + apkUrl + ", 保存路径:" + target + ", 文件名:" + apkName);
+        updateEntity.getIUpdateHttpService().download(apkUrl, target, apkName, fileDownloadCallBack);
     }
 
 
@@ -308,7 +310,7 @@ public class DownloadService extends Service {
                     return;
                 }
             }
-
+            UpdateLog.d("更新文件下载完成, 文件路径:" + file.getAbsolutePath());
             try {
                 if (UpdateUtils.isAppOnForeground(DownloadService.this)) {
                     //App前台运行

@@ -82,7 +82,7 @@ public class App extends Application {
                 .isAutoMode(false)    //默认设置非自动模式，可根据具体使用配置
                 .param("versionCode", UpdateUtils.getVersionCode(this)) //设置默认公共请求参数
                 .param("appKey", getPackageName())
-//                .debug(true)
+                .debug(true)
                 .setOnUpdateFailureListener(new OnUpdateFailureListener() { //设置版本更新出错的监听
                     @Override
                     public void onFailure(UpdateError error) {
