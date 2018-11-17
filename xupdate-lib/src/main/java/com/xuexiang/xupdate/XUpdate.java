@@ -24,6 +24,7 @@ import com.xuexiang.xupdate.listener.OnInstallListener;
 import com.xuexiang.xupdate.listener.OnUpdateFailureListener;
 import com.xuexiang.xupdate.listener.impl.DefaultInstallListener;
 import com.xuexiang.xupdate.listener.impl.DefaultUpdateFailureListener;
+import com.xuexiang.xupdate.logs.ILogger;
 import com.xuexiang.xupdate.logs.UpdateLog;
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
 import com.xuexiang.xupdate.proxy.IUpdateDownloader;
@@ -318,6 +319,17 @@ public class XUpdate {
      */
     public XUpdate debug(boolean isDebug) {
         UpdateLog.debug(isDebug);
+        return this;
+    }
+
+    /**
+     * 设置日志打印接口
+     *
+     * @param logger
+     * @return
+     */
+    public XUpdate setILogger(@NonNull ILogger logger) {
+        UpdateLog.setLogger(logger);
         return this;
     }
 

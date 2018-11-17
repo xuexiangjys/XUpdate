@@ -126,12 +126,12 @@ dependencies {
 
 ```
 XUpdate.get()
+        .debug(true) //开启debug模式，可用于问题的排查
         .isWifiOnly(true)     //默认设置只在wifi下检查版本更新
         .isGet(true)          //默认设置使用get请求检查版本
         .isAutoMode(false)    //默认设置非自动模式，可根据具体使用配置
         .param("VersionCode", UpdateUtils.getVersionCode(this)) //设置默认公共请求参数
         .param("AppKey", getPackageName())
-//                .debug(true)
         .setOnUpdateFailureListener(new OnUpdateFailureListener() { //设置版本更新出错的监听
             @Override
             public void onFailure(UpdateError error) {
@@ -140,6 +140,17 @@ XUpdate.get()
         })
         .setIUpdateHttpService(new OKHttpUpdateHttpService()) //这个必须设置！实现网络请求功能。
         .init(this);   //这个必须初始化
+```
+
+【注意】：如果出现任何问题，可开启debug模式来追踪问题。如果你还需要将日志记录在磁盘上，可实现以下接口
+
+```
+XUpdate.get().setILogger(new ILogger() {
+    @Override
+    public void log(int priority, String tag, String message, Throwable t) {
+        //实现日志记录功能
+    }
+});
 ```
 
 ### 2.3、版本更新实体信息
