@@ -116,7 +116,7 @@ allprojects {
 ```
 dependencies {
   ...
-  implementation 'com.github.xuexiangjys:XUpdate:1.0.3'
+  implementation 'com.github.xuexiangjys:XUpdate:1.0.4'
 }
 ```
 
@@ -400,7 +400,7 @@ https://github.com/WVector/AppUpdate
 
 ![](https://github.com/xuexiangjys/XPage/blob/master/img/qq_group.jpg)
 
-[xusvg]: https://img.shields.io/badge/XUpdate-v1.0.3-brightgreen.svg
+[xusvg]: https://img.shields.io/badge/XUpdate-v1.0.4-brightgreen.svg
 [xu]: https://github.com/xuexiangjys/XUpdate
 [apisvg]: https://img.shields.io/badge/API-14+-brightgreen.svg
 [api]: https://android-arsenal.com/api?level=14
