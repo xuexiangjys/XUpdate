@@ -233,4 +233,19 @@ public class UpdateEntity implements Serializable {
         return mIUpdateHttpService;
     }
 
+    @Override
+    public String toString() {
+        return "UpdateEntity{" +
+                "mHasUpdate=" + mHasUpdate +
+                ", mIsForce=" + mIsForce +
+                ", mIsIgnorable=" + mIsIgnorable +
+                ", mVersionCode=" + mVersionCode +
+                ", mVersionName='" + mVersionName + '\'' +
+                ", mUpdateContent='" + mUpdateContent + '\'' +
+                ", mDownloadEntity=" + mDownloadEntity +
+                ", mIsSilent=" + mIsSilent +
+                ", mIsAutoInstall=" + mIsAutoInstall +
+                ", mIUpdateHttpService=" + mIUpdateHttpService +
+                '}';
+    }
 }

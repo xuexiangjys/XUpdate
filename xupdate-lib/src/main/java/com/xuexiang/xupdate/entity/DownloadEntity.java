@@ -104,4 +104,14 @@ public class DownloadEntity implements Serializable {
         return Md5Utils.isFileValid(mMd5, apkFile);
     }
 
+    @Override
+    public String toString() {
+        return "DownloadEntity{" +
+                "mDownloadUrl='" + mDownloadUrl + '\'' +
+                ", mCacheDir='" + mCacheDir + '\'' +
+                ", mMd5='" + mMd5 + '\'' +
+                ", mSize=" + mSize +
+                ", mIsShowNotification=" + mIsShowNotification +
+                '}';
+    }
 }

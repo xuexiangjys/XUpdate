@@ -167,6 +167,7 @@ public class UpdateManager implements IUpdateProxy {
      */
     @Override
     public void update() {
+        UpdateLog.d("XUpdate.update()启动:" + toString());
         if (mIUpdateProxy != null) {
             mIUpdateProxy.update();
         } else {
@@ -261,7 +262,8 @@ public class UpdateManager implements IUpdateProxy {
      * @param updateEntity
      */
     private UpdateEntity refreshParams(UpdateEntity updateEntity) {
-        if (updateEntity != null) {  //更新信息（本地信息）
+        //更新信息（本地信息）
+        if (updateEntity != null) {
             updateEntity.setApkCacheDir(mApkCacheDir);
             updateEntity.setIsAutoMode(mIsAutoMode);
             updateEntity.setIUpdateHttpService(mIUpdateHttpService);
@@ -278,10 +280,12 @@ public class UpdateManager implements IUpdateProxy {
     @Override
     public void findNewVersion(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy) {
         UpdateLog.i("发现新版本:" + UpdateUtils.toJson(updateEntity));
-        if (updateEntity.isSilent()) { //静默下载，发现新版本后，直接下载更新
+        if (updateEntity.isSilent()) {
+            //静默下载，发现新版本后，直接下载更新
             startDownload(updateEntity, mOnFileDownloadListener);
         } else {
-            if (mIUpdateProxy != null) { //否则显示版本更新提示
+            if (mIUpdateProxy != null) {
+                //否则显示版本更新提示
                 mIUpdateProxy.findNewVersion(updateEntity, updateProxy);
             } else {
                 if (mIUpdatePrompter instanceof DefaultUpdatePrompter) {
@@ -642,5 +646,17 @@ public class UpdateManager implements IUpdateProxy {
             build().setIUpdateProxy(updateProxy)
                     .update();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "XUpdate{" +
+                "mUpdateUrl='" + mUpdateUrl + '\'' +
+                ", mParams=" + mParams +
+                ", mApkCacheDir='" + mApkCacheDir + '\'' +
+                ", mIsWifiOnly=" + mIsWifiOnly +
+                ", mIsGet=" + mIsGet +
+                ", mIsAutoMode=" + mIsAutoMode +
+                '}';
     }
 }

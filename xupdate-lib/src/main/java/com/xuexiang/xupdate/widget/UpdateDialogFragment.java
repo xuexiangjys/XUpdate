@@ -296,7 +296,8 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     @Override
     public void onClick(View view) {
         int i = view.getId();
-        if (i == R.id.btn_update) { //点击版本升级按钮【下载apk】
+        //点击版本升级按钮【下载apk】
+        if (i == R.id.btn_update) {
             //权限判断是否有访问外部存储空间权限
             int flag = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (flag != PackageManager.PERMISSION_GRANTED) {
@@ -304,10 +305,12 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
             } else {
                 installApp();
             }
-        } else if (i == R.id.iv_close) { //点击关闭按钮
+        } else if (i == R.id.iv_close) {
+            //点击关闭按钮
             mIUpdateProxy.cancelDownload();
             dismiss();
-        } else if (i == R.id.tv_ignore) { //点击忽略按钮
+        } else if (i == R.id.tv_ignore) {
+            //点击忽略按钮
             UpdateUtils.saveIgnoreVersion(getActivity(), mUpdateEntity.getVersionName());
             dismiss();
         }

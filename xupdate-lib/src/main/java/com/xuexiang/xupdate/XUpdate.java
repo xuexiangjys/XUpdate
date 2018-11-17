@@ -140,8 +140,9 @@ public class XUpdate {
     }
 
     private void testInitialize() {
-        if (mContext == null)
+        if (mContext == null) {
             throw new ExceptionInInitializerError("请先在全局Application中调用 XUpdate.get().init() 初始化！");
+        }
     }
 
     public static Context getContext() {
@@ -185,6 +186,7 @@ public class XUpdate {
         if (mParams == null) {
             mParams = new TreeMap<>();
         }
+        UpdateLog.d("设置全局参数, key:" + key + ", value:" + value.toString());
         mParams.put(key, value);
         return this;
     }
@@ -196,8 +198,22 @@ public class XUpdate {
      * @return
      */
     public XUpdate params(@NonNull Map<String, Object> params) {
+        logForParams(params);
         mParams = params;
         return this;
+    }
+
+    private void logForParams(@NonNull Map<String, Object> params) {
+        StringBuilder sb = new StringBuilder("设置全局参数:{\n");
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            sb.append("key = ")
+                    .append(entry.getKey())
+                    .append(", value = ")
+                    .append(entry.getValue().toString())
+                    .append("\n");
+        }
+        sb.append("}");
+        UpdateLog.d(sb.toString());
     }
 
 
@@ -207,7 +223,8 @@ public class XUpdate {
      * @param updateHttpService
      * @return
      */
-    public XUpdate setIUpdateHttpService(IUpdateHttpService updateHttpService) {
+    public XUpdate setIUpdateHttpService(@NonNull IUpdateHttpService updateHttpService) {
+        UpdateLog.d("设置全局更新网络请求服务:" + updateHttpService.getClass().getCanonicalName());
         mIUpdateHttpService = updateHttpService;
         return this;
     }
@@ -218,7 +235,7 @@ public class XUpdate {
      * @param updateChecker
      * @return
      */
-    public XUpdate setIUpdateChecker(IUpdateChecker updateChecker) {
+    public XUpdate setIUpdateChecker(@NonNull IUpdateChecker updateChecker) {
         mIUpdateChecker = updateChecker;
         return this;
     }
@@ -229,7 +246,7 @@ public class XUpdate {
      * @param updateParser
      * @return
      */
-    public XUpdate setIUpdateParser(IUpdateParser updateParser) {
+    public XUpdate setIUpdateParser(@NonNull IUpdateParser updateParser) {
         mIUpdateParser = updateParser;
         return this;
     }
@@ -240,7 +257,7 @@ public class XUpdate {
      * @param updateDownLoader
      * @return
      */
-    public XUpdate setIUpdateDownLoader(IUpdateDownloader updateDownLoader) {
+    public XUpdate setIUpdateDownLoader(@NonNull IUpdateDownloader updateDownLoader) {
         mIUpdateDownloader = updateDownLoader;
         return this;
     }
@@ -252,6 +269,7 @@ public class XUpdate {
      * @return
      */
     public XUpdate isGet(boolean isGet) {
+        UpdateLog.d("设置全局是否使用的是Get请求:" + isGet);
         mIsGet = isGet;
         return this;
     }
@@ -263,6 +281,7 @@ public class XUpdate {
      * @return
      */
     public XUpdate isWifiOnly(boolean isWifiOnly) {
+        UpdateLog.d("设置全局是否只在wifi下进行版本更新检查:" + isWifiOnly);
         mIsWifiOnly = isWifiOnly;
         return this;
     }
@@ -274,6 +293,7 @@ public class XUpdate {
      * @return
      */
     public XUpdate isAutoMode(boolean isAutoMode) {
+        UpdateLog.d("设置全局是否是自动版本更新模式:" + isAutoMode);
         mIsAutoMode = isAutoMode;
         return this;
     }
@@ -285,6 +305,7 @@ public class XUpdate {
      * @return
      */
     public XUpdate setApkCacheDir(String apkCacheDir) {
+        UpdateLog.d("设置全局apk的缓存路径:" + apkCacheDir);
         mApkCacheDir = apkCacheDir;
         return this;
     }
@@ -325,6 +346,7 @@ public class XUpdate {
         mOnUpdateFailureListener = onUpdateFailureListener;
         return this;
     }
+
 
 
 }

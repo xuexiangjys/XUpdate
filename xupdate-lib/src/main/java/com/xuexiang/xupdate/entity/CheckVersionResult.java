@@ -170,4 +170,20 @@ public class CheckVersionResult {
         ApkSize = apkSize;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "CheckVersionResult{" +
+                "Code=" + Code +
+                ", Msg='" + Msg + '\'' +
+                ", UpdateStatus=" + UpdateStatus +
+                ", VersionCode=" + VersionCode +
+                ", VersionName='" + VersionName + '\'' +
+                ", UploadTime='" + UploadTime + '\'' +
+                ", ModifyContent='" + ModifyContent + '\'' +
+                ", DownloadUrl='" + DownloadUrl + '\'' +
+                ", ApkMd5='" + ApkMd5 + '\'' +
+                ", ApkSize=" + ApkSize +
+                '}';
+    }
 }
