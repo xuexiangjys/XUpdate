@@ -85,4 +85,14 @@ public class DefaultUpdateDownloader implements IUpdateDownloader {
             mIsBound = false;
         }
     }
+
+    /**
+     * 后台下载更新
+     */
+    @Override
+    public void backgroundDownload() {
+        if (mDownloadBinder != null) {
+            mDownloadBinder.showNotification();
+        }
+    }
 }

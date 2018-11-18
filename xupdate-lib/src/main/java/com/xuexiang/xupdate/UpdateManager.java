@@ -327,6 +327,19 @@ public class UpdateManager implements IUpdateProxy {
     }
 
     /**
+     * 后台下载
+     */
+    @Override
+    public void backgroundDownload() {
+        UpdateLog.i("点击了后台更新按钮, 在通知栏中显示下载进度...");
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.backgroundDownload();
+        } else {
+            mIUpdateDownloader.backgroundDownload();
+        }
+    }
+
+    /**
      * 为外部提供简单的下载功能
      *
      * @param downloadUrl      下载地址
@@ -409,6 +422,10 @@ public class UpdateManager implements IUpdateProxy {
          * 顶部背景图片
          */
         int topResId = -1;
+        /**
+         * 是否支持后台更新
+         */
+        boolean supportBackgroundUpdate = false;
         /**
          * apk缓存的目录
          */
@@ -595,6 +612,16 @@ public class UpdateManager implements IUpdateProxy {
         }
 
         /**
+         * 设置是否支持后台更新
+         * @param supportBackgroundUpdate
+         * @return
+         */
+        public Builder supportBackgroundUpdate(boolean supportBackgroundUpdate) {
+            this.supportBackgroundUpdate = supportBackgroundUpdate;
+            return this;
+        }
+
+        /**
          * 设备版本更新下载器
          *
          * @param updateDownLoader
@@ -616,9 +643,9 @@ public class UpdateManager implements IUpdateProxy {
 
             if (this.updatePrompter == null) {
                 if (context instanceof FragmentActivity) {
-                    updatePrompter = new DefaultUpdatePrompter(((FragmentActivity) context).getSupportFragmentManager(), themeColor, topResId);
+                    updatePrompter = new DefaultUpdatePrompter(((FragmentActivity) context).getSupportFragmentManager(), themeColor, topResId, supportBackgroundUpdate);
                 } else if (context instanceof Activity) {
-                    updatePrompter = new DefaultUpdatePrompter(themeColor, topResId);
+                    updatePrompter = new DefaultUpdatePrompter(themeColor, topResId, supportBackgroundUpdate);
                 } else {
                     throw new UnsupportedOperationException("[UpdateManager.Builder] : 使用默认的版本更新提示器，context必须传Activity！");
                 }

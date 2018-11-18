@@ -71,6 +71,10 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
      */
     private Button mBtnUpdate;
     /**
+     * 后台更新
+     */
+    private Button mBtnBackgroundUpdate;
+    /**
      * 忽略版本
      */
     private TextView mTvIgnore;
@@ -94,26 +98,37 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
      * 更新代理
      */
     private IUpdateProxy mIUpdateProxy;
+    /**
+     * 是否支持后台更新
+     */
+    private boolean mSupportBackgroundUpdate;
 
     /**
      * 获取更新提示
      *
-     * @param updateEntity 更新信息
-     * @param updateProxy  更新代理
-     * @param themeColor   主题颜色
-     * @param topResId     title背景图片
+     * @param updateEntity            更新信息
+     * @param updateProxy             更新代理
+     * @param themeColor              主题颜色
+     * @param topResId                title背景图片
+     * @param supportBackgroundUpdate 是否支持后台更新
      * @return
      */
-    public static UpdateDialog newInstance(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, @ColorInt int themeColor, @DrawableRes int topResId) {
+    public static UpdateDialog newInstance(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, @ColorInt int themeColor, @DrawableRes int topResId, boolean supportBackgroundUpdate) {
         UpdateDialog dialog = new UpdateDialog(updateProxy.getContext());
         dialog.setIUpdateProxy(updateProxy)
-                .setUpdateEntity(updateEntity);
+                .setUpdateEntity(updateEntity)
+                .setSupportBackgroundUpdate(supportBackgroundUpdate);
         dialog.initTheme(themeColor, topResId);
         return dialog;
     }
 
     private UpdateDialog(Context context) {
         super(context, R.layout.xupdate_dialog_app);
+    }
+
+    public UpdateDialog setSupportBackgroundUpdate(boolean supportBackgroundUpdate) {
+        mSupportBackgroundUpdate = supportBackgroundUpdate;
+        return this;
     }
 
     @Override
@@ -126,6 +141,8 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
         mTvUpdateInfo = findViewById(R.id.tv_update_info);
         //更新按钮
         mBtnUpdate = findViewById(R.id.btn_update);
+        //后台更新按钮
+        mBtnBackgroundUpdate = findViewById(R.id.btn_background_update);
         //忽略
         mTvIgnore = findViewById(R.id.tv_ignore);
         //进度条
@@ -140,6 +157,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
     @Override
     protected void initListeners() {
         mBtnUpdate.setOnClickListener(this);
+        mBtnBackgroundUpdate.setOnClickListener(this);
         mIvClose.setOnClickListener(this);
         mTvIgnore.setOnClickListener(this);
 
@@ -171,6 +189,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
 
     /**
      * 初始化更新信息
+     *
      * @param updateEntity
      */
     private void initUpdateInfo(UpdateEntity updateEntity) {
@@ -214,6 +233,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
     private void setDialogTheme(int color, int topResId) {
         mIvTop.setImageResource(topResId);
         mBtnUpdate.setBackgroundDrawable(DrawableUtils.getDrawable(UpdateUtils.dip2px(4, getContext()), color));
+        mBtnBackgroundUpdate.setBackgroundDrawable(DrawableUtils.getDrawable(UpdateUtils.dip2px(4, getContext()), color));
         mNumberProgressBar.setProgressTextColor(color);
         mNumberProgressBar.setReachedBarColor(color);
         //随背景颜色变化
@@ -239,6 +259,10 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
             } else {
                 installApp();
             }
+        } else if (i == R.id.btn_background_update) {
+            //点击后台更新按钮
+            mIUpdateProxy.backgroundDownload();
+            dismiss();
         } else if (i == R.id.iv_close) {
             //点击关闭按钮
             mIUpdateProxy.cancelDownload();
@@ -274,6 +298,11 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
             if (isShowing()) {
                 mNumberProgressBar.setVisibility(View.VISIBLE);
                 mBtnUpdate.setVisibility(View.GONE);
+                if (mSupportBackgroundUpdate) {
+                    mBtnBackgroundUpdate.setVisibility(View.VISIBLE);
+                } else {
+                    mBtnBackgroundUpdate.setVisibility(View.GONE);
+                }
             }
         }
 
@@ -288,6 +317,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
         @Override
         public boolean onCompleted(File file) {
             if (isShowing()) {
+                mBtnBackgroundUpdate.setVisibility(View.GONE);
                 if (mUpdateEntity.isForce()) {
                     showInstallButton(file);
                 } else {

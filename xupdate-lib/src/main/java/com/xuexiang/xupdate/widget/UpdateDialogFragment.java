@@ -66,6 +66,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     public final static String KEY_UPDATE_ENTITY = "key_update_entity";
     public final static String KEY_UPDATE_THEME_COLOR = "key_update_theme_color";
     public final static String KEY_UPDATE_TOP_PICTURE = "key_update_top_picture";
+    public final static String KEY_UPDATE_SUPPORT_BACKGROUND = "key_update_support_background";
 
     public final static int REQUEST_CODE_REQUEST_PERMISSIONS = 111;
 
@@ -87,6 +88,10 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
      * 版本更新
      */
     private Button mBtnUpdate;
+    /**
+     * 后台更新
+     */
+    private Button mBtnBackgroundUpdate;
     /**
      * 忽略版本
      */
@@ -111,17 +116,22 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
      * 更新代理
      */
     private IUpdateProxy mIUpdateProxy;
+    /**
+     * 是否支持后台更新
+     */
+    private boolean mSupportBackgroundUpdate;
 
     /**
      * 获取更新提示
      *
-     * @param updateEntity 更新信息
-     * @param updateProxy  更新代理
-     * @param themeColor   主题颜色
-     * @param topResId     title背景图片
+     * @param updateEntity            更新信息
+     * @param updateProxy             更新代理
+     * @param themeColor              主题颜色
+     * @param topResId                title背景图片
+     * @param supportBackgroundUpdate 是否支持后台更新
      * @return
      */
-    public static UpdateDialogFragment newInstance(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, @ColorInt int themeColor, @DrawableRes int topResId) {
+    public static UpdateDialogFragment newInstance(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, @ColorInt int themeColor, @DrawableRes int topResId, boolean supportBackgroundUpdate) {
         UpdateDialogFragment fragment = new UpdateDialogFragment();
         Bundle args = new Bundle();
         args.putSerializable(KEY_UPDATE_ENTITY, updateEntity);
@@ -131,6 +141,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         if (topResId != 0) {
             args.putInt(KEY_UPDATE_TOP_PICTURE, topResId);
         }
+        args.putBoolean(KEY_UPDATE_SUPPORT_BACKGROUND, supportBackgroundUpdate);
         fragment.setIUpdateProxy(updateProxy)
                 .setArguments(args);
         return fragment;
@@ -201,6 +212,8 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         mTvUpdateInfo = view.findViewById(R.id.tv_update_info);
         //更新按钮
         mBtnUpdate = view.findViewById(R.id.btn_update);
+        //后台更新按钮
+        mBtnBackgroundUpdate = view.findViewById(R.id.btn_background_update);
         //忽略
         mTvIgnore = view.findViewById(R.id.tv_ignore);
         //进度条
@@ -226,6 +239,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         if (bundle != null) {
             final int themeColor = bundle.getInt(KEY_UPDATE_THEME_COLOR, -1);
             final int topResId = bundle.getInt(KEY_UPDATE_TOP_PICTURE, -1);
+            mSupportBackgroundUpdate = bundle.getBoolean(KEY_UPDATE_SUPPORT_BACKGROUND);
             //设置主题色
             initTheme(themeColor, topResId);
             mUpdateEntity = (UpdateEntity) bundle.getSerializable(KEY_UPDATE_ENTITY);
@@ -238,6 +252,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
 
     /**
      * 初始化更新信息
+     *
      * @param updateEntity
      */
     private void initUpdateInfo(UpdateEntity updateEntity) {
@@ -281,6 +296,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     private void setDialogTheme(int color, int topResId) {
         mIvTop.setImageResource(topResId);
         mBtnUpdate.setBackgroundDrawable(DrawableUtils.getDrawable(UpdateUtils.dip2px(4, getActivity()), color));
+        mBtnBackgroundUpdate.setBackgroundDrawable(DrawableUtils.getDrawable(UpdateUtils.dip2px(4, getActivity()), color));
         mNumberProgressBar.setProgressTextColor(color);
         mNumberProgressBar.setReachedBarColor(color);
         //随背景颜色变化
@@ -289,6 +305,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
 
     private void initListeners() {
         mBtnUpdate.setOnClickListener(this);
+        mBtnBackgroundUpdate.setOnClickListener(this);
         mIvClose.setOnClickListener(this);
         mTvIgnore.setOnClickListener(this);
     }
@@ -305,6 +322,10 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
             } else {
                 installApp();
             }
+        } else if (i == R.id.btn_background_update) {
+            //点击后台更新按钮
+            mIUpdateProxy.backgroundDownload();
+            dismiss();
         } else if (i == R.id.iv_close) {
             //点击关闭按钮
             mIUpdateProxy.cancelDownload();
@@ -355,6 +376,11 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
             if (!UpdateDialogFragment.this.isRemoving()) {
                 mNumberProgressBar.setVisibility(View.VISIBLE);
                 mBtnUpdate.setVisibility(View.GONE);
+                if (mSupportBackgroundUpdate) {
+                    mBtnBackgroundUpdate.setVisibility(View.VISIBLE);
+                } else {
+                    mBtnBackgroundUpdate.setVisibility(View.GONE);
+                }
             }
         }
 
@@ -369,6 +395,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         @Override
         public boolean onCompleted(File file) {
             if (!UpdateDialogFragment.this.isRemoving()) {
+                mBtnBackgroundUpdate.setVisibility(View.GONE);
                 if (mUpdateEntity.isForce()) {
                     showInstallButton(file);
                 } else {

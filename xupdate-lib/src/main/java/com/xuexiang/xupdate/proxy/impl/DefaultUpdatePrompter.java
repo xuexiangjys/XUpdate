@@ -40,6 +40,7 @@ public class DefaultUpdatePrompter implements IUpdatePrompter {
     private int mThemeColor;
     @DrawableRes
     private int mTopResId;
+    private boolean mSupportBackgroundUpdate;
 
     /**
      * 使用默认Dialog
@@ -47,9 +48,10 @@ public class DefaultUpdatePrompter implements IUpdatePrompter {
      * @param themeColor
      * @param topResId
      */
-    public DefaultUpdatePrompter(@ColorInt int themeColor, @DrawableRes int topResId) {
+    public DefaultUpdatePrompter(@ColorInt int themeColor, @DrawableRes int topResId, boolean supportBackgroundUpdate) {
         mThemeColor = themeColor;
         mTopResId = topResId;
+        mSupportBackgroundUpdate = supportBackgroundUpdate;
     }
 
     /**
@@ -59,19 +61,20 @@ public class DefaultUpdatePrompter implements IUpdatePrompter {
      * @param themeColor
      * @param topResId
      */
-    public DefaultUpdatePrompter(@NonNull FragmentManager manager, @ColorInt int themeColor, @DrawableRes int topResId) {
+    public DefaultUpdatePrompter(@NonNull FragmentManager manager, @ColorInt int themeColor, @DrawableRes int topResId, boolean supportBackgroundUpdate) {
         mFragmentManager = manager;
         mThemeColor = themeColor;
         mTopResId = topResId;
+        mSupportBackgroundUpdate = supportBackgroundUpdate;
     }
 
     @Override
     public void showPrompt(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy) {
         if (mFragmentManager != null) {
-            UpdateDialogFragment.newInstance(updateEntity, updateProxy, mThemeColor, mTopResId)
+            UpdateDialogFragment.newInstance(updateEntity, updateProxy, mThemeColor, mTopResId, mSupportBackgroundUpdate)
                     .show(mFragmentManager);
         } else {
-            UpdateDialog.newInstance(updateEntity, updateProxy, mThemeColor, mTopResId)
+            UpdateDialog.newInstance(updateEntity, updateProxy, mThemeColor, mTopResId, mSupportBackgroundUpdate)
                     .show();
         }
 

@@ -133,6 +133,7 @@ public class DownloadService extends Service {
     @Override
     public void onDestroy() {
         mNotificationManager = null;
+        mBuilder = null;
         super.onDestroy();
     }
 
@@ -146,6 +147,13 @@ public class DownloadService extends Service {
             return;
         }
 
+        initNotification();
+    }
+
+    /**
+     * 初始化通知
+     */
+    private void initNotification() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
             //设置绕过免打扰模式
@@ -212,6 +220,15 @@ public class DownloadService extends Service {
             mUpdateEntity.getIUpdateHttpService().cancelDownload(mUpdateEntity.getDownloadUrl());
             DownloadService.this.stop(msg);
         }
+
+        /**
+         * 显示通知
+         */
+        public void showNotification() {
+            if (mBuilder == null && DownloadService.isRunning()) {
+                initNotification();
+            }
+        }
     }
 
     /**
@@ -266,7 +283,13 @@ public class DownloadService extends Service {
 
         @Override
         public void onStart() {
-            if (mIsCancel) return;
+            if (mIsCancel) {
+                return;
+            }
+
+            //清空通知栏状态
+            mNotificationManager.cancel(DOWNLOAD_NOTIFY_ID);
+            mBuilder = null;
 
             //初始化通知栏
             setUpNotification(mDownloadEntity);
@@ -277,7 +300,9 @@ public class DownloadService extends Service {
 
         @Override
         public void onProgress(float progress, long total) {
-            if (mIsCancel) return;
+            if (mIsCancel) {
+                return;
+            }
 
             //做一下判断，防止自回调过于频繁，造成更新通知栏进度过于频繁，而出现卡顿的问题。
             int rate = Math.round(progress * 100);
@@ -302,7 +327,9 @@ public class DownloadService extends Service {
 
         @Override
         public void onSuccess(File file) {
-            if (mIsCancel) return;
+            if (mIsCancel) {
+                return;
+            }
 
             if (mOnFileDownloadListener != null) {
                 if (!mOnFileDownloadListener.onCompleted(file)) {
@@ -335,7 +362,9 @@ public class DownloadService extends Service {
 
         @Override
         public void onError(Throwable throwable) {
-            if (mIsCancel) return;
+            if (mIsCancel) {
+                return;
+            }
 
             _XUpdate.onUpdateError(DOWNLOAD_FAILED, throwable.getMessage());
             //App前台运行

@@ -47,6 +47,12 @@ public class UpdateActivity extends Activity implements View.OnClickListener{
                         .updateUrl(mUpdateUrl)
                         .update();
                 break;
+            case R.id.btn_support_background_update:
+                XUpdate.newBuild(this)
+                        .updateUrl(mUpdateUrl)
+                        .supportBackgroundUpdate(true)
+                        .update();
+                break;
             case R.id.btn_auto_update:
                 XUpdate.newBuild(this)
                         .updateUrl(mUpdateUrl)

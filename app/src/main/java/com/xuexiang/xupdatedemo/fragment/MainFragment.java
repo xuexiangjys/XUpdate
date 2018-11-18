@@ -68,6 +68,7 @@ public class MainFragment extends XPageSimpleListFragment {
     @Override
     protected List<String> initSimpleData(List<String> lists) {
         lists.add("默认App更新");
+        lists.add("默认App更新 + 支持后台更新");
         lists.add("版本更新(自动模式)");
         lists.add("强制版本更新");
         lists.add("默认App更新 + 自定义提示弹窗主题");
@@ -91,15 +92,21 @@ public class MainFragment extends XPageSimpleListFragment {
             case 1:
                 XUpdate.newBuild(getActivity())
                         .updateUrl(mUpdateUrl)
-                        .isAutoMode(true) //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
+                        .supportBackgroundUpdate(true)
                         .update();
                 break;
             case 2:
                 XUpdate.newBuild(getActivity())
-                        .updateUrl(mUpdateUrl2)
+                        .updateUrl(mUpdateUrl)
+                        .isAutoMode(true) //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
                         .update();
                 break;
             case 3:
+                XUpdate.newBuild(getActivity())
+                        .updateUrl(mUpdateUrl2)
+                        .update();
+                break;
+            case 4:
                 XUpdate.newBuild(getActivity())
                         .updateHttpService(new XHttpUpdateHttpService("https://raw.githubusercontent.com"))
                         .updateUrl("/xuexiangjys/XUpdate/master/jsonapi/update_test.json")
@@ -107,13 +114,13 @@ public class MainFragment extends XPageSimpleListFragment {
                         .topResId(R.mipmap.bg_update_top)
                         .update();
                 break;
-            case 4:
+            case 5:
                 XUpdate.newBuild(getActivity())
                         .updateUrl(mUpdateUrl3)
                         .updateParser(new CustomUpdateParser())
                         .update();
                 break;
-            case 5:
+            case 6:
                 XUpdate.newBuild(getActivity())
                         .updateUrl(mUpdateUrl3)
                         .updateChecker(new DefaultUpdateChecker() {
@@ -132,7 +139,7 @@ public class MainFragment extends XPageSimpleListFragment {
                         .updatePrompter(new CustomUpdatePrompter(getActivity()))
                         .update();
                 break;
-            case 6:
+            case 7:
                 XUpdate.newBuild(getActivity())
                         .apkCacheDir(PathUtils.getExtDownloadsPath())
                         .build()
@@ -160,12 +167,13 @@ public class MainFragment extends XPageSimpleListFragment {
                             }
                         });
                 break;
-            case 7:
+            case 8:
                 selectAPKFile();
                 break;
-            case 8:
-                startActivity(new Intent(getContext(), UpdateActivity.class));
             case 9:
+                startActivity(new Intent(getContext(), UpdateActivity.class));
+                break;
+            case 10:
                 openPage(XUpdateServiceFragment.class);
                 break;
             default:

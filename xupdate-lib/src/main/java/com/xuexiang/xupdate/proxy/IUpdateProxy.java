@@ -97,6 +97,11 @@ public interface IUpdateProxy {
     void startDownload(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener);
 
     /**
+     * 后台下载
+     */
+    void backgroundDownload();
+
+    /**
      * 取消下载
      */
     void cancelDownload();

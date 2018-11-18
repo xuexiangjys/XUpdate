@@ -17,6 +17,7 @@
 
 <resources>
     <string name="xupdate_lab_update">Upgrade</string>
+    <string name="xupdate_lab_background_update">Background Upgrade</string>
     <string name="xupdate_lab_install">Install</string>
     <string name="xupdate_lab_ignore">Ignore</string>
     <string name="xupdate_tip_permissions_reject">Please authorize access to storage space permissions, otherwise App can not be updated!</string>

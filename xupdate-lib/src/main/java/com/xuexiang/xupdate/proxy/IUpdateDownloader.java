@@ -43,4 +43,9 @@ public interface IUpdateDownloader {
      * 取消下载
      */
     void cancelDownload();
+
+    /**
+     * 后台下载更新
+     */
+    void backgroundDownload();
 }

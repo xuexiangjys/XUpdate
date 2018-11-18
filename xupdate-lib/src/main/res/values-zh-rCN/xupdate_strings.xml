@@ -17,6 +17,7 @@
 
 <resources>
     <string name="xupdate_lab_update">升级</string>
+    <string name="xupdate_lab_background_update">后台更新</string>
     <string name="xupdate_lab_install">安装</string>
     <string name="xupdate_lab_ignore">忽略此版本</string>
     <string name="xupdate_tip_permissions_reject">请授权访问存储空间权限，否则App无法更新！</string>
