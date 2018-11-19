@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 
+import com.xuexiang.xupdate.entity.PromptEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdatePrompter;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
@@ -43,12 +44,6 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
     public CustomUpdatePrompter(Context context) {
         mContext = context;
     }
-
-    @Override
-    public void showPrompt(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy) {
-        showUpdatePrompt(updateEntity, updateProxy);
-    }
-
 
     /**
      * 显示自定义提示
@@ -100,5 +95,17 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
             builder.setCancelable(false);
         }
         builder.create().show();
+    }
+
+    /**
+     * 显示版本更新提示
+     *
+     * @param updateEntity 更新信息
+     * @param updateProxy  更新代理
+     * @param promptEntity 提示界面参数
+     */
+    @Override
+    public void showPrompt(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, @NonNull PromptEntity promptEntity) {
+        showUpdatePrompt(updateEntity, updateProxy);
     }
 }

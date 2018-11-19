@@ -25,6 +25,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 
+import com.xuexiang.xupdate.entity.PromptEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.logs.UpdateLog;
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
@@ -115,6 +116,10 @@ public class UpdateManager implements IUpdateProxy {
      * 版本更新提示器
      */
     private IUpdatePrompter mIUpdatePrompter;
+    /**
+     * 版本更新提示器参数信息
+     */
+    private PromptEntity mPromptEntity;
 
     /**
      * 构造函数
@@ -139,6 +144,7 @@ public class UpdateManager implements IUpdateProxy {
         mOnFileDownloadListener = builder.onFileDownloadListener;
 
         mIUpdatePrompter = builder.updatePrompter;
+        mPromptEntity = builder.promptEntity;
     }
 
     /**
@@ -290,12 +296,12 @@ public class UpdateManager implements IUpdateProxy {
             } else {
                 if (mIUpdatePrompter instanceof DefaultUpdatePrompter) {
                     if (mContext != null && !((Activity) mContext).isFinishing()) {
-                        mIUpdatePrompter.showPrompt(updateEntity, updateProxy);
+                        mIUpdatePrompter.showPrompt(updateEntity, updateProxy, mPromptEntity);
                     } else {
                         _XUpdate.onUpdateError(PROMPT_ACTIVITY_DESTROY);
                     }
                 } else {
-                    mIUpdatePrompter.showPrompt(updateEntity, updateProxy);
+                    mIUpdatePrompter.showPrompt(updateEntity, updateProxy, mPromptEntity);
                 }
             }
         }
@@ -403,6 +409,10 @@ public class UpdateManager implements IUpdateProxy {
          */
         IUpdateChecker updateChecker;
         /**
+         * 版本更新提示器参数信息
+         */
+        PromptEntity promptEntity;
+        /**
          * 版本更新提示器
          */
         IUpdatePrompter updatePrompter;
@@ -414,18 +424,6 @@ public class UpdateManager implements IUpdateProxy {
          * 下载监听
          */
         OnFileDownloadListener onFileDownloadListener;
-        /**
-         * 主题颜色
-         */
-        int themeColor = -1;
-        /**
-         * 顶部背景图片
-         */
-        int topResId = -1;
-        /**
-         * 是否支持后台更新
-         */
-        boolean supportBackgroundUpdate = false;
         /**
          * apk缓存的目录
          */
@@ -443,6 +441,8 @@ public class UpdateManager implements IUpdateProxy {
             if (_XUpdate.getParams() != null) {
                 params.putAll(_XUpdate.getParams());
             }
+
+            promptEntity = new PromptEntity();
 
             updateHttpService = _XUpdate.getIUpdateHttpService();
 
@@ -596,7 +596,7 @@ public class UpdateManager implements IUpdateProxy {
          * @return
          */
         public Builder themeColor(@ColorInt int themeColor) {
-            this.themeColor = themeColor;
+            promptEntity.setThemeColor(themeColor);
             return this;
         }
 
@@ -607,17 +607,18 @@ public class UpdateManager implements IUpdateProxy {
          * @return
          */
         public Builder topResId(@DrawableRes int topResId) {
-            this.topResId = topResId;
+            promptEntity.setTopResId(topResId);
             return this;
         }
 
         /**
          * 设置是否支持后台更新
+         *
          * @param supportBackgroundUpdate
          * @return
          */
         public Builder supportBackgroundUpdate(boolean supportBackgroundUpdate) {
-            this.supportBackgroundUpdate = supportBackgroundUpdate;
+            promptEntity.setSupportBackgroundUpdate(supportBackgroundUpdate);
             return this;
         }
 
@@ -643,9 +644,9 @@ public class UpdateManager implements IUpdateProxy {
 
             if (this.updatePrompter == null) {
                 if (context instanceof FragmentActivity) {
-                    updatePrompter = new DefaultUpdatePrompter(((FragmentActivity) context).getSupportFragmentManager(), themeColor, topResId, supportBackgroundUpdate);
+                    updatePrompter = new DefaultUpdatePrompter(((FragmentActivity) context).getSupportFragmentManager());
                 } else if (context instanceof Activity) {
-                    updatePrompter = new DefaultUpdatePrompter(themeColor, topResId, supportBackgroundUpdate);
+                    updatePrompter = new DefaultUpdatePrompter();
                 } else {
                     throw new UnsupportedOperationException("[UpdateManager.Builder] : 使用默认的版本更新提示器，context必须传Activity！");
                 }

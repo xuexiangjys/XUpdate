@@ -16,11 +16,10 @@
 
 package com.xuexiang.xupdate.proxy.impl;
 
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 
+import com.xuexiang.xupdate.entity.PromptEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdatePrompter;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
@@ -36,47 +35,37 @@ import com.xuexiang.xupdate.widget.UpdateDialogFragment;
 public class DefaultUpdatePrompter implements IUpdatePrompter {
 
     private FragmentManager mFragmentManager;
-    @ColorInt
-    private int mThemeColor;
-    @DrawableRes
-    private int mTopResId;
-    private boolean mSupportBackgroundUpdate;
 
     /**
      * 使用默认Dialog
-     *
-     * @param themeColor
-     * @param topResId
      */
-    public DefaultUpdatePrompter(@ColorInt int themeColor, @DrawableRes int topResId, boolean supportBackgroundUpdate) {
-        mThemeColor = themeColor;
-        mTopResId = topResId;
-        mSupportBackgroundUpdate = supportBackgroundUpdate;
+    public DefaultUpdatePrompter() {
     }
 
     /**
      * 使用FragmentDialog
      *
      * @param manager
-     * @param themeColor
-     * @param topResId
      */
-    public DefaultUpdatePrompter(@NonNull FragmentManager manager, @ColorInt int themeColor, @DrawableRes int topResId, boolean supportBackgroundUpdate) {
+    public DefaultUpdatePrompter(@NonNull FragmentManager manager) {
         mFragmentManager = manager;
-        mThemeColor = themeColor;
-        mTopResId = topResId;
-        mSupportBackgroundUpdate = supportBackgroundUpdate;
     }
 
+    /**
+     * 显示版本更新提示
+     *
+     * @param updateEntity 更新信息
+     * @param updateProxy  更新代理
+     * @param promptEntity 提示界面参数
+     */
     @Override
-    public void showPrompt(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy) {
+    public void showPrompt(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, @NonNull PromptEntity promptEntity) {
         if (mFragmentManager != null) {
-            UpdateDialogFragment.newInstance(updateEntity, updateProxy, mThemeColor, mTopResId, mSupportBackgroundUpdate)
+            UpdateDialogFragment.newInstance(updateEntity, updateProxy, promptEntity)
                     .show(mFragmentManager);
         } else {
-            UpdateDialog.newInstance(updateEntity, updateProxy, mThemeColor, mTopResId, mSupportBackgroundUpdate)
+            UpdateDialog.newInstance(updateEntity, updateProxy, promptEntity)
                     .show();
         }
-
     }
 }

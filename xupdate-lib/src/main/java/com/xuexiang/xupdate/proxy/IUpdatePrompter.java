@@ -18,6 +18,7 @@ package com.xuexiang.xupdate.proxy;
 
 import android.support.annotation.NonNull;
 
+import com.xuexiang.xupdate.entity.PromptEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 
 /**
@@ -31,7 +32,9 @@ public interface IUpdatePrompter {
     /**
      * 显示版本更新提示
      *
-     * @param updateEntity
+     * @param updateEntity 更新信息
+     * @param updateProxy  更新代理
+     * @param promptEntity 提示界面参数
      */
-    void showPrompt(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy);
+    void showPrompt(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, @NonNull PromptEntity promptEntity);
 }

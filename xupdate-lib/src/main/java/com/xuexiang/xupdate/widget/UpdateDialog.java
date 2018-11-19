@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.xuexiang.xupdate.R;
 import com.xuexiang.xupdate._XUpdate;
+import com.xuexiang.xupdate.entity.PromptEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
 import com.xuexiang.xupdate.service.OnFileDownloadListener;
@@ -99,26 +100,24 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
      */
     private IUpdateProxy mIUpdateProxy;
     /**
-     * 是否支持后台更新
+     * 提示器参数信息
      */
-    private boolean mSupportBackgroundUpdate;
+    private PromptEntity mPromptEntity;
 
     /**
      * 获取更新提示
      *
-     * @param updateEntity            更新信息
-     * @param updateProxy             更新代理
-     * @param themeColor              主题颜色
-     * @param topResId                title背景图片
-     * @param supportBackgroundUpdate 是否支持后台更新
+     * @param updateEntity 更新信息
+     * @param updateProxy  更新代理
+     * @param promptEntity 提示器参数信息
      * @return
      */
-    public static UpdateDialog newInstance(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, @ColorInt int themeColor, @DrawableRes int topResId, boolean supportBackgroundUpdate) {
+    public static UpdateDialog newInstance(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, PromptEntity promptEntity) {
         UpdateDialog dialog = new UpdateDialog(updateProxy.getContext());
         dialog.setIUpdateProxy(updateProxy)
                 .setUpdateEntity(updateEntity)
-                .setSupportBackgroundUpdate(supportBackgroundUpdate);
-        dialog.initTheme(themeColor, topResId);
+                .setPromptEntity(promptEntity);
+        dialog.initTheme(promptEntity.getThemeColor(), promptEntity.getTopResId());
         return dialog;
     }
 
@@ -126,8 +125,8 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
         super(context, R.layout.xupdate_dialog_app);
     }
 
-    public UpdateDialog setSupportBackgroundUpdate(boolean supportBackgroundUpdate) {
-        mSupportBackgroundUpdate = supportBackgroundUpdate;
+    public UpdateDialog setPromptEntity(PromptEntity promptEntity) {
+        mPromptEntity = promptEntity;
         return this;
     }
 
@@ -298,7 +297,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
             if (isShowing()) {
                 mNumberProgressBar.setVisibility(View.VISIBLE);
                 mBtnUpdate.setVisibility(View.GONE);
-                if (mSupportBackgroundUpdate) {
+                if (mPromptEntity.isSupportBackgroundUpdate()) {
                     mBtnBackgroundUpdate.setVisibility(View.VISIBLE);
                 } else {
                     mBtnBackgroundUpdate.setVisibility(View.GONE);

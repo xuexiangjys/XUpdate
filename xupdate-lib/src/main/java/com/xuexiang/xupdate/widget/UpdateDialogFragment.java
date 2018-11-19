@@ -44,6 +44,7 @@ import android.widget.TextView;
 
 import com.xuexiang.xupdate.R;
 import com.xuexiang.xupdate._XUpdate;
+import com.xuexiang.xupdate.entity.PromptEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
 import com.xuexiang.xupdate.service.OnFileDownloadListener;
@@ -64,9 +65,7 @@ import static com.xuexiang.xupdate.entity.UpdateError.ERROR.PROMPT_UNKNOWN;
  */
 public class UpdateDialogFragment extends DialogFragment implements View.OnClickListener {
     public final static String KEY_UPDATE_ENTITY = "key_update_entity";
-    public final static String KEY_UPDATE_THEME_COLOR = "key_update_theme_color";
-    public final static String KEY_UPDATE_TOP_PICTURE = "key_update_top_picture";
-    public final static String KEY_UPDATE_SUPPORT_BACKGROUND = "key_update_support_background";
+    public final static String KEY_UPDATE_PROMPT_ENTITY = "key_update_prompt_entity";
 
     public final static int REQUEST_CODE_REQUEST_PERMISSIONS = 111;
 
@@ -117,31 +116,23 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
      */
     private IUpdateProxy mIUpdateProxy;
     /**
-     * 是否支持后台更新
+     * 提示器参数信息
      */
-    private boolean mSupportBackgroundUpdate;
+    private PromptEntity mPromptEntity;
 
     /**
      * 获取更新提示
      *
-     * @param updateEntity            更新信息
-     * @param updateProxy             更新代理
-     * @param themeColor              主题颜色
-     * @param topResId                title背景图片
-     * @param supportBackgroundUpdate 是否支持后台更新
+     * @param updateEntity 更新信息
+     * @param updateProxy  更新代理
+     * @param promptEntity 提示器参数信息
      * @return
      */
-    public static UpdateDialogFragment newInstance(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, @ColorInt int themeColor, @DrawableRes int topResId, boolean supportBackgroundUpdate) {
+    public static UpdateDialogFragment newInstance(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, @NonNull PromptEntity promptEntity) {
         UpdateDialogFragment fragment = new UpdateDialogFragment();
         Bundle args = new Bundle();
         args.putSerializable(KEY_UPDATE_ENTITY, updateEntity);
-        if (themeColor != 0) {
-            args.putInt(KEY_UPDATE_THEME_COLOR, themeColor);
-        }
-        if (topResId != 0) {
-            args.putInt(KEY_UPDATE_TOP_PICTURE, topResId);
-        }
-        args.putBoolean(KEY_UPDATE_SUPPORT_BACKGROUND, supportBackgroundUpdate);
+        args.putSerializable(KEY_UPDATE_PROMPT_ENTITY, promptEntity);
         fragment.setIUpdateProxy(updateProxy)
                 .setArguments(args);
         return fragment;
@@ -237,11 +228,13 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     private void initData() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            final int themeColor = bundle.getInt(KEY_UPDATE_THEME_COLOR, -1);
-            final int topResId = bundle.getInt(KEY_UPDATE_TOP_PICTURE, -1);
-            mSupportBackgroundUpdate = bundle.getBoolean(KEY_UPDATE_SUPPORT_BACKGROUND);
+            mPromptEntity = (PromptEntity) bundle.getSerializable(KEY_UPDATE_PROMPT_ENTITY);
             //设置主题色
-            initTheme(themeColor, topResId);
+            if (mPromptEntity == null) {
+                //如果不存在就使用默认的
+                mPromptEntity = new PromptEntity();
+            }
+            initTheme(mPromptEntity.getThemeColor(), mPromptEntity.getTopResId());
             mUpdateEntity = (UpdateEntity) bundle.getSerializable(KEY_UPDATE_ENTITY);
             if (mUpdateEntity != null) {
                 initUpdateInfo(mUpdateEntity);
@@ -376,7 +369,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
             if (!UpdateDialogFragment.this.isRemoving()) {
                 mNumberProgressBar.setVisibility(View.VISIBLE);
                 mBtnUpdate.setVisibility(View.GONE);
-                if (mSupportBackgroundUpdate) {
+                if (mPromptEntity.isSupportBackgroundUpdate()) {
                     mBtnBackgroundUpdate.setVisibility(View.VISIBLE);
                 } else {
                     mBtnBackgroundUpdate.setVisibility(View.GONE);
