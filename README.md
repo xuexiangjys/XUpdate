@@ -13,7 +13,7 @@
 
 * 支持设置只在wifi下进行版本更新。
 
-* 支持静默下载、自动版本更新。
+* 支持静默下载（后台更新）、自动版本更新。
 
 * 提供界面友好的版本更新提示弹窗，可自定义其主题样式。
 
@@ -116,7 +116,7 @@ allprojects {
 ```
 dependencies {
   ...
-  implementation 'com.github.xuexiangjys:XUpdate:1.0.4'
+  implementation 'com.github.xuexiangjys:XUpdate:1.0.5'
 }
 ```
 
@@ -306,7 +306,7 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
     }
 
     @Override
-    public void showPrompt(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy) {
+    public void showPrompt(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, @NonNull PromptEntity promptEntity) {
         showUpdatePrompt(updateEntity, updateProxy);
     }
 
@@ -411,7 +411,7 @@ https://github.com/WVector/AppUpdate
 
 ![](https://github.com/xuexiangjys/XPage/blob/master/img/qq_group.jpg)
 
-[xusvg]: https://img.shields.io/badge/XUpdate-v1.0.4-brightgreen.svg
+[xusvg]: https://img.shields.io/badge/XUpdate-v1.0.5-brightgreen.svg
 [xu]: https://github.com/xuexiangjys/XUpdate
 [apisvg]: https://img.shields.io/badge/API-14+-brightgreen.svg
 [api]: https://android-arsenal.com/api?level=14
