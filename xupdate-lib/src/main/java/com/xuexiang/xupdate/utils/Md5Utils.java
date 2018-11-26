@@ -71,7 +71,7 @@ public final class Md5Utils {
      * @return 文件是否有效
      */
     public static boolean isFileValid(String md5, File file) {
-        return TextUtils.isEmpty(md5) || md5.equals(Md5Utils.getFileMD5(file));
+        return TextUtils.isEmpty(md5) || md5.equalsIgnoreCase(Md5Utils.getFileMD5(file));
     }
 
     /**
