@@ -67,6 +67,8 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
                                                         ---> 用户点击（取消或忽略） ---> 结束
 ```
 
+[点击查看框架UML设计图](https://github.com/xuexiangjys/XUpdate/blob/master/img/xupdate_uml.png)
+
 ## 1、演示（请star支持）
 
 * 默认版本更新
