@@ -1,7 +1,7 @@
 # XUpdate
 [![xu][xusvg]][xu]  [![api][apisvg]][api]
 
-一个轻量级、高可用性的Android版本更新框架
+一个轻量级、高可用性的Android版本更新框架。赶紧点击[使用说明文档](https://github.com/xuexiangjys/XUpdate/wiki)，体验一下吧！
 
 ## 关于我
 
@@ -93,7 +93,7 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
 
 ### Demo下载
 
-[![downloads](https://img.shields.io/badge/downloads-1.6M-blue.svg)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk)
+[![downloads](https://img.shields.io/badge/downloads-1.6M-blue.svg)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
 
 ![](https://github.com/xuexiangjys/XUpdate/blob/master/img/download.png)
 
