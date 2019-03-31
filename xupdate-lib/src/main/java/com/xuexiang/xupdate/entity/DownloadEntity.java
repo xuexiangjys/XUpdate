@@ -16,10 +16,12 @@
 
 package com.xuexiang.xupdate.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.xuexiang.xupdate.utils.Md5Utils;
 
 import java.io.File;
-import java.io.Serializable;
 
 /**
  * 下载信息实体
@@ -27,7 +29,7 @@ import java.io.Serializable;
  * @author xuexiang
  * @since 2018/7/9 上午11:41
  */
-public class DownloadEntity implements Serializable {
+public class DownloadEntity implements Parcelable {
     /**
      * 下载地址
      */
@@ -49,6 +51,30 @@ public class DownloadEntity implements Serializable {
      * 是否在通知栏上显示下载进度
      */
     private boolean mIsShowNotification;
+
+    public DownloadEntity() {
+
+    }
+
+    protected DownloadEntity(Parcel in) {
+        mDownloadUrl = in.readString();
+        mCacheDir = in.readString();
+        mMd5 = in.readString();
+        mSize = in.readLong();
+        mIsShowNotification = in.readByte() != 0;
+    }
+
+    public static final Creator<DownloadEntity> CREATOR = new Creator<DownloadEntity>() {
+        @Override
+        public DownloadEntity createFromParcel(Parcel in) {
+            return new DownloadEntity(in);
+        }
+
+        @Override
+        public DownloadEntity[] newArray(int size) {
+            return new DownloadEntity[size];
+        }
+    };
 
     public String getDownloadUrl() {
         return mDownloadUrl;
@@ -113,5 +139,19 @@ public class DownloadEntity implements Serializable {
                 ", mSize=" + mSize +
                 ", mIsShowNotification=" + mIsShowNotification +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mDownloadUrl);
+        dest.writeString(mCacheDir);
+        dest.writeString(mMd5);
+        dest.writeLong(mSize);
+        dest.writeByte((byte) (mIsShowNotification ? 1 : 0));
     }
 }

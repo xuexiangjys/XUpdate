@@ -131,8 +131,8 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     public static UpdateDialogFragment newInstance(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, @NonNull PromptEntity promptEntity) {
         UpdateDialogFragment fragment = new UpdateDialogFragment();
         Bundle args = new Bundle();
-        args.putSerializable(KEY_UPDATE_ENTITY, updateEntity);
-        args.putSerializable(KEY_UPDATE_PROMPT_ENTITY, promptEntity);
+        args.putParcelable(KEY_UPDATE_ENTITY, updateEntity);
+        args.putParcelable(KEY_UPDATE_PROMPT_ENTITY, promptEntity);
         fragment.setIUpdateProxy(updateProxy)
                 .setArguments(args);
         return fragment;
@@ -228,14 +228,14 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     private void initData() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mPromptEntity = (PromptEntity) bundle.getSerializable(KEY_UPDATE_PROMPT_ENTITY);
+            mPromptEntity = bundle.getParcelable(KEY_UPDATE_PROMPT_ENTITY);
             //设置主题色
             if (mPromptEntity == null) {
                 //如果不存在就使用默认的
                 mPromptEntity = new PromptEntity();
             }
             initTheme(mPromptEntity.getThemeColor(), mPromptEntity.getTopResId());
-            mUpdateEntity = (UpdateEntity) bundle.getSerializable(KEY_UPDATE_ENTITY);
+            mUpdateEntity = bundle.getParcelable(KEY_UPDATE_ENTITY);
             if (mUpdateEntity != null) {
                 initUpdateInfo(mUpdateEntity);
                 initListeners();
