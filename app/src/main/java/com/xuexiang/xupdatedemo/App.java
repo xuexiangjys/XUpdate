@@ -38,6 +38,8 @@ import com.xuexiang.xutil.tip.ToastUtils;
 
 import java.util.List;
 
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
+
 /**
  * @author xuexiang
  * @since 2018/7/9 下午2:15
@@ -86,7 +88,9 @@ public class App extends Application {
                 .setOnUpdateFailureListener(new OnUpdateFailureListener() { //设置版本更新出错的监听
                     @Override
                     public void onFailure(UpdateError error) {
-                        ToastUtils.toast(error.toString());
+                        if (error.getCode() != CHECK_NO_NEW_VERSION) { //对不同错误进行处理
+                            ToastUtils.toast(error.toString());
+                        }
                     }
                 })
                 .setIUpdateHttpService(new OKHttpUpdateHttpService()) //这个必须设置！实现网络请求功能。
