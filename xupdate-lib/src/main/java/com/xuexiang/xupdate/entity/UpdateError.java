@@ -17,8 +17,11 @@
 package com.xuexiang.xupdate.entity;
 
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.SparseArray;
+
+import com.xuexiang.xupdate.R;
 
 /**
  * 更新错误
@@ -111,26 +114,31 @@ public class UpdateError extends Throwable {
         public static final int UPDATE_UNKNOWN = 5100;
     }
 
-    private static final SparseArray<String> sMessages = new SparseArray<String>();
+    private static final SparseArray<String> sMessages = new SparseArray<>();
 
-    static {
-        sMessages.append(ERROR.CHECK_NET_REQUEST, "查询失败：网络请求错误");
-        sMessages.append(ERROR.CHECK_NO_WIFI, "查询失败：没有WIFI");
-        sMessages.append(ERROR.CHECK_NO_NETWORK, "查询失败：没有网络");
-        sMessages.append(ERROR.CHECK_UPDATING, "程序正在进行版本更新！");
-        sMessages.append(ERROR.CHECK_NO_NEW_VERSION, "查询更新：没有新版本");
-        sMessages.append(ERROR.CHECK_JSON_EMPTY, "查询失败：Json 为空");
-        sMessages.append(ERROR.CHECK_PARSE, "查询失败：解析Json错误");
-        sMessages.append(ERROR.CHECK_IGNORED_VERSION, "更新失败：已经被忽略的版本");
-        sMessages.append(ERROR.CHECK_APK_CACHE_DIR_EMPTY, "更新失败：apk的下载缓存目录为空");
+    /**
+     * 初始化错误信息
+     *
+     * @param context
+     */
+    public static void init(Context context) {
+        sMessages.append(ERROR.CHECK_NET_REQUEST, context.getString(R.string.xupdate_error_check_net_request));
+        sMessages.append(ERROR.CHECK_NO_WIFI, context.getString(R.string.xupdate_error_check_no_wifi));
+        sMessages.append(ERROR.CHECK_NO_NETWORK, context.getString(R.string.xupdate_error_check_no_network));
+        sMessages.append(ERROR.CHECK_UPDATING, context.getString(R.string.xupdate_error_check_updating));
+        sMessages.append(ERROR.CHECK_NO_NEW_VERSION, context.getString(R.string.xupdate_error_check_no_new_version));
+        sMessages.append(ERROR.CHECK_JSON_EMPTY, context.getString(R.string.xupdate_error_check_json_empty));
+        sMessages.append(ERROR.CHECK_PARSE, context.getString(R.string.xupdate_error_check_parse));
+        sMessages.append(ERROR.CHECK_IGNORED_VERSION, context.getString(R.string.xupdate_error_check_ignored_version));
+        sMessages.append(ERROR.CHECK_APK_CACHE_DIR_EMPTY, context.getString(R.string.xupdate_error_check_apk_cache_dir_empty));
 
-        sMessages.append(ERROR.PROMPT_UNKNOWN, "提示失败：未知错误");
-        sMessages.append(ERROR.PROMPT_ACTIVITY_DESTROY, "提示失败：activity已被销毁");
+        sMessages.append(ERROR.PROMPT_UNKNOWN, context.getString(R.string.xupdate_error_prompt_unknown));
+        sMessages.append(ERROR.PROMPT_ACTIVITY_DESTROY, context.getString(R.string.xupdate_error_prompt_activity_destroy));
 
-        sMessages.append(ERROR.DOWNLOAD_FAILED, "下载失败");
-        sMessages.append(ERROR.DOWNLOAD_PERMISSION_DENIED, "无法下载：存储权限申请被拒绝！");
+        sMessages.append(ERROR.DOWNLOAD_FAILED, context.getString(R.string.xupdate_error_download_failed));
+        sMessages.append(ERROR.DOWNLOAD_PERMISSION_DENIED, context.getString(R.string.xupdate_error_download_permission_denied));
 
 
-        sMessages.append(ERROR.INSTALL_FAILED, "安装APK失败！");
+        sMessages.append(ERROR.INSTALL_FAILED, context.getString(R.string.xupdate_error_install_failed));
     }
 }

@@ -20,6 +20,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.xuexiang.xupdate.entity.UpdateError;
 import com.xuexiang.xupdate.listener.OnInstallListener;
 import com.xuexiang.xupdate.listener.OnUpdateFailureListener;
 import com.xuexiang.xupdate.listener.impl.DefaultInstallListener;
@@ -133,6 +134,7 @@ public class XUpdate {
      */
     public void init(Application application) {
         mContext = application;
+        UpdateError.init(mContext);
     }
 
     private Application getApplication() {
