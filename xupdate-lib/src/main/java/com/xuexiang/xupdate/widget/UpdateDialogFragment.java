@@ -69,6 +69,10 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
 
     public final static int REQUEST_CODE_REQUEST_PERMISSIONS = 111;
 
+    /**
+     * 用于保存屏幕旋转之后被销毁的IUpdateProxy，因为IUpdateProxy过于复杂，暂时无法使用Bundle进行保存
+     */
+    private static IUpdateProxy sTmpProxy;
     //======顶部========//
     /**
      * 顶部图片
@@ -219,6 +223,11 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //数据恢复
+        if (sTmpProxy != null) {
+            mIUpdateProxy = sTmpProxy;
+            sTmpProxy = null;
+        }
         initData();
     }
 
@@ -317,11 +326,15 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
             }
         } else if (i == R.id.btn_background_update) {
             //点击后台更新按钮
-            mIUpdateProxy.backgroundDownload();
+            if (mIUpdateProxy != null) {
+                mIUpdateProxy.backgroundDownload();
+            }
             dismiss();
         } else if (i == R.id.iv_close) {
             //点击关闭按钮
-            mIUpdateProxy.cancelDownload();
+            if (mIUpdateProxy != null) {
+                mIUpdateProxy.cancelDownload();
+            }
             dismiss();
         } else if (i == R.id.tv_ignore) {
             //点击忽略按钮
@@ -356,7 +369,9 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
                 showInstallButton(UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity));
             }
         } else {
-            mIUpdateProxy.startDownload(mUpdateEntity, mOnFileDownloadListener);
+            if (mIUpdateProxy != null) {
+                mIUpdateProxy.startDownload(mUpdateEntity, mOnFileDownloadListener);
+            }
         }
     }
 
@@ -368,6 +383,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         public void onStart() {
             if (!UpdateDialogFragment.this.isRemoving()) {
                 mNumberProgressBar.setVisibility(View.VISIBLE);
+                mNumberProgressBar.setProgress(0);
                 mBtnUpdate.setVisibility(View.GONE);
                 if (mPromptEntity.isSupportBackgroundUpdate()) {
                     mBtnBackgroundUpdate.setVisibility(View.VISIBLE);
@@ -458,5 +474,14 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         _XUpdate.setIsShowUpdatePrompter(false);
         super.onDestroyView();
     }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //保存数据
+        sTmpProxy = mIUpdateProxy;
+    }
+
 }
 

@@ -16,11 +16,11 @@
 
 package com.xuexiang.xupdate.widget;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatDialog;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -36,7 +36,7 @@ import com.xuexiang.xupdate.R;
  * @author xuexiang
  * @since 2018/7/24 上午9:34
  */
-public abstract class BaseDialog extends Dialog {
+public abstract class BaseDialog extends AppCompatDialog {
     private View mContentView;
 
     public BaseDialog(Context context, int layoutId) {
@@ -76,6 +76,7 @@ public abstract class BaseDialog extends Dialog {
         initListeners();
     }
 
+    @Override
     public <T extends View> T findViewById(@IdRes int id) {
         return mContentView.findViewById(id);
     }
@@ -152,7 +153,9 @@ public abstract class BaseDialog extends Dialog {
     private static void hideSoftInput(final View view) {
         InputMethodManager imm =
                 (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm == null) return;
+        if (imm == null) {
+            return;
+        }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

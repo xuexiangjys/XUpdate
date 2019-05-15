@@ -20,6 +20,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
+
     <LinearLayout
         android:id="@+id/ll_top"
         android:layout_width="wrap_content"
@@ -32,80 +33,88 @@
             android:layout_height="wrap_content"
             android:src="@drawable/xupdate_bg_app_top" />
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/xupdate_bg_app_info"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none">
 
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                tools:text="是否升级到4.1.1版本？" />
-
-            <ScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:scrollbars="none">
+                android:background="@drawable/xupdate_bg_app_info"
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/tv_update_info"
+                    android:id="@+id/tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    tools:text="是否升级到4.1.1版本？" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_update_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5dp"
+                        android:textColor="#666"
+                        android:textSize="14sp"
+                        tools:text="1、xxxxxxxx\n2、ooooooooo" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="40dp"
+                    android:text="@string/xupdate_lab_update"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_ignore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="40dp"
+                    android:text="@string/xupdate_lab_ignore"
                     android:textColor="#666"
-                    android:textSize="14sp"
-                    android:lineSpacingExtra="5dp"
-                    tools:text="1、xxxxxxxx\n2、ooooooooo" />
-            </ScrollView>
+                    android:textSize="15sp"
+                    android:visibility="gone" />
 
-            <Button
-                android:id="@+id/btn_update"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minHeight="40dp"
-                android:text="@string/xupdate_lab_update"
-                android:textColor="@android:color/white"
-                android:textSize="15sp" />
+                <com.xuexiang.xupdate.widget.NumberProgressBar
+                    android:id="@+id/npb_progress"
+                    style="@style/XUpdate_ProgressBar_Red"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/tv_ignore"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minHeight="40dp"
-                android:text="@string/xupdate_lab_ignore"
-                android:textColor="#666"
-                android:textSize="15sp"
-                android:visibility="gone" />
+                <Button
+                    android:id="@+id/btn_background_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="35dp"
+                    android:text="@string/xupdate_lab_background_update"
+                    android:textColor="@android:color/white"
+                    android:textSize="13sp"
+                    android:visibility="gone" />
 
-            <com.xuexiang.xupdate.widget.NumberProgressBar
-                android:id="@+id/npb_progress"
-                style="@style/XUpdate_ProgressBar_Red"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:visibility="gone" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
 
-            <Button
-                android:id="@+id/btn_background_update"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minHeight="35dp"
-                android:text="@string/xupdate_lab_background_update"
-                android:textColor="@android:color/white"
-                android:textSize="13sp"
-                android:visibility="gone"/>
-
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_close"
