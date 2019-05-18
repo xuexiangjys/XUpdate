@@ -73,19 +73,19 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
 
 * 默认版本更新
 
-![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_1.png)
+![](./img/update_1.png)
 
 * 强制版本更新
 
-![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_2.png)
+![](./img/update_2.png)
 
 * 自定义提示弹窗主题
 
-![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_3.png)
+![](./img/update_3.png)
 
 * 使用系统弹窗提示
 
-![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_4.png)
+![](./img/update_4.png)
 
 ### Demo更新后台服务
 
@@ -95,7 +95,7 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
 
 [![downloads](https://img.shields.io/badge/downloads-1.6M-blue.svg)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
 
-![](https://github.com/xuexiangjys/XUpdate/blob/master/img/download.png)
+![](./img/download.png)
 
 
 ## 2、如何使用
