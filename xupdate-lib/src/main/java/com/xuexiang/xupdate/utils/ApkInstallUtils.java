@@ -51,6 +51,24 @@ public final class ApkInstallUtils {
      */
     public static final int REQUEST_CODE_INSTALL_APP = 999;
 
+    /**
+     * 是否支持静默安装【默认是true】
+     */
+    private static boolean sSupportSilentInstall = true;
+
+    public static boolean isSupportSilentInstall() {
+        return sSupportSilentInstall;
+    }
+
+    /**
+     * 设置是否支持静默安装
+     *
+     * @param supportSilentInstall
+     */
+    public static void setSupportSilentInstall(boolean supportSilentInstall) {
+        ApkInstallUtils.sSupportSilentInstall = supportSilentInstall;
+    }
+
     private ApkInstallUtils() {
         throw new UnsupportedOperationException("Do not need instantiate!");
     }
@@ -63,7 +81,7 @@ public final class ApkInstallUtils {
      * @return
      */
     public static boolean install(Context context, File apkFile) throws IOException {
-        return install(context, apkFile.getCanonicalPath());
+        return isSupportSilentInstall() ? install(context, apkFile.getCanonicalPath()) : installNormal(context, apkFile.getCanonicalPath());
     }
 
 
@@ -110,7 +128,9 @@ public final class ApkInstallUtils {
     @RequiresPermission(INSTALL_PACKAGES)
     private static boolean installAppSilentBelow24(Context context, String filePath) {
         File file = getFileByPath(filePath);
-        if (!isFileExists(file)) return false;
+        if (!isFileExists(file)) {
+            return false;
+        }
 
         String pmParams = " -r " + getInstallLocationParams();
 
@@ -137,6 +157,8 @@ public final class ApkInstallUtils {
                 return "-f";
             case APP_INSTALL_EXTERNAL:
                 return "-s";
+            default:
+                break;
         }
         return "";
     }
@@ -171,6 +193,7 @@ public final class ApkInstallUtils {
     }
 
     //===============================//
+
     /**
      * 静默安装 App 在Android7.0及以上起作用
      * <p>非 root 需添加权限
@@ -182,7 +205,9 @@ public final class ApkInstallUtils {
     @RequiresPermission(INSTALL_PACKAGES)
     private static boolean installAppSilentAbove24(String packageName, String filePath) {
         File file = getFileByPath(filePath);
-        if (!isFileExists(file)) return false;
+        if (!isFileExists(file)) {
+            return false;
+        }
         boolean isRoot = isDeviceRooted();
         String command = "pm install -i " + packageName + " --user 0 " + filePath;
         CommandResult commandResult = ShellUtils.execCommand(command, isRoot);
@@ -269,7 +294,9 @@ public final class ApkInstallUtils {
      * @return {@code true}: null 或全空白字符<br> {@code false}: 不为 null 且不全空白字符
      */
     private static boolean isSpace(final String s) {
-        if (s == null) return true;
+        if (s == null) {
+            return true;
+        }
         for (int i = 0, len = s.length(); i < len; ++i) {
             if (!Character.isWhitespace(s.charAt(i))) {
                 return false;

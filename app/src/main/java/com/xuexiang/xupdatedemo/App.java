@@ -93,6 +93,7 @@ public class App extends Application {
                         }
                     }
                 })
+                .supportSilentInstall(true)//设置是否支持静默安装，默认是true
                 .setIUpdateHttpService(new OKHttpUpdateHttpService()) //这个必须设置！实现网络请求功能。
                 .init(this);   //这个必须初始化
 
