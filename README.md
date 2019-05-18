@@ -118,7 +118,7 @@ allprojects {
 ```
 dependencies {
   ...
-  implementation 'com.github.xuexiangjys:XUpdate:1.0.8'
+  implementation 'com.github.xuexiangjys:XUpdate:1.0.9'
 }
 ```
 
@@ -128,20 +128,23 @@ dependencies {
 
 ```
 XUpdate.get()
-        .debug(true) //开启debug模式，可用于问题的排查
-        .isWifiOnly(true)     //默认设置只在wifi下检查版本更新
-        .isGet(true)          //默认设置使用get请求检查版本
-        .isAutoMode(false)    //默认设置非自动模式，可根据具体使用配置
-        .param("VersionCode", UpdateUtils.getVersionCode(this)) //设置默认公共请求参数
-        .param("AppKey", getPackageName())
-        .setOnUpdateFailureListener(new OnUpdateFailureListener() { //设置版本更新出错的监听
-            @Override
-            public void onFailure(UpdateError error) {
+    .debug(true)
+    .isWifiOnly(true)                                               //默认设置只在wifi下检查版本更新
+    .isGet(true)                                                    //默认设置使用get请求检查版本
+    .isAutoMode(false)                                              //默认设置非自动模式，可根据具体使用配置
+    .param("versionCode", UpdateUtils.getVersionCode(this))         //设置默认公共请求参数
+    .param("appKey", getPackageName())
+    .setOnUpdateFailureListener(new OnUpdateFailureListener() {     //设置版本更新出错的监听
+        @Override
+        public void onFailure(UpdateError error) {
+            if (error.getCode() != CHECK_NO_NEW_VERSION) {          //对不同错误进行处理
                 ToastUtils.toast(error.toString());
             }
-        })
-        .setIUpdateHttpService(new OKHttpUpdateHttpService()) //这个必须设置！实现网络请求功能。
-        .init(this);   //这个必须初始化
+        }
+    })
+    .supportSilentInstall(true)                                     //设置是否支持静默安装，默认是true
+    .setIUpdateHttpService(new OKHttpUpdateHttpService())           //这个必须设置！实现网络请求功能。
+    .init(this);                                                    //这个必须初始化
 ```
 
 【注意】：如果出现任何问题，可开启debug模式来追踪问题。如果你还需要将日志记录在磁盘上，可实现以下接口
@@ -413,7 +416,7 @@ https://github.com/WVector/AppUpdate
 
 ![](https://github.com/xuexiangjys/XPage/blob/master/img/qq_group.jpg)
 
-[xusvg]: https://img.shields.io/badge/XUpdate-v1.0.8-brightgreen.svg
+[xusvg]: https://img.shields.io/badge/XUpdate-v1.0.9-brightgreen.svg
 [xu]: https://github.com/xuexiangjys/XUpdate
 [apisvg]: https://img.shields.io/badge/API-14+-brightgreen.svg
 [api]: https://android-arsenal.com/api?level=14
