@@ -16,10 +16,10 @@
 
 package com.xuexiang.xupdate.utils;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -32,13 +32,11 @@ import android.net.NetworkInfo;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.xuexiang.xupdate.R;
-import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 
 import java.io.File;
@@ -257,7 +255,7 @@ public final class UpdateUtils {
      */
     @NonNull
     public static String getDisplayUpdateInfo(Context context, @NonNull UpdateEntity updateEntity) {
-        String targetSize = Formatter.formatShortFileSize(XUpdate.getContext(), updateEntity.getSize() * 1024);
+        String targetSize = byte2FitMemorySize(updateEntity.getSize() * 1024);
         final String updateContent = updateEntity.getUpdateContent();
 
         String updateInfo = "";
@@ -268,6 +266,28 @@ public final class UpdateUtils {
             updateInfo += updateContent;
         }
         return updateInfo;
+    }
+
+    /**
+     * 字节数转合适内存大小
+     * <p>保留 1 位小数</p>
+     *
+     * @param byteNum 字节数
+     * @return 合适内存大小
+     */
+    @SuppressLint("DefaultLocale")
+    private static String byte2FitMemorySize(final long byteNum) {
+        if (byteNum <= 0) {
+            return "";
+        } else if (byteNum < 1024) {
+            return String.format("%.1fB", (double) byteNum);
+        } else if (byteNum < 1048576) {
+            return String.format("%.1fKB", (double) byteNum / 1024);
+        } else if (byteNum < 1073741824) {
+            return String.format("%.1fMB", (double) byteNum / 1048576);
+        } else {
+            return String.format("%.1fGB", (double) byteNum / 1073741824);
+        }
     }
 
     //=============下载====================//

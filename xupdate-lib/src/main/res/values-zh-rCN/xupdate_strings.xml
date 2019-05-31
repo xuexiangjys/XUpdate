@@ -29,4 +29,19 @@
     <string name="xupdate_lab_downloading">正在下载：</string>
     <string name="xupdate_tip_download_url_error">新版本下载路径错误</string>
 
+    <string name="xupdate_error_install_failed">安装APK失败！</string>
+    <string name="xupdate_error_download_permission_denied">无法下载：存储权限申请被拒绝！</string>
+    <string name="xupdate_error_download_failed">下载失败!</string>
+    <string name="xupdate_error_prompt_activity_destroy">提示失败：activity已被销毁！</string>
+    <string name="xupdate_error_prompt_unknown">提示失败：未知错误！</string>
+    <string name="xupdate_error_check_apk_cache_dir_empty">更新失败：apk的下载缓存目录为空！</string>
+    <string name="xupdate_error_check_ignored_version">更新失败：已经被忽略的版本！</string>
+    <string name="xupdate_error_check_parse">查询失败：解析Json错误！</string>
+    <string name="xupdate_error_check_json_empty">查询失败：Json为空！</string>
+    <string name="xupdate_error_check_no_new_version">已是最新版本！</string>
+    <string name="xupdate_error_check_updating">程序正在进行版本更新！</string>
+    <string name="xupdate_error_check_no_network">查询失败：没有网络！</string>
+    <string name="xupdate_error_check_no_wifi">查询失败：没有WIFI！</string>
+    <string name="xupdate_error_check_net_request">查询失败：网络请求错误！</string>
+
 </resources>

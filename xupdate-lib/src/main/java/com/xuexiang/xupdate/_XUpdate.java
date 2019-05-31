@@ -31,7 +31,6 @@ import com.xuexiang.xupdate.proxy.IUpdateDownloader;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateParser;
 import com.xuexiang.xupdate.utils.ApkInstallUtils;
-import com.xuexiang.xupdate.utils.UpdateUtils;
 
 import java.io.File;
 import java.util.Map;
@@ -121,7 +120,7 @@ public final class _XUpdate {
      * @param downloadEntity 文件下载信息
      */
     public static void startInstallApk(@NonNull Context context, @NonNull File apkFile, @NonNull DownloadEntity downloadEntity) {
-        UpdateLog.d("开始安装apk文件, 文件路径:" + apkFile.getAbsolutePath() + ", 下载信息:" + UpdateUtils.toJson(downloadEntity));
+        UpdateLog.d("开始安装apk文件, 文件路径:" + apkFile.getAbsolutePath() + ", 下载信息:" + downloadEntity);
         if (onInstallApk(context, apkFile, downloadEntity)) {
             onApkInstallSuccess(); //静默安装的话，不会回调到这里
         } else {

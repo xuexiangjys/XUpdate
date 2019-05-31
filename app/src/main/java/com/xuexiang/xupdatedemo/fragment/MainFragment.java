@@ -140,32 +140,7 @@ public class MainFragment extends XPageSimpleListFragment {
                         .update();
                 break;
             case 7:
-                XUpdate.newBuild(getActivity())
-                        .apkCacheDir(PathUtils.getExtDownloadsPath())
-                        .build()
-                        .download(mDownloadUrl, new OnFileDownloadListener() {
-                            @Override
-                            public void onStart() {
-                                HProgressDialogUtils.showHorizontalProgressDialog(getContext(), "下载进度", false);
-                            }
-
-                            @Override
-                            public void onProgress(float progress, long total) {
-                                HProgressDialogUtils.setProgress(Math.round(progress * 100));
-                            }
-
-                            @Override
-                            public boolean onCompleted(File file) {
-                                HProgressDialogUtils.cancel();
-                                ToastUtils.toast("apk下载完毕，文件路径：" + file.getPath());
-                                return false;
-                            }
-
-                            @Override
-                            public void onError(Throwable throwable) {
-                                HProgressDialogUtils.cancel();
-                            }
-                        });
+                useApkDownLoadFunction();
                 break;
             case 8:
                 selectAPKFile();
@@ -179,6 +154,37 @@ public class MainFragment extends XPageSimpleListFragment {
             default:
                 break;
         }
+    }
+
+
+    @Permission(PermissionConsts.STORAGE)
+    private void useApkDownLoadFunction() {
+        XUpdate.newBuild(getActivity())
+                .apkCacheDir(PathUtils.getExtDownloadsPath())
+                .build()
+                .download(mDownloadUrl, new OnFileDownloadListener() {
+                    @Override
+                    public void onStart() {
+                        HProgressDialogUtils.showHorizontalProgressDialog(getContext(), "下载进度", false);
+                    }
+
+                    @Override
+                    public void onProgress(float progress, long total) {
+                        HProgressDialogUtils.setProgress(Math.round(progress * 100));
+                    }
+
+                    @Override
+                    public boolean onCompleted(File file) {
+                        HProgressDialogUtils.cancel();
+                        ToastUtils.toast("apk下载完毕，文件路径：" + file.getPath());
+                        return false;
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        HProgressDialogUtils.cancel();
+                    }
+                });
     }
 
     @Permission(PermissionConsts.STORAGE)

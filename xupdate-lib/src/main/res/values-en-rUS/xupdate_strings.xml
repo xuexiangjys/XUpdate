@@ -29,4 +29,19 @@
     <string name="xupdate_lab_downloading">Downloading：</string>
     <string name="xupdate_tip_download_url_error">New version download path error</string>
 
+    <string name="xupdate_error_install_failed">Failed to install APK!</string>
+    <string name="xupdate_error_download_permission_denied">Unable to download: storage permission request rejected!</string>
+    <string name="xupdate_error_download_failed">Download failed!</string>
+    <string name="xupdate_error_prompt_activity_destroy">Failed: the activity has been destroyed!</string>
+    <string name="xupdate_error_prompt_unknown">Failed: unknown error!</string>
+    <string name="xupdate_error_check_apk_cache_dir_empty">Update failed: apk download cache directory is empty!</string>
+    <string name="xupdate_error_check_ignored_version">Update failed: ignored version!</string>
+    <string name="xupdate_error_check_parse">Query failure: Json parsing error!</string>
+    <string name="xupdate_error_check_json_empty">Query failed: Json is empty!</string>
+    <string name="xupdate_error_check_no_new_version">It\'s the latest version!</string>
+    <string name="xupdate_error_check_updating">The program is being updated!</string>
+    <string name="xupdate_error_check_no_network">Query failed: no network!</string>
+    <string name="xupdate_error_check_no_wifi">Query failed: no WIFI!</string>
+    <string name="xupdate_error_check_net_request">Query failed: network request error!</string>
+
 </resources>

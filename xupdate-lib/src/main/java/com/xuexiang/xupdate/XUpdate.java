@@ -20,6 +20,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.xuexiang.xupdate.entity.UpdateError;
 import com.xuexiang.xupdate.listener.OnInstallListener;
 import com.xuexiang.xupdate.listener.OnUpdateFailureListener;
 import com.xuexiang.xupdate.listener.impl.DefaultInstallListener;
@@ -33,6 +34,7 @@ import com.xuexiang.xupdate.proxy.IUpdateParser;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateChecker;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateDownloader;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateParser;
+import com.xuexiang.xupdate.utils.ApkInstallUtils;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -133,6 +135,7 @@ public class XUpdate {
      */
     public void init(Application application) {
         mContext = application;
+        UpdateError.init(mContext);
     }
 
     private Application getApplication() {
@@ -312,6 +315,17 @@ public class XUpdate {
     }
 
     /**
+     * 设置是否支持静默安装
+     *
+     * @param supportSilentInstall
+     * @return
+     */
+    public XUpdate supportSilentInstall(boolean supportSilentInstall) {
+        ApkInstallUtils.setSupportSilentInstall(supportSilentInstall);
+        return this;
+    }
+
+    /**
      * 设置是否是debug模式
      *
      * @param isDebug
@@ -358,7 +372,6 @@ public class XUpdate {
         mOnUpdateFailureListener = onUpdateFailureListener;
         return this;
     }
-
 
 
 }

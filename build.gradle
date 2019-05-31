@@ -7,8 +7,11 @@ buildscript {
         classpath deps.android_gradle_plugin
         classpath deps.android_maven_gradle_plugin
 
-        classpath 'com.github.xuexiangjys.XAOP:xaop-plugin:1.0.1'
+        classpath 'com.github.xuexiangjys.XAOP:xaop-plugin:1.0.3'
 
+    }
+    repositories {
+        google()
     }
 }
 

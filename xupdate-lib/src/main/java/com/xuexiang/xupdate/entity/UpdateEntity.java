@@ -16,12 +16,12 @@
 
 package com.xuexiang.xupdate.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
-
-import java.io.Serializable;
 
 /**
  * 版本更新信息实体
@@ -29,7 +29,7 @@ import java.io.Serializable;
  * @author xuexiang
  * @since 2018/6/29 下午9:33
  */
-public class UpdateEntity implements Serializable {
+public class UpdateEntity implements Parcelable {
     //===========是否可以升级=============//
     /**
      * 是否有新版本
@@ -54,7 +54,7 @@ public class UpdateEntity implements Serializable {
     /**
      * 版本名称
      */
-    private String mVersionName = "unknown_version";
+    private String mVersionName;
 
     /**
      * 更新内容
@@ -64,7 +64,7 @@ public class UpdateEntity implements Serializable {
     /**
      * 下载信息实体
      */
-    private DownloadEntity mDownloadEntity = new DownloadEntity();
+    private DownloadEntity mDownloadEntity;
 
     //============升级行为============//
     /**
@@ -74,7 +74,37 @@ public class UpdateEntity implements Serializable {
     /**
      * 是否下载完成后自动安装[默认是true]
      */
-    private boolean mIsAutoInstall = true;
+    private boolean mIsAutoInstall;
+
+    public UpdateEntity() {
+        mVersionName = "unknown_version";
+        mDownloadEntity = new DownloadEntity();
+        mIsAutoInstall = true;
+    }
+
+    protected UpdateEntity(Parcel in) {
+        mHasUpdate = in.readByte() != 0;
+        mIsForce = in.readByte() != 0;
+        mIsIgnorable = in.readByte() != 0;
+        mVersionCode = in.readInt();
+        mVersionName = in.readString();
+        mUpdateContent = in.readString();
+        mDownloadEntity = in.readParcelable(DownloadEntity.class.getClassLoader());
+        mIsSilent = in.readByte() != 0;
+        mIsAutoInstall = in.readByte() != 0;
+    }
+
+    public static final Creator<UpdateEntity> CREATOR = new Creator<UpdateEntity>() {
+        @Override
+        public UpdateEntity createFromParcel(Parcel in) {
+            return new UpdateEntity(in);
+        }
+
+        @Override
+        public UpdateEntity[] newArray(int size) {
+            return new UpdateEntity[size];
+        }
+    };
 
     public boolean isHasUpdate() {
         return mHasUpdate;
@@ -247,5 +277,23 @@ public class UpdateEntity implements Serializable {
                 ", mIsAutoInstall=" + mIsAutoInstall +
                 ", mIUpdateHttpService=" + mIUpdateHttpService +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (mHasUpdate ? 1 : 0));
+        dest.writeByte((byte) (mIsForce ? 1 : 0));
+        dest.writeByte((byte) (mIsIgnorable ? 1 : 0));
+        dest.writeInt(mVersionCode);
+        dest.writeString(mVersionName);
+        dest.writeString(mUpdateContent);
+        dest.writeParcelable(mDownloadEntity, flags);
+        dest.writeByte((byte) (mIsSilent ? 1 : 0));
+        dest.writeByte((byte) (mIsAutoInstall ? 1 : 0));
     }
 }

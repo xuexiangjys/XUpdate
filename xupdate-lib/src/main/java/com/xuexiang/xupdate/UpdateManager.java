@@ -285,7 +285,7 @@ public class UpdateManager implements IUpdateProxy {
      */
     @Override
     public void findNewVersion(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy) {
-        UpdateLog.i("发现新版本:" + UpdateUtils.toJson(updateEntity));
+        UpdateLog.i("发现新版本:" + updateEntity);
         if (updateEntity.isSilent()) {
             //静默下载，发现新版本后，直接下载更新
             startDownload(updateEntity, mOnFileDownloadListener);
@@ -324,7 +324,7 @@ public class UpdateManager implements IUpdateProxy {
 
     @Override
     public void startDownload(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener) {
-        UpdateLog.i("开始下载更新文件:" + UpdateUtils.toJson(updateEntity));
+        UpdateLog.i("开始下载更新文件:" + updateEntity);
         if (mIUpdateProxy != null) {
             mIUpdateProxy.startDownload(updateEntity, downloadListener);
         } else {

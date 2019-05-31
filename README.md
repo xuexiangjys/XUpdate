@@ -1,7 +1,7 @@
 # XUpdate
 [![xu][xusvg]][xu]  [![api][apisvg]][api]
 
-一个轻量级、高可用性的Android版本更新框架
+一个轻量级、高可用性的Android版本更新框架。赶紧点击[使用说明文档](https://github.com/xuexiangjys/XUpdate/wiki)，体验一下吧！
 
 ## 关于我
 
@@ -73,19 +73,19 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
 
 * 默认版本更新
 
-![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_1.png)
+![](./img/update_1.png)
 
 * 强制版本更新
 
-![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_2.png)
+![](./img/update_2.png)
 
 * 自定义提示弹窗主题
 
-![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_3.png)
+![](./img/update_3.png)
 
 * 使用系统弹窗提示
 
-![](https://github.com/xuexiangjys/XUpdate/blob/master/img/update_4.png)
+![](./img/update_4.png)
 
 ### Demo更新后台服务
 
@@ -93,9 +93,9 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
 
 ### Demo下载
 
-[![downloads](https://img.shields.io/badge/downloads-1.6M-blue.svg)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk)
+[![downloads](https://img.shields.io/badge/downloads-1.6M-blue.svg)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
 
-![](https://github.com/xuexiangjys/XUpdate/blob/master/img/download.png)
+![](./img/download.png)
 
 
 ## 2、如何使用
@@ -118,7 +118,7 @@ allprojects {
 ```
 dependencies {
   ...
-  implementation 'com.github.xuexiangjys:XUpdate:1.0.6'
+  implementation 'com.github.xuexiangjys:XUpdate:1.0.9'
 }
 ```
 
@@ -128,20 +128,23 @@ dependencies {
 
 ```
 XUpdate.get()
-        .debug(true) //开启debug模式，可用于问题的排查
-        .isWifiOnly(true)     //默认设置只在wifi下检查版本更新
-        .isGet(true)          //默认设置使用get请求检查版本
-        .isAutoMode(false)    //默认设置非自动模式，可根据具体使用配置
-        .param("VersionCode", UpdateUtils.getVersionCode(this)) //设置默认公共请求参数
-        .param("AppKey", getPackageName())
-        .setOnUpdateFailureListener(new OnUpdateFailureListener() { //设置版本更新出错的监听
-            @Override
-            public void onFailure(UpdateError error) {
+    .debug(true)
+    .isWifiOnly(true)                                               //默认设置只在wifi下检查版本更新
+    .isGet(true)                                                    //默认设置使用get请求检查版本
+    .isAutoMode(false)                                              //默认设置非自动模式，可根据具体使用配置
+    .param("versionCode", UpdateUtils.getVersionCode(this))         //设置默认公共请求参数
+    .param("appKey", getPackageName())
+    .setOnUpdateFailureListener(new OnUpdateFailureListener() {     //设置版本更新出错的监听
+        @Override
+        public void onFailure(UpdateError error) {
+            if (error.getCode() != CHECK_NO_NEW_VERSION) {          //对不同错误进行处理
                 ToastUtils.toast(error.toString());
             }
-        })
-        .setIUpdateHttpService(new OKHttpUpdateHttpService()) //这个必须设置！实现网络请求功能。
-        .init(this);   //这个必须初始化
+        }
+    })
+    .supportSilentInstall(true)                                     //设置是否支持静默安装，默认是true
+    .setIUpdateHttpService(new OKHttpUpdateHttpService())           //这个必须设置！实现网络请求功能。
+    .init(this);                                                    //这个必须初始化
 ```
 
 【注意】：如果出现任何问题，可开启debug模式来追踪问题。如果你还需要将日志记录在磁盘上，可实现以下接口
@@ -413,7 +416,7 @@ https://github.com/WVector/AppUpdate
 
 ![](https://github.com/xuexiangjys/XPage/blob/master/img/qq_group.jpg)
 
-[xusvg]: https://img.shields.io/badge/XUpdate-v1.0.6-brightgreen.svg
+[xusvg]: https://img.shields.io/badge/XUpdate-v1.0.9-brightgreen.svg
 [xu]: https://github.com/xuexiangjys/XUpdate
 [apisvg]: https://img.shields.io/badge/API-14+-brightgreen.svg
 [api]: https://android-arsenal.com/api?level=14
