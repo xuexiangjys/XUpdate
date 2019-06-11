@@ -66,6 +66,7 @@ public class XHttpUpdateHttpService implements IUpdateHttpService {
 
     @Override
     public void asyncPost(@NonNull String url, @NonNull Map<String, Object> params, @NonNull final Callback callBack) {
+        //这里默认post的是Form格式，使用json格式的请修改为 params -> upJson
         XHttp.post(url)
                 .baseUrl(mBaseUrl)
                 .params(params)

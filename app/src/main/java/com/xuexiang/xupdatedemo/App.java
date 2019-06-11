@@ -35,8 +35,12 @@ import com.xuexiang.xupdatedemo.http.OKHttpUpdateHttpService;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.StringUtils;
 import com.xuexiang.xutil.tip.ToastUtils;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 
@@ -73,9 +77,10 @@ public class App extends Application {
 
         initXHttp();
 
+        initOKHttpUtils();
+
         initUpdate();
     }
-
 
     private void initUpdate() {
         XUpdate.get()
@@ -103,5 +108,13 @@ public class App extends Application {
         XHttpSDK.init(this);   //初始化网络请求框架，必须首先执行
         XHttpSDK.debug("XHttp");  //需要调试的时候执行
         XHttp.getInstance().setTimeout(20000);
+    }
+
+    private void initOKHttpUtils() {
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(20000L, TimeUnit.MILLISECONDS)
+                .readTimeout(20000L, TimeUnit.MILLISECONDS)
+                .build();
+        OkHttpUtils.initClient(okHttpClient);
     }
 }

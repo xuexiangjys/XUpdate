@@ -41,7 +41,7 @@ import okhttp3.Response;
 public class OKHttpUpdateHttpService implements IUpdateHttpService {
 
     public OKHttpUpdateHttpService() {
-        OkHttpUtils.getInstance().timeout(20000);
+
     }
 
     @Override
@@ -52,7 +52,7 @@ public class OKHttpUpdateHttpService implements IUpdateHttpService {
                 .build()
                 .execute(new StringCallback() {
                     @Override
-                    public void onError(Call call, Response response, Exception e, int id) {
+                    public void onError(Call call, Exception e, int id) {
                         callBack.onError(e);
                     }
 
@@ -65,13 +65,14 @@ public class OKHttpUpdateHttpService implements IUpdateHttpService {
 
     @Override
     public void asyncPost(@NonNull String url, @NonNull Map<String, Object> params, final @NonNull Callback callBack) {
+        //这里默认post的是Form格式，使用json格式的请修改 post -> postString
         OkHttpUtils.post()
                 .url(url)
                 .params(transform(params))
                 .build()
                 .execute(new StringCallback() {
                     @Override
-                    public void onError(Call call, Response response, Exception e, int id) {
+                    public void onError(Call call, Exception e, int id) {
                         callBack.onError(e);
                     }
 
@@ -94,7 +95,7 @@ public class OKHttpUpdateHttpService implements IUpdateHttpService {
                     }
 
                     @Override
-                    public void onError(Call call, Response response, Exception e, int id) {
+                    public void onError(Call call, Exception e, int id) {
                         callback.onError(e);
                     }
 
