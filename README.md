@@ -1,5 +1,9 @@
 # XUpdate
-[![xu][xusvg]][xu]  [![api][apisvg]][api]
+
+[![](https://jitpack.io/v/xuexiangjys/XUpdate.svg)](https://jitpack.io/#xuexiangjys/XUpdate)
+[![api][apisvg]][api]
+[![I](https://img.shields.io/github/issues/xuexiangjys/XUpdate.svg)](https://github.com/xuexiangjys/XUpdate/issues)
+[![Star](https://img.shields.io/github/stars/xuexiangjys/XUpdate.svg)](https://github.com/xuexiangjys/XUpdate)
 
 一个轻量级、高可用性的Android版本更新框架。赶紧点击[使用说明文档](https://github.com/xuexiangjys/XUpdate/wiki)，体验一下吧！
 
