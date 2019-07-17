@@ -372,6 +372,10 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
             if (mIUpdateProxy != null) {
                 mIUpdateProxy.startDownload(mUpdateEntity, mOnFileDownloadListener);
             }
+            //忽略版本在点击更新按钮后隐藏
+            if (mUpdateEntity.isIgnorable()) {
+                mTvIgnore.setVisibility(View.GONE);
+            }
         }
     }
 
