@@ -67,6 +67,7 @@ public class MainFragment extends XPageSimpleListFragment {
     private final static int REQUEST_CODE_SELECT_APK_FILE = 1000;
     @Override
     protected List<String> initSimpleData(List<String> lists) {
+        lists.add("获取文件的MD5值");
         lists.add("默认App更新");
         lists.add("默认App更新 + 支持后台更新");
         lists.add("版本更新(自动模式)");
@@ -85,28 +86,31 @@ public class MainFragment extends XPageSimpleListFragment {
     protected void onItemClick(int position) {
         switch (position) {
             case 0:
-                XUpdate.newBuild(getActivity())
-                        .updateUrl(mUpdateUrl)
-                        .update();
+                openPage(FileMD5Fragment.class);
                 break;
             case 1:
                 XUpdate.newBuild(getActivity())
                         .updateUrl(mUpdateUrl)
-                        .supportBackgroundUpdate(true)
                         .update();
                 break;
             case 2:
                 XUpdate.newBuild(getActivity())
                         .updateUrl(mUpdateUrl)
-                        .isAutoMode(true) //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
+                        .supportBackgroundUpdate(true)
                         .update();
                 break;
             case 3:
                 XUpdate.newBuild(getActivity())
-                        .updateUrl(mUpdateUrl2)
+                        .updateUrl(mUpdateUrl)
+                        .isAutoMode(true) //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
                         .update();
                 break;
             case 4:
+                XUpdate.newBuild(getActivity())
+                        .updateUrl(mUpdateUrl2)
+                        .update();
+                break;
+            case 5:
                 XUpdate.newBuild(getActivity())
                         .updateHttpService(new XHttpUpdateHttpService("https://raw.githubusercontent.com"))
                         .updateUrl("/xuexiangjys/XUpdate/master/jsonapi/update_test.json")
@@ -114,13 +118,13 @@ public class MainFragment extends XPageSimpleListFragment {
                         .topResId(R.mipmap.bg_update_top)
                         .update();
                 break;
-            case 5:
+            case 6:
                 XUpdate.newBuild(getActivity())
                         .updateUrl(mUpdateUrl3)
                         .updateParser(new CustomUpdateParser())
                         .update();
                 break;
-            case 6:
+            case 7:
                 XUpdate.newBuild(getActivity())
                         .updateUrl(mUpdateUrl3)
                         .updateChecker(new DefaultUpdateChecker() {
@@ -139,16 +143,16 @@ public class MainFragment extends XPageSimpleListFragment {
                         .updatePrompter(new CustomUpdatePrompter(getActivity()))
                         .update();
                 break;
-            case 7:
+            case 8:
                 useApkDownLoadFunction();
                 break;
-            case 8:
+            case 9:
                 selectAPKFile();
                 break;
-            case 9:
+            case 10:
                 startActivity(new Intent(getContext(), UpdateActivity.class));
                 break;
-            case 10:
+            case 11:
                 openPage(XUpdateServiceFragment.class);
                 break;
             default:

@@ -39,7 +39,7 @@ public final class Md5Utils {
     }
 
     public static String getFileMD5(File file) {
-        if (!file.exists()) {
+        if (file == null || !file.exists()) {
             return "";
         }
         FileInputStream in = null;

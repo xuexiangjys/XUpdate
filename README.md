@@ -184,7 +184,7 @@ mIsAutoInstall | boolean | true | 是否下载完成后自动安装
 :-|:-:|:-:|:-
 mDownloadUrl | String | "" | 下载地址
 mCacheDir | String | "" | 文件下载的目录
-mMd5 | String | "" | 下载文件的md5值，用于校验，防止下载的apk文件被替换
+mMd5 | String | "" | 下载文件的md5值，用于校验，防止下载的apk文件被替换（最新演示demo中有计算md5值的工具）
 mSize | long | 0 | 下载文件的大小【单位：KB】
 mIsShowNotification | boolean | false | 是否在通知栏上显示下载进度
 
