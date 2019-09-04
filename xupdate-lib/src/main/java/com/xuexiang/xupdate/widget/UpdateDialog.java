@@ -284,7 +284,13 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
                 showInstallButton(UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity));
             }
         } else {
-            mIUpdateProxy.startDownload(mUpdateEntity, mOnFileDownloadListener);
+            if (mIUpdateProxy != null) {
+                mIUpdateProxy.startDownload(mUpdateEntity, mOnFileDownloadListener);
+            }
+            //忽略版本在点击更新按钮后隐藏
+            if (mUpdateEntity.isIgnorable()) {
+                mTvIgnore.setVisibility(View.GONE);
+            }
         }
     }
 
