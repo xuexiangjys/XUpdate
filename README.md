@@ -1,7 +1,7 @@
 # XUpdate
 
 [![](https://jitpack.io/v/xuexiangjys/XUpdate.svg)](https://jitpack.io/#xuexiangjys/XUpdate)
-[![api][apisvg]][api]
+[![api](https://img.shields.io/badge/API-14+-brightgreen.svg)](https://android-arsenal.com/api?level=14)
 [![I](https://img.shields.io/github/issues/xuexiangjys/XUpdate.svg)](https://github.com/xuexiangjys/XUpdate/issues)
 [![Star](https://img.shields.io/github/stars/xuexiangjys/XUpdate.svg)](https://github.com/xuexiangjys/XUpdate)
 
@@ -122,7 +122,7 @@ allprojects {
 ```
 dependencies {
   ...
-  implementation 'com.github.xuexiangjys:XUpdate:1.0.9'
+  implementation 'com.github.xuexiangjys:XUpdate:1.1.0'
 }
 ```
 
@@ -416,11 +416,6 @@ https://github.com/WVector/AppUpdate
 
 ## 联系方式
 
-[![](https://img.shields.io/badge/点击一键加入QQ交流群-602082750-blue.svg)](http://shang.qq.com/wpa/qunwpa?idkey=9922861ef85c19f1575aecea0e8680f60d9386080a97ed310c971ae074998887)
+[![](https://img.shields.io/badge/点击一键加入QQ交流群-720212425-blue.svg)](http://shang.qq.com/wpa/qunwpa?idkey=37ea606864cafa3c8a5d6b07f04fd672936a50fd6e535c13702baf705d57e6e8)
 
-![](https://github.com/xuexiangjys/XPage/blob/master/img/qq_group.jpg)
-
-[xusvg]: https://img.shields.io/badge/XUpdate-v1.0.9-brightgreen.svg
-[xu]: https://github.com/xuexiangjys/XUpdate
-[apisvg]: https://img.shields.io/badge/API-14+-brightgreen.svg
-[api]: https://android-arsenal.com/api?level=14
+![](https://github.com/xuexiangjys/XUpdate/blob/master/img/xupdate_qq.jpg)
