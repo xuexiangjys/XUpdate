@@ -16,10 +16,13 @@
 
 package com.xuexiang.xupdatedemo.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.xuexiang.xpage.base.XPageActivity;
 import com.xuexiang.xupdatedemo.fragment.MainFragment;
+import com.xuexiang.xupdatedemo.utils.NotifyUtils;
 
 public class MainActivity extends XPageActivity {
 
@@ -28,5 +31,18 @@ public class MainActivity extends XPageActivity {
         super.onCreate(savedInstanceState);
 
         openPage(MainFragment.class);
+
+        if (!NotifyUtils.isNotifyPermissionOpen(this)) {
+            new AlertDialog.Builder(this)
+                    .setCancelable(false)
+                    .setTitle("通知栏权限")
+                    .setMessage("请打开应用的通知权限，否则应用将无法收到通知！")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface d, int w) {
+                            NotifyUtils.openNotifyPermissionSetting(MainActivity.this);
+                        }
+                    })
+                    .show();
+        }
     }
 }

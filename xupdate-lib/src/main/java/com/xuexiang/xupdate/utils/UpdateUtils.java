@@ -302,7 +302,7 @@ public final class UpdateUtils {
         File appFile = getApkFileByUpdateEntity(updateEntity);
         return !TextUtils.isEmpty(updateEntity.getMd5())
                 && appFile.exists()
-                && Md5Utils.getFileMD5(appFile).equals(updateEntity.getMd5());
+                && Md5Utils.getFileMD5(appFile).equalsIgnoreCase(updateEntity.getMd5());
     }
 
     /**

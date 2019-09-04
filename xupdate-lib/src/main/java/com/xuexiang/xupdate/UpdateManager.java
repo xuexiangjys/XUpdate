@@ -288,7 +288,12 @@ public class UpdateManager implements IUpdateProxy {
         UpdateLog.i("发现新版本:" + updateEntity);
         if (updateEntity.isSilent()) {
             //静默下载，发现新版本后，直接下载更新
-            startDownload(updateEntity, mOnFileDownloadListener);
+            if (!UpdateUtils.isApkDownloaded(updateEntity)) {
+                startDownload(updateEntity, mOnFileDownloadListener);
+            } else {
+                //已经下载好的直接安装
+                _XUpdate.startInstallApk(getContext(), UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity), mUpdateEntity.getDownLoadEntity());
+            }
         } else {
             if (mIUpdateProxy != null) {
                 //否则显示版本更新提示

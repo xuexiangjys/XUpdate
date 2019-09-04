@@ -265,6 +265,11 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         mTvUpdateInfo.setText(updateInfo);
         mTvTitle.setText(String.format(getString(R.string.xupdate_lab_ready_update), newVersion));
 
+        //如果文件已下载，直接显示安装
+        if (UpdateUtils.isApkDownloaded(mUpdateEntity)) {
+            showInstallButton(UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity));
+        }
+
         //强制更新,不显示关闭按钮
         if (updateEntity.isForce()) {
             mLlClose.setVisibility(View.GONE);
