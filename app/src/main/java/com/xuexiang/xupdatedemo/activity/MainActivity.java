@@ -35,13 +35,13 @@ public class MainActivity extends XPageActivity {
         if (!NotifyUtils.isNotifyPermissionOpen(this)) {
             new AlertDialog.Builder(this)
                     .setCancelable(false)
-                    .setTitle("通知栏权限")
-                    .setMessage("请打开应用的通知权限，否则应用将无法收到通知！")
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    .setMessage("通知权限未打开，是否前去打开？")
+                    .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface d, int w) {
                             NotifyUtils.openNotifyPermissionSetting(MainActivity.this);
                         }
                     })
+                    .setNegativeButton("否", null)
                     .show();
         }
     }
