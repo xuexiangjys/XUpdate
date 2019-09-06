@@ -21,10 +21,7 @@ import android.text.TextUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * MD5加密工具类
@@ -38,24 +35,32 @@ public final class Md5Utils {
         throw new UnsupportedOperationException("cannot be instantiated");
     }
 
+    /**
+     * 获取文件的MD5值
+     *
+     * @param file
+     * @return
+     */
     public static String getFileMD5(File file) {
         if (file == null || !file.exists()) {
             return "";
         }
-        FileInputStream in = null;
+        FileInputStream fis = null;
         try {
-            in = new FileInputStream(file);
-            FileChannel channel = in.getChannel();
-            MappedByteBuffer buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, file.length());
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(buffer);
-            return bytes2Hex(md.digest());
-        } catch (NoSuchAlgorithmException | IOException e) {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            fis = new FileInputStream(file);
+            byte[] buffer = new byte[8192];
+            int len;
+            while ((len = fis.read(buffer)) != -1) {
+                digest.update(buffer, 0, len);
+            }
+            return bytes2Hex(digest.digest());
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (in != null) {
+            if (fis != null) {
                 try {
-                    in.close();
+                    fis.close();
                 } catch (IOException ignored) {
                 }
             }
@@ -84,8 +89,8 @@ public final class Md5Utils {
         char[] res = new char[src.length << 1];
         final char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
         for (int i = 0, j = 0; i < src.length; i++) {
-            res[j++] = hexDigits[src[i] >>> 4 & 0x0f];
-            res[j++] = hexDigits[src[i] & 0x0f];
+            res[j++] = hexDigits[src[i] >>> 4 & 0x0F];
+            res[j++] = hexDigits[src[i] & 0x0F];
         }
         return new String(res);
     }
