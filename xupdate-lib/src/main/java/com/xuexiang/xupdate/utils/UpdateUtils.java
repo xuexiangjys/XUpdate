@@ -37,6 +37,7 @@ import android.util.DisplayMetrics;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.xuexiang.xupdate.R;
+import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 
 import java.io.File;
@@ -302,7 +303,7 @@ public final class UpdateUtils {
         File appFile = getApkFileByUpdateEntity(updateEntity);
         return !TextUtils.isEmpty(updateEntity.getMd5())
                 && appFile.exists()
-                && Md5Utils.getFileMD5(appFile).equalsIgnoreCase(updateEntity.getMd5());
+                && _XUpdate.isFileValid(updateEntity.getMd5(), appFile);
     }
 
     /**
@@ -329,7 +330,7 @@ public final class UpdateUtils {
         if (TextUtils.isEmpty(downloadUrl)) {
             return "temp.apk";
         } else {
-            String appName = downloadUrl.substring(downloadUrl.lastIndexOf("/") + 1, downloadUrl.length());
+            String appName = downloadUrl.substring(downloadUrl.lastIndexOf("/") + 1);
             if (!appName.endsWith(".apk")) {
                 appName = "temp.apk";
             }

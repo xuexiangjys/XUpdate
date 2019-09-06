@@ -30,6 +30,7 @@ import com.xuexiang.xupdate.proxy.IUpdateChecker;
 import com.xuexiang.xupdate.proxy.IUpdateDownloader;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateParser;
+import com.xuexiang.xupdate.proxy.impl.DefaultFileEncryptor;
 import com.xuexiang.xupdate.utils.ApkInstallUtils;
 
 import java.io.File;
@@ -96,6 +97,34 @@ public final class _XUpdate {
         return XUpdate.get().mApkCacheDir;
     }
 
+    //===========================文件加密===================================//
+
+    /**
+     * 加密文件
+     *
+     * @param file 需要加密的文件
+     */
+    public static String encryptFile(File file) {
+        if (XUpdate.get().mIFileEncryptor == null) {
+            XUpdate.get().mIFileEncryptor = new DefaultFileEncryptor();
+        }
+        return XUpdate.get().mIFileEncryptor.encryptFile(file);
+    }
+
+    /**
+     * 验证文件是否有效（加密是否一致）
+     *
+     * @param encrypt 加密值，不能为空
+     * @param file    需要校验的文件
+     * @return 文件是否有效
+     */
+    public static boolean isFileValid(String encrypt, File file) {
+        if (XUpdate.get().mIFileEncryptor == null) {
+            XUpdate.get().mIFileEncryptor = new DefaultFileEncryptor();
+        }
+        return XUpdate.get().mIFileEncryptor.isFileValid(encrypt, file);
+    }
+
     //===========================apk安装监听===================================//
 
     public static OnInstallListener getOnInstallListener() {
@@ -105,8 +134,8 @@ public final class _XUpdate {
     /**
      * 开始安装apk文件
      *
-     * @param context        传activity可以获取安装的返回值，详见{@link ApkInstallUtils#REQUEST_CODE_INSTALL_APP}
-     * @param apkFile        apk文件
+     * @param context 传activity可以获取安装的返回值，详见{@link ApkInstallUtils#REQUEST_CODE_INSTALL_APP}
+     * @param apkFile apk文件
      */
     public static void startInstallApk(@NonNull Context context, @NonNull File apkFile) {
         startInstallApk(context, apkFile, new DownloadEntity());

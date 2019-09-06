@@ -27,10 +27,12 @@ import com.xuexiang.xupdate.listener.impl.DefaultInstallListener;
 import com.xuexiang.xupdate.listener.impl.DefaultUpdateFailureListener;
 import com.xuexiang.xupdate.logs.ILogger;
 import com.xuexiang.xupdate.logs.UpdateLog;
+import com.xuexiang.xupdate.proxy.IFileEncryptor;
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
 import com.xuexiang.xupdate.proxy.IUpdateDownloader;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateParser;
+import com.xuexiang.xupdate.proxy.impl.DefaultFileEncryptor;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateChecker;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateDownloader;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateParser;
@@ -89,6 +91,10 @@ public class XUpdate {
      */
     IUpdateDownloader mIUpdateDownloader;
     /**
+     * 文件加密器【有默认】
+     */
+    IFileEncryptor mIFileEncryptor;
+    /**
      * APK安装监听【有默认】
      */
     OnInstallListener mOnInstallListener;
@@ -107,10 +113,10 @@ public class XUpdate {
         mIUpdateChecker = new DefaultUpdateChecker();
         mIUpdateParser = new DefaultUpdateParser();
         mIUpdateDownloader = new DefaultUpdateDownloader();
+        mIFileEncryptor = new DefaultFileEncryptor();
         mOnInstallListener = new DefaultInstallListener();
         mOnUpdateFailureListener = new DefaultUpdateFailureListener();
     }
-
 
     /**
      * 获取版本更新的入口
@@ -348,6 +354,18 @@ public class XUpdate {
     }
 
     //===========================apk安装监听===================================//
+
+
+    /**
+     * 设置文件加密器
+     *
+     * @param fileEncryptor
+     * @return
+     */
+    public XUpdate setIFileEncryptor(IFileEncryptor fileEncryptor) {
+        mIFileEncryptor = fileEncryptor;
+        return this;
+    }
 
     /**
      * 设置安装监听

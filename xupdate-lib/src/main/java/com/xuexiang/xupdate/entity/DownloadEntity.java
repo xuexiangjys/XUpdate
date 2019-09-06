@@ -19,7 +19,7 @@ package com.xuexiang.xupdate.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.xuexiang.xupdate.utils.Md5Utils;
+import com.xuexiang.xupdate._XUpdate;
 
 import java.io.File;
 
@@ -39,7 +39,7 @@ public class DownloadEntity implements Parcelable {
      */
     private String mCacheDir;
     /**
-     * 下载文件的md5值，用于校验，防止下载的apk文件被替换
+     * 下载文件的加密值，用于校验，防止下载的apk文件被替换【当然你也可以不使用MD5加密】
      */
     private String mMd5;
     /**
@@ -120,14 +120,15 @@ public class DownloadEntity implements Parcelable {
         mIsShowNotification = showNotification;
         return this;
     }
+
     /**
-     * apk文件是否有效
+     * 验证文件是否有效【没设置mMd5默认不校验，直接有效】
      *
-     * @param apkFile
-     * @return
+     * @param apkFile 需要校验的文件
+     * @return 文件是否有效
      */
     public boolean isApkFileValid(File apkFile) {
-        return Md5Utils.isFileValid(mMd5, apkFile);
+        return _XUpdate.isFileValid(mMd5, apkFile);
     }
 
     @Override

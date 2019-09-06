@@ -10,7 +10,7 @@ import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xaop.consts.PermissionConsts;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.base.XPageFragment;
-import com.xuexiang.xupdate.utils.Md5Utils;
+import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdatedemo.R;
 import com.xuexiang.xutil.app.IntentUtils;
 import com.xuexiang.xutil.app.PathUtils;
@@ -83,7 +83,7 @@ public class FileMD5Fragment extends XPageFragment {
             return;
         }
 
-        tvMd5.setText(Md5Utils.getFileMD5(FileUtils.getFileByPath(filePath)));
+        tvMd5.setText(_XUpdate.encryptFile(FileUtils.getFileByPath(filePath)));
     }
 
 
