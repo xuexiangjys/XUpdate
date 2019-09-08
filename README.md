@@ -19,6 +19,12 @@
 
 [![github](https://img.shields.io/badge/GitHub-xuexiangjys-blue.svg)](https://github.com/xuexiangjys)   [![csdn](https://img.shields.io/badge/CSDN-xuexiangjys-green.svg)](http://blog.csdn.net/xuexiangjys)   [![简书](https://img.shields.io/badge/简书-xuexiangjys-red.svg)](https://www.jianshu.com/u/6bf605575337)   [![掘金](https://img.shields.io/badge/掘金-xuexiangjys-brightgreen.svg)](https://juejin.im/user/598feef55188257d592e56ed)   [![知乎](https://img.shields.io/badge/知乎-xuexiangjys-violet.svg)](https://www.zhihu.com/people/xuexiangjys)
 
+## X系列库快速集成
+
+为了方便大家快速集成X系列框架库，我提供了一个空壳模版供大家参考使用: https://github.com/xuexiangjys/TemplateAppProject
+
+---
+
 ## 特征
 
 * 支持post和get两种版本检查方式，支持自定义网络请求。
@@ -81,6 +87,8 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
 
 [点击查看框架UML设计图](https://github.com/xuexiangjys/XUpdate/blob/master/img/xupdate_uml.png)
 
+---
+
 ## 1、演示（请star支持）
 
 * 默认版本更新
@@ -109,9 +117,11 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
 
 ![](./img/download.png)
 
+---
 
-## 2、如何使用
-目前支持主流开发工具AndroidStudio的使用，直接配置build.gradle，增加依赖即可.
+## 2、快速集成指南
+
+> 目前支持主流开发工具AndroidStudio的使用，直接配置build.gradle，增加依赖即可.
 
 ### 2.1、Android Studio导入方法，添加Gradle依赖
 
@@ -130,7 +140,7 @@ allprojects {
 ```
 dependencies {
   ...
-  implementation 'com.github.xuexiangjys:XUpdate:1.1.0'
+  implementation 'com.github.xuexiangjys:XUpdate:1.1.1'
 }
 ```
 
@@ -195,6 +205,8 @@ mCacheDir | String | "" | 文件下载的目录
 mMd5 | String | "" | 下载文件的md5值，用于校验，防止下载的apk文件被替换（最新演示demo中有计算md5值的工具）
 mSize | long | 0 | 下载文件的大小【单位：KB】
 mIsShowNotification | boolean | false | 是否在通知栏上显示下载进度
+
+---
 
 ## 3、版本更新
 
@@ -418,6 +430,7 @@ _XUpdate.startInstallApk(getContext(), FileUtils.getFileByPath(PathUtils.getFile
 ```
 -keep class com.xuexiang.xupdate.entity.** { *; }
 ```
+---
 
 ## 特别感谢
 https://github.com/WVector/AppUpdate
