@@ -479,6 +479,8 @@ https://github.com/WVector/AppUpdate
 
 ## 如果觉得项目还不错，可以考虑打赏一波
 
+> 你的打赏是我维护的动力，我将会列出所有打赏人员的清单在下方作为凭证，打赏前请留下打赏项目的备注！
+
 ![](https://github.com/xuexiangjys/Resource/blob/master/img/pay/alipay.jpeg) &emsp; ![](https://github.com/xuexiangjys/Resource/blob/master/img/pay/weixinpay.jpeg)
 
 
