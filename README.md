@@ -39,6 +39,8 @@
 
 * 支持MD5文件校验、版本忽略、版本强制更新等功能。
 
+* 支持自定义文件校验方法【默认是MD5校验】。
+
 * 支持自定义请求API接口。
 
 * 兼容Android6.0、7.0、8.0和9.0。
@@ -202,9 +204,48 @@ mIsAutoInstall | boolean | true | 是否下载完成后自动安装
 :-|:-:|:-:|:-
 mDownloadUrl | String | "" | 下载地址
 mCacheDir | String | "" | 文件下载的目录
-mMd5 | String | "" | 下载文件的md5值，用于校验，防止下载的apk文件被替换（最新演示demo中有计算md5值的工具）
+mMd5 | String | "" | 下载文件的加密校验值(默认使用md5加密)，用于校验，防止下载的apk文件被替换（最新演示demo中有计算校验值的工具）
 mSize | long | 0 | 下载文件的大小【单位：KB】
 mIsShowNotification | boolean | false | 是否在通知栏上显示下载进度
+
+### 2.4、文件加密校验方式
+
+本框架默认使用的文件加密校验方法是MD5加密方式，当然如果你不想使用MD5加密，你也可以自定义文件加密器`IFileEncryptor`,以下是MD5文件加密器的实现供参考：
+
+```
+/**
+ * 默认的文件加密计算使用的是MD5加密
+ *
+ * @author xuexiang
+ * @since 2019-09-06 14:21
+ */
+public class DefaultFileEncryptor implements IFileEncryptor {
+    /**
+     * 加密文件
+     *
+     * @param file
+     * @return
+     */
+    @Override
+    public String encryptFile(File file) {
+        return Md5Utils.getFileMD5(file);
+    }
+
+    /**
+     * 检验文件是否有效（加密是否一致）
+     *
+     * @param encrypt 加密值, 如果encrypt为空，直接认为是有效的
+     * @param file    需要校验的文件
+     * @return 文件是否有效
+     */
+    @Override
+    public boolean isFileValid(String encrypt, File file) {
+        return TextUtils.isEmpty(encrypt) || encrypt.equalsIgnoreCase(encryptFile(file));
+    }
+}
+
+```
+最后再调用`XUpdate.get().setIFileEncryptor`方法设置即可生效。
 
 ---
 
@@ -231,7 +272,7 @@ XUpdate.newBuild(getActivity())
   "ModifyContent": "1、优化api接口。\r\n2、添加使用demo演示。\r\n3、新增自定义更新服务API接口。\r\n4、优化更新提示界面。",
   "DownloadUrl": "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/apk/xupdate_demo_1.0.2.apk",
   "ApkSize": 2048
-  "ApkMd5": "..."  //md5值没有的话，就无法保证apk是否完整，每次都会重新下载。
+  "ApkMd5": "..."  //md5值没有的话，就无法保证apk是否完整，每次都会重新下载。框架默认使用的是md5加密。
 }
 ```
 
@@ -433,7 +474,13 @@ _XUpdate.startInstallApk(getContext(), FileUtils.getFileByPath(PathUtils.getFile
 ---
 
 ## 特别感谢
+
 https://github.com/WVector/AppUpdate
+
+## 如果觉得项目还不错，可以考虑打赏一波
+
+![](https://github.com/xuexiangjys/Resource/blob/master/img/pay/alipay.jpeg) &emsp; ![](https://github.com/xuexiangjys/Resource/blob/master/img/pay/weixinpay.jpeg)
+
 
 ## 联系方式
 
