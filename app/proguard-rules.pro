@@ -194,3 +194,9 @@
 
 # xupdate
 -keep class com.xuexiang.xupdate.entity.** { *; }
+
+#XHttp2
+-keep class com.xuexiang.xhttp2.model.** { *; }
+-keep class com.xuexiang.xhttp2.cache.model.** { *; }
+-keep class com.xuexiang.xhttp2.cache.stategy.**{*;}
+-keep class com.xuexiang.xhttp2.annotation.** { *; }
