@@ -16,6 +16,8 @@
 
 package com.xuexiang.xupdatedemo.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * 提供的默认的标注返回api
  *
@@ -23,9 +25,15 @@ package com.xuexiang.xupdatedemo.entity;
  * @since 2018/5/22 下午4:22
  */
 public class ApiResult<T> {
+    public final static String CODE = "Code";
+    public final static String MSG = "Msg";
+    public final static String DATA = "Data";
 
-    private int Code = 0;
-    private String Msg = "";
+    @SerializedName(value = CODE, alternate = {"code"})
+    private int Code;
+    @SerializedName(value = MSG, alternate = {"msg"})
+    private String Msg;
+    @SerializedName(value = DATA, alternate = {"data"})
     private T Data;
 
     public int getCode() {
