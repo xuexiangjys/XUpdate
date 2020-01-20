@@ -41,7 +41,7 @@ public class PromptEntity implements Parcelable {
         mThemeColor = -1;
         mTopResId = -1;
         mSupportBackgroundUpdate = false;
-        mWidthRatio = 0.8F;
+        mWidthRatio = -1;
         mHeightRatio = -1;
     }
 
@@ -92,7 +92,7 @@ public class PromptEntity implements Parcelable {
         return this;
     }
 
-    public PromptEntity setWidthRatio(@FloatRange(from = 0.5F, to = 1F) float widthRatio) {
+    public PromptEntity setWidthRatio(float widthRatio) {
         mWidthRatio = widthRatio;
         return this;
     }

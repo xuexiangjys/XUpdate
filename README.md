@@ -142,7 +142,7 @@ allprojects {
 ```
 dependencies {
   ...
-  implementation 'com.github.xuexiangjys:XUpdate:1.1.2'
+  implementation 'com.github.xuexiangjys:XUpdate:1.1.3'
 }
 ```
 
@@ -300,7 +300,7 @@ XUpdate.newBuild(getActivity())
 
 * promptThemeColor: 设置主题颜色（升级/安装按钮的背景色）
 * promptTopResId: 弹窗的标题背景的资源图片
-* promptWidthRatio: 弹窗宽度占屏幕宽度的比例，默认是0.8
+* promptWidthRatio: 弹窗宽度占屏幕宽度的比例，默认是-1，不做约束
 * promptHeightRatio: 弹窗高度占屏幕高度的比例，默认是-1，不做约束
 
 ```

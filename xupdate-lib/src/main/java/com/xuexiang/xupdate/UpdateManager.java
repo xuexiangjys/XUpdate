@@ -653,12 +653,12 @@ public class UpdateManager implements IUpdateProxy {
         }
 
         /**
-         * 设置版本更新提示器宽度占屏幕的比例，默认是0.8
+         * 设置版本更新提示器宽度占屏幕的比例，默认是-1，不做约束
          *
          * @param widthRatio
          * @return
          */
-        public Builder promptWidthRatio(@FloatRange(from = 0.5F, to = 1F) float widthRatio) {
+        public Builder promptWidthRatio(float widthRatio) {
             promptEntity.setWidthRatio(widthRatio);
             return this;
         }

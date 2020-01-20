@@ -250,8 +250,10 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
         if (window != null) {
             WindowManager.LayoutParams lp = window.getAttributes();
             DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-            lp.width = (int) (displayMetrics.widthPixels * widthRatio);
-            if (heightRatio > 0) {
+            if (widthRatio > 0 && widthRatio < 1) {
+                lp.width = (int) (displayMetrics.widthPixels * widthRatio);
+            }
+            if (heightRatio > 0 && heightRatio < 1) {
                 lp.height = (int) (displayMetrics.heightPixels * heightRatio);
             }
             window.setAttributes(lp);
