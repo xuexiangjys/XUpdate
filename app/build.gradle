@@ -56,24 +56,24 @@ dependencies {
     testImplementation deps.junit
     androidTestImplementation deps.runner
     androidTestImplementation deps.espresso.core
-//    implementation project(':xupdate-lib')
+    implementation project(':xupdate-lib')
 
-    implementation 'com.github.xuexiangjys:XUpdate:1.1.1'
+//    implementation 'com.github.xuexiangjys:XUpdate:1.1.1'
 
     implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.6'
     implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.6'
     implementation 'com.github.xuexiangjys.XAOP:xaop-runtime:1.0.5'  //添加依赖
 
     //XPage
-    implementation 'com.github.xuexiangjys.XPage:xpage-lib:2.2.7'
-    annotationProcessor 'com.github.xuexiangjys.XPage:xpage-compiler:2.2.7'
+    implementation 'com.github.xuexiangjys.XPage:xpage-lib:2.2.9'
+    annotationProcessor 'com.github.xuexiangjys.XPage:xpage-compiler:2.2.9'
     //butterknife的sdk
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //如果开启了内存泄漏监测leak,就需要加上这个依赖
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
-    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
 
     //网络请求的实现一
     implementation 'com.zhy:okhttputils:2.6.2'

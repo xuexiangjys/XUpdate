@@ -261,7 +261,7 @@ public final class UpdateUtils {
 
         String updateInfo = "";
         if (!TextUtils.isEmpty(targetSize)) {
-            updateInfo = context.getString(R.string.xupdate_lab_new_version_size) + targetSize + "\n\r";
+            updateInfo = context.getString(R.string.xupdate_lab_new_version_size) + targetSize + "\n";
         }
         if (!TextUtils.isEmpty(updateContent)) {
             updateInfo += updateContent;
