@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -600,7 +601,19 @@ public class UpdateManager implements IUpdateProxy {
          * @param themeColor
          * @return
          */
+        @Deprecated
         public Builder themeColor(@ColorInt int themeColor) {
+            promptEntity.setThemeColor(themeColor);
+            return this;
+        }
+
+        /**
+         * 设置主题颜色
+         *
+         * @param themeColor
+         * @return
+         */
+        public Builder promptThemeColor(@ColorInt int themeColor) {
             promptEntity.setThemeColor(themeColor);
             return this;
         }
@@ -611,7 +624,19 @@ public class UpdateManager implements IUpdateProxy {
          * @param topResId
          * @return
          */
+        @Deprecated
         public Builder topResId(@DrawableRes int topResId) {
+            promptEntity.setTopResId(topResId);
+            return this;
+        }
+
+        /**
+         * 设置顶部背景图片
+         *
+         * @param topResId
+         * @return
+         */
+        public Builder promptTopResId(@DrawableRes int topResId) {
             promptEntity.setTopResId(topResId);
             return this;
         }
@@ -624,6 +649,28 @@ public class UpdateManager implements IUpdateProxy {
          */
         public Builder supportBackgroundUpdate(boolean supportBackgroundUpdate) {
             promptEntity.setSupportBackgroundUpdate(supportBackgroundUpdate);
+            return this;
+        }
+
+        /**
+         * 设置版本更新提示器宽度占屏幕的比例，默认是0.8
+         *
+         * @param widthRatio
+         * @return
+         */
+        public Builder promptWidthRatio(@FloatRange(from = 0.5F, to = 1F) float widthRatio) {
+            promptEntity.setWidthRatio(widthRatio);
+            return this;
+        }
+
+        /**
+         * 设置版本更新提示器高度占屏幕的比例，默认是-1，不做约束
+         *
+         * @param heightRatio
+         * @return
+         */
+        public Builder promptHeightRatio(float heightRatio) {
+            promptEntity.setHeightRatio(heightRatio);
             return this;
         }
 

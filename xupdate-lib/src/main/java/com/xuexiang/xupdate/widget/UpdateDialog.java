@@ -25,7 +25,10 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -117,7 +120,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
         dialog.setIUpdateProxy(updateProxy)
                 .setUpdateEntity(updateEntity)
                 .setPromptEntity(promptEntity);
-        dialog.initTheme(promptEntity.getThemeColor(), promptEntity.getTopResId());
+        dialog.initTheme(promptEntity.getThemeColor(), promptEntity.getTopResId(), promptEntity.getWidthRatio(), promptEntity.getHeightRatio());
         return dialog;
     }
 
@@ -218,30 +221,41 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
     /**
      * 初始化主题色
      */
-    private void initTheme(@ColorInt int themeColor, @DrawableRes int topResId) {
+    private void initTheme(@ColorInt int themeColor, @DrawableRes int topResId, float widthRatio, float heightRatio) {
         if (themeColor == -1) {
             themeColor = ColorUtils.getColor(getContext(), R.color.xupdate_default_theme_color);
         }
         if (topResId == -1) {
             topResId = R.drawable.xupdate_bg_app_top;
         }
-        setDialogTheme(themeColor, topResId);
+        setDialogTheme(themeColor, topResId, widthRatio, heightRatio);
     }
 
     /**
      * 设置
      *
-     * @param color    主色
+     * @param themeColor    主色
      * @param topResId 图片
      */
-    private void setDialogTheme(int color, int topResId) {
+    private void setDialogTheme(int themeColor, int topResId, float widthRatio, float heightRatio) {
         mIvTop.setImageResource(topResId);
-        mBtnUpdate.setBackgroundDrawable(DrawableUtils.getDrawable(UpdateUtils.dip2px(4, getContext()), color));
-        mBtnBackgroundUpdate.setBackgroundDrawable(DrawableUtils.getDrawable(UpdateUtils.dip2px(4, getContext()), color));
-        mNumberProgressBar.setProgressTextColor(color);
-        mNumberProgressBar.setReachedBarColor(color);
+        mBtnUpdate.setBackgroundDrawable(DrawableUtils.getDrawable(UpdateUtils.dip2px(4, getContext()), themeColor));
+        mBtnBackgroundUpdate.setBackgroundDrawable(DrawableUtils.getDrawable(UpdateUtils.dip2px(4, getContext()), themeColor));
+        mNumberProgressBar.setProgressTextColor(themeColor);
+        mNumberProgressBar.setReachedBarColor(themeColor);
         //随背景颜色变化
-        mBtnUpdate.setTextColor(ColorUtils.isColorDark(color) ? Color.WHITE : Color.BLACK);
+        mBtnUpdate.setTextColor(ColorUtils.isColorDark(themeColor) ? Color.WHITE : Color.BLACK);
+
+        Window window = getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+            lp.width = (int) (displayMetrics.widthPixels * widthRatio);
+            if (heightRatio > 0) {
+                lp.height = (int) (displayMetrics.heightPixels * heightRatio);
+            }
+            window.setAttributes(lp);
+        }
     }
 
     //====================更新功能============================//

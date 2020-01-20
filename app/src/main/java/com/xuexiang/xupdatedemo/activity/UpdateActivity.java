@@ -30,8 +30,8 @@ import com.xuexiang.xupdatedemo.R;
  */
 public class UpdateActivity extends Activity implements View.OnClickListener{
 
-    private String mUpdateUrl = "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/jsonapi/update_test.json";
-    private String mUpdateUrl2 = "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/jsonapi/update_forced.json";
+    private String mUpdateUrl = "https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_test.json";
+    private String mUpdateUrl2 = "https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_forced.json";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,13 +50,15 @@ public class UpdateActivity extends Activity implements View.OnClickListener{
             case R.id.btn_support_background_update:
                 XUpdate.newBuild(this)
                         .updateUrl(mUpdateUrl)
+                        .promptWidthRatio(0.7F)
                         .supportBackgroundUpdate(true)
                         .update();
                 break;
             case R.id.btn_auto_update:
                 XUpdate.newBuild(this)
                         .updateUrl(mUpdateUrl)
-                        .isAutoMode(true) //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
+                        //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
+                        .isAutoMode(true)
                         .update();
                 break;
             case R.id.btn_force_update:

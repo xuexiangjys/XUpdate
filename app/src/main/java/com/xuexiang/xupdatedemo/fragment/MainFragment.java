@@ -56,13 +56,13 @@ import static android.app.Activity.RESULT_OK;
 @Page(name = "XUpdate 版本更新")
 public class MainFragment extends XPageSimpleListFragment {
 
-    private String mUpdateUrl = "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/jsonapi/update_test.json";
+    private String mUpdateUrl = "https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_test.json";
 
-    private String mUpdateUrl2 = "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/jsonapi/update_forced.json";
+    private String mUpdateUrl2 = "https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_forced.json";
 
-    private String mUpdateUrl3 = "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/jsonapi/update_custom.json";
+    private String mUpdateUrl3 = "https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_custom.json";
 
-    private String mDownloadUrl = "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/apk/xupdate_demo_1.0.2.apk";
+    private String mDownloadUrl = "https://gitee.com/xuexiangjys/XUpdate/raw/master/apk/xupdate_demo_1.0.2.apk";
 
     private final static int REQUEST_CODE_SELECT_APK_FILE = 1000;
     @Override
@@ -112,10 +112,11 @@ public class MainFragment extends XPageSimpleListFragment {
                 break;
             case 5:
                 XUpdate.newBuild(getActivity())
-                        .updateHttpService(new XHttpUpdateHttpService("https://raw.githubusercontent.com"))
-                        .updateUrl("/xuexiangjys/XUpdate/master/jsonapi/update_test.json")
-                        .themeColor(ResUtils.getColor(R.color.update_theme_color))
-                        .topResId(R.mipmap.bg_update_top)
+                        .updateHttpService(new XHttpUpdateHttpService("https://gitee.com"))
+                        .updateUrl("/xuexiangjys/XUpdate/raw/master/jsonapi/update_test.json")
+                        .promptThemeColor(ResUtils.getColor(R.color.update_theme_color))
+                        .promptTopResId(R.mipmap.bg_update_top)
+                        .promptWidthRatio(0.7F)
                         .update();
                 break;
             case 6:

@@ -23,6 +23,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDialog;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -98,10 +99,14 @@ public abstract class BaseDialog extends AppCompatDialog {
      * @param height
      */
     protected BaseDialog setDialogSize(int width, int height) {
-        WindowManager.LayoutParams p = getWindow().getAttributes(); // 获取对话框当前的参数值
-        p.width = width;
-        p.height = height;
-        getWindow().setAttributes(p);
+        // 获取对话框当前的参数值
+        Window window = getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams p = getWindow().getAttributes();
+            p.width = width;
+            p.height = height;
+            window.setAttributes(p);
+        }
         return this;
     }
 
