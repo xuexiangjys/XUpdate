@@ -142,7 +142,7 @@ allprojects {
 ```
 dependencies {
   ...
-  implementation 'com.github.xuexiangjys:XUpdate:1.1.1'
+  implementation 'com.github.xuexiangjys:XUpdate:1.1.2'
 }
 ```
 
@@ -298,14 +298,17 @@ XUpdate.newBuild(getActivity())
 
 可设置弹窗的标题背景和按钮颜色。
 
-* themeColor: 设置主题颜色（升级/安装按钮的背景色）
-* topResId: 弹窗的标题背景的资源图片
+* promptThemeColor: 设置主题颜色（升级/安装按钮的背景色）
+* promptTopResId: 弹窗的标题背景的资源图片
+* promptWidthRatio: 弹窗宽度占屏幕宽度的比例，默认是0.8
+* promptHeightRatio: 弹窗高度占屏幕高度的比例，默认是-1，不做约束
 
 ```
 XUpdate.newBuild(getActivity())
         .updateUrl(mUpdateUrl)
         .themeColor(ResUtils.getColor(R.color.update_theme_color))
         .topResId(R.mipmap.bg_update_top)
+        .promptWidthRatio(0.7F)
         .update();
 ```
 
