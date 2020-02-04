@@ -37,6 +37,8 @@ public class FileMD5Fragment extends XPageFragment {
     TextView tvPath;
     @BindView(R.id.tv_md5)
     TextView tvMd5;
+    @BindView(R.id.tv_size)
+    TextView tvSize;
 
     @Override
     protected int getLayoutId() {
@@ -84,6 +86,9 @@ public class FileMD5Fragment extends XPageFragment {
         }
 
         tvMd5.setText(_XUpdate.encryptFile(FileUtils.getFileByPath(filePath)));
+
+        tvSize.setText(String.valueOf(FileUtils.getFileLength(filePath) / 1024));
+
     }
 
 
