@@ -45,7 +45,9 @@
 
 * 兼容Android6.0、7.0、8.0和9.0。
 
-* 支持中文和英文两种语言显示（国际化）
+* 支持中文和英文两种语言显示（国际化）。
+
+* 支持Flutter插件使用。
 
 ## 组成结构
 
@@ -478,7 +480,16 @@ _XUpdate.startInstallApk(getContext(), FileUtils.getFileByPath(PathUtils.getFile
 -keep class com.xuexiang.xupdatedemo.entity.** { *; }
 
 ```
+
+## 相关链接
+
+* [XUpdate 文档](https://github.com/xuexiangjys/XUpdate/wiki)
+* [XUpdate 管理服务](https://github.com/xuexiangjys/XUpdateService)
+* [XUpdate 后台管理系统](https://github.com/xuexiangjys/xupdate-management)
+* [XUpdate Flutter插件](https://github.com/xuexiangjys/flutter_xupdate)
+
 ---
+
 
 ## 特别感谢
 
