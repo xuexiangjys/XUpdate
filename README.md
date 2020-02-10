@@ -47,7 +47,7 @@
 
 * 支持中文和英文两种语言显示（国际化）。
 
-* 支持Flutter插件使用。
+* 支持Flutter插件使用：[flutter_xupdate](https://github.com/xuexiangjys/flutter_xupdate)。
 
 ## 组成结构
 
