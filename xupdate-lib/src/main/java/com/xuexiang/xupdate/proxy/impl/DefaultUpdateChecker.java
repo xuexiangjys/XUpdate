@@ -30,11 +30,8 @@ import com.xuexiang.xupdate.utils.UpdateUtils;
 
 import java.util.Map;
 
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_APK_CACHE_DIR_EMPTY;
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_IGNORED_VERSION;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_JSON_EMPTY;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NET_REQUEST;
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_PARSE;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_UPDATING;
 
@@ -125,38 +122,23 @@ public class DefaultUpdateChecker implements IUpdateChecker {
                 updateProxy.parseJson(result, new IUpdateParseCallback() {
                     @Override
                     public void onParseResult(UpdateEntity updateEntity) {
-                        processUpdateEntity(updateEntity, result, updateProxy);
+                        try {
+                            UpdateUtils.processUpdateEntity(updateEntity, result, updateProxy);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            _XUpdate.onUpdateError(CHECK_PARSE, e.getMessage());
+                        }
                     }
                 });
             } else {
                 //同步解析
-                processUpdateEntity(updateProxy.parseJson(result), result, updateProxy);
+                UpdateUtils.processUpdateEntity(updateProxy.parseJson(result), result, updateProxy);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             _XUpdate.onUpdateError(CHECK_PARSE, e.getMessage());
         }
     }
 
-    private void processUpdateEntity(UpdateEntity updateEntity, @NonNull String result, @NonNull IUpdateProxy updateProxy) {
-        if (updateEntity != null) {
-            if (updateEntity.isHasUpdate()) {
-                //校验是否是已忽略版本
-                if (UpdateUtils.isIgnoreVersion(updateProxy.getContext(), updateEntity.getVersionName())) {
-                    _XUpdate.onUpdateError(CHECK_IGNORED_VERSION);
-                    //校验apk下载缓存目录是否为空
-                } else if (TextUtils.isEmpty(updateEntity.getApkCacheDir())) {
-                    _XUpdate.onUpdateError(CHECK_APK_CACHE_DIR_EMPTY);
-                } else {
-                    updateProxy.findNewVersion(updateEntity, updateProxy);
-                }
-            } else {
-                _XUpdate.onUpdateError(CHECK_NO_NEW_VERSION);
-            }
-        } else {
-            _XUpdate.onUpdateError(CHECK_PARSE, "json:" + result);
-        }
-    }
 
 }

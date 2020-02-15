@@ -39,9 +39,15 @@ import com.google.gson.JsonParseException;
 import com.xuexiang.xupdate.R;
 import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
+import com.xuexiang.xupdate.proxy.IUpdateProxy;
 
 import java.io.File;
 import java.util.List;
+
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_APK_CACHE_DIR_EMPTY;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_IGNORED_VERSION;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_PARSE;
 
 /**
  * 更新工具类
@@ -59,6 +65,33 @@ public final class UpdateUtils {
     }
 
     //=======================检查========================//
+
+    /**
+     * 处理解析获取到的最新版本更新信息【版本处理的核心】
+     *
+     * @param updateEntity 版本更新信息
+     * @param result       版本的json信息
+     * @param updateProxy  更新代理
+     */
+    public static void processUpdateEntity(UpdateEntity updateEntity, @NonNull String result, @NonNull IUpdateProxy updateProxy) throws Exception {
+        if (updateEntity != null) {
+            if (updateEntity.isHasUpdate()) {
+                //校验是否是已忽略版本
+                if (UpdateUtils.isIgnoreVersion(updateProxy.getContext(), updateEntity.getVersionName())) {
+                    _XUpdate.onUpdateError(CHECK_IGNORED_VERSION);
+                    //校验apk下载缓存目录是否为空
+                } else if (TextUtils.isEmpty(updateEntity.getApkCacheDir())) {
+                    _XUpdate.onUpdateError(CHECK_APK_CACHE_DIR_EMPTY);
+                } else {
+                    updateProxy.findNewVersion(updateEntity, updateProxy);
+                }
+            } else {
+                _XUpdate.onUpdateError(CHECK_NO_NEW_VERSION);
+            }
+        } else {
+            _XUpdate.onUpdateError(CHECK_PARSE, "json:" + result);
+        }
+    }
 
     /**
      * 不能为null
@@ -171,6 +204,7 @@ public final class UpdateUtils {
 
     /**
      * 把 单个指定类型的对象 转换为 JSON 字符串
+     *
      * @param src
      * @return
      */

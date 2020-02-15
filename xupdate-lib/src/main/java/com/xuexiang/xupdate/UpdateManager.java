@@ -383,16 +383,6 @@ public class UpdateManager implements IUpdateProxy {
         }
     }
 
-    /**
-     * 为外部提供简单的下载功能
-     *
-     * @param downloadUrl      下载地址
-     * @param downloadListener 下载监听
-     */
-    public void download(String downloadUrl, @Nullable OnFileDownloadListener downloadListener) {
-        startDownload(refreshParams(new UpdateEntity().setDownloadUrl(downloadUrl)), downloadListener);
-    }
-
     @Override
     public void cancelDownload() {
         UpdateLog.d("正在取消更新文件的下载...");
@@ -403,6 +393,31 @@ public class UpdateManager implements IUpdateProxy {
         }
     }
 
+    //============================对外提供的自定义使用api===============================//
+
+    /**
+     * 为外部提供简单的下载功能
+     *
+     * @param downloadUrl      下载地址
+     * @param downloadListener 下载监听
+     */
+    public void download(String downloadUrl, @Nullable OnFileDownloadListener downloadListener) {
+        startDownload(refreshParams(new UpdateEntity().setDownloadUrl(downloadUrl)), downloadListener);
+    }
+
+    /**
+     * 直接更新，不使用版本更新检查器
+     *
+     * @param updateEntity 版本更新信息
+     */
+    public void update(UpdateEntity updateEntity) {
+        mUpdateEntity = refreshParams(updateEntity);
+        try {
+            UpdateUtils.processUpdateEntity(mUpdateEntity, "这里调用的是直接更新方法，因此没有json!", this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     //============================构建者===============================//
