@@ -28,6 +28,7 @@ import android.text.TextUtils;
 
 import com.xuexiang.xupdate.entity.PromptEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
+import com.xuexiang.xupdate.listener.IUpdateParseCallback;
 import com.xuexiang.xupdate.logs.UpdateLog;
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
 import com.xuexiang.xupdate.proxy.IUpdateDownloader;
@@ -245,6 +246,15 @@ public class UpdateManager implements IUpdateProxy {
         }
     }
 
+    @Override
+    public boolean isAsyncParser() {
+        if (mIUpdateProxy != null) {
+            return mIUpdateProxy.isAsyncParser();
+        } else {
+            return mIUpdateParser.isAsyncParser();
+        }
+    }
+
     /**
      * 将请求的json结果解析为版本更新信息实体
      *
@@ -261,6 +271,28 @@ public class UpdateManager implements IUpdateProxy {
         }
         mUpdateEntity = refreshParams(mUpdateEntity);
         return mUpdateEntity;
+    }
+
+    @Override
+    public void parseJson(@NonNull String json, final IUpdateParseCallback callback) throws Exception {
+        UpdateLog.i("服务端返回的最新版本信息:" + json);
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.parseJson(json, new IUpdateParseCallback() {
+                @Override
+                public void onParseResult(UpdateEntity updateEntity) {
+                    mUpdateEntity = refreshParams(updateEntity);
+                    callback.onParseResult(updateEntity);
+                }
+            });
+        } else {
+            mIUpdateParser.parseJson(json, new IUpdateParseCallback() {
+                @Override
+                public void onParseResult(UpdateEntity updateEntity) {
+                    mUpdateEntity = refreshParams(updateEntity);
+                    callback.onParseResult(updateEntity);
+                }
+            });
+        }
     }
 
     /**
@@ -370,6 +402,8 @@ public class UpdateManager implements IUpdateProxy {
             mIUpdateDownloader.cancelDownload();
         }
     }
+
+
 
     //============================构建者===============================//
 

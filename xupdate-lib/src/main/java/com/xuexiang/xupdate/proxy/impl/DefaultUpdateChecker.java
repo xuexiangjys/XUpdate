@@ -21,6 +21,7 @@ import android.text.TextUtils;
 
 import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
+import com.xuexiang.xupdate.listener.IUpdateParseCallback;
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
@@ -117,29 +118,44 @@ public class DefaultUpdateChecker implements IUpdateChecker {
     }
 
     @Override
-    public void processCheckResult(@NonNull String result, @NonNull IUpdateProxy updateProxy) {
+    public void processCheckResult(final @NonNull String result, final @NonNull IUpdateProxy updateProxy) {
         try {
-            UpdateEntity updateEntity = updateProxy.parseJson(result);
-            if (updateEntity != null) {
-                if (updateEntity.isHasUpdate()) {
-                    //校验是否是已忽略版本
-                    if (UpdateUtils.isIgnoreVersion(updateProxy.getContext(), updateEntity.getVersionName())) {
-                        _XUpdate.onUpdateError(CHECK_IGNORED_VERSION);
-                    //校验apk下载缓存目录是否为空
-                    } else if (TextUtils.isEmpty(updateEntity.getApkCacheDir())) {
-                        _XUpdate.onUpdateError(CHECK_APK_CACHE_DIR_EMPTY);
-                    } else {
-                        updateProxy.findNewVersion(updateEntity, updateProxy);
+            if (updateProxy.isAsyncParser()) {
+                //异步解析
+                updateProxy.parseJson(result, new IUpdateParseCallback() {
+                    @Override
+                    public void onParseResult(UpdateEntity updateEntity) {
+                        processUpdateEntity(updateEntity, result, updateProxy);
                     }
-                } else {
-                    _XUpdate.onUpdateError(CHECK_NO_NEW_VERSION);
-                }
+                });
             } else {
-                _XUpdate.onUpdateError(CHECK_PARSE, "json:" + result);
+                //同步解析
+                processUpdateEntity(updateProxy.parseJson(result), result, updateProxy);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             _XUpdate.onUpdateError(CHECK_PARSE, e.getMessage());
+        }
+    }
+
+    private void processUpdateEntity(UpdateEntity updateEntity, @NonNull String result, @NonNull IUpdateProxy updateProxy) {
+        if (updateEntity != null) {
+            if (updateEntity.isHasUpdate()) {
+                //校验是否是已忽略版本
+                if (UpdateUtils.isIgnoreVersion(updateProxy.getContext(), updateEntity.getVersionName())) {
+                    _XUpdate.onUpdateError(CHECK_IGNORED_VERSION);
+                    //校验apk下载缓存目录是否为空
+                } else if (TextUtils.isEmpty(updateEntity.getApkCacheDir())) {
+                    _XUpdate.onUpdateError(CHECK_APK_CACHE_DIR_EMPTY);
+                } else {
+                    updateProxy.findNewVersion(updateEntity, updateProxy);
+                }
+            } else {
+                _XUpdate.onUpdateError(CHECK_NO_NEW_VERSION);
+            }
+        } else {
+            _XUpdate.onUpdateError(CHECK_PARSE, "json:" + result);
         }
     }
 

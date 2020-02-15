@@ -19,7 +19,7 @@ package com.xuexiang.xupdatedemo.custom;
 import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate.entity.CheckVersionResult;
 import com.xuexiang.xupdate.entity.UpdateEntity;
-import com.xuexiang.xupdate.proxy.IUpdateParser;
+import com.xuexiang.xupdate.proxy.impl.AbstractUpdateParser;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 import com.xuexiang.xupdatedemo.entity.ApiResult;
 import com.xuexiang.xupdatedemo.entity.AppVersionInfo;
@@ -33,7 +33,7 @@ import java.lang.reflect.Type;
  * @author xuexiang
  * @since 2018/7/30 下午12:00
  */
-public class XUpdateServiceParser implements IUpdateParser {
+public class XUpdateServiceParser extends AbstractUpdateParser {
     @Override
     public UpdateEntity parseJson(String json) throws Exception {
         ApiResult<AppVersionInfo> apiResult = JsonUtil.fromJson(json, getApiResultType(AppVersionInfo.class));

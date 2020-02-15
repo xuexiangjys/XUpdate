@@ -21,16 +21,15 @@ import android.text.TextUtils;
 import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate.entity.CheckVersionResult;
 import com.xuexiang.xupdate.entity.UpdateEntity;
-import com.xuexiang.xupdate.proxy.IUpdateParser;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 
 /**
- * 版本更新解析器
+ * 默认版本更新解析器
  *
  * @author xuexiang
  * @since 2018/7/5 下午4:36
  */
-public class DefaultUpdateParser implements IUpdateParser {
+public class DefaultUpdateParser extends AbstractUpdateParser {
 
     @Override
     public UpdateEntity parseJson(String json) {
