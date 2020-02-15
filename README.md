@@ -117,7 +117,17 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
 
 ### Demo下载
 
-[![downloads](https://img.shields.io/badge/downloads-1.6M-blue.svg)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
+#### 蒲公英下载
+
+> 蒲公英下载的密码: xuexiangjys
+
+[![downloads](https://img.shields.io/badge/downloads-2.1M-blue.svg)](https://www.pgyer.com/xupdate)
+
+![](./img/download_pugongying.png)
+
+#### Github下载
+
+[![downloads](https://img.shields.io/badge/downloads-2.1M-blue.svg)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
 
 ![](./img/download.png)
 
@@ -144,7 +154,7 @@ allprojects {
 ```
 dependencies {
   ...
-  implementation 'com.github.xuexiangjys:XUpdate:1.1.3'
+  implementation 'com.github.xuexiangjys:XUpdate:1.1.4'
 }
 ```
 
