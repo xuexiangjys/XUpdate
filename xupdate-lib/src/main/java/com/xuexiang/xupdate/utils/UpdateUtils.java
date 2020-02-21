@@ -378,17 +378,18 @@ public final class UpdateUtils {
      * @param uniqueName 缓存目录
      */
     public static String getDiskCacheDir(Context context, String uniqueName) {
-        File cacheDir;
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-                || !Environment.isExternalStorageRemovable()) {
-            cacheDir = context.getExternalCacheDir();
+        String cachePath;
+        if (isSDCardEnable() && context.getExternalCacheDir() != null) {
+            cachePath = context.getExternalCacheDir().getPath();
         } else {
-            cacheDir = context.getCacheDir();
+            cachePath = context.getCacheDir().getPath();
         }
-        if (cacheDir == null) {// if cacheDir is null throws NullPointerException
-            cacheDir = context.getCacheDir();
-        }
-        return cacheDir.getPath() + File.separator + uniqueName;
+        return cachePath + File.separator + uniqueName;
+    }
+
+    private static boolean isSDCardEnable() {
+        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable();
     }
 
     private static PackageInfo getPackageInfo(Context context) {
