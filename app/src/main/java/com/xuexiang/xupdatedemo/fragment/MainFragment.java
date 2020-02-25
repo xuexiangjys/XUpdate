@@ -66,7 +66,7 @@ public class MainFragment extends XPageSimpleListFragment {
 
     private String mUpdateUrl3 = "https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_custom.json";
 
-    private String mDownloadUrl = "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/apk/xupdate_demo_1.0.2.apk";
+    private String mDownloadUrl = "https://xuexiangjys.oss-cn-shanghai.aliyuncs.com/apk/xupdate_demo_1.0.2.apk";
 
     private final static int REQUEST_CODE_SELECT_APK_FILE = 1000;
     @Override
