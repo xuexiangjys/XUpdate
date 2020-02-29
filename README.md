@@ -511,6 +511,12 @@ https://github.com/WVector/AppUpdate
 
 ![](https://github.com/xuexiangjys/Resource/blob/master/img/pay/alipay.jpeg) &emsp; ![](https://github.com/xuexiangjys/Resource/blob/master/img/pay/weixinpay.jpeg)
 
+感谢下面小伙伴的打赏：
+
+姓名 | 金额 | 方式
+:-|:-|:-
+*天 | 100￥ | 微信
+
 
 ## 联系方式
 
