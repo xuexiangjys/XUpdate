@@ -15,22 +15,22 @@
   -->
 
 <resources>
-    <declare-styleable name="XUpdate_ProgressBar">
-        <attr name="progress_current" format="integer" />
-        <attr name="progress_max" format="integer" />
+    <declare-styleable name="XNumberProgressBar">
+        <attr name="xnpb_current" format="integer" />
+        <attr name="xnpb_max" format="integer" />
 
-        <attr name="progress_unreached_color" format="color" />
-        <attr name="progress_reached_color" format="color" />
+        <attr name="xnpb_unreached_color" format="color" />
+        <attr name="xnpb_reached_color" format="color" />
 
-        <attr name="progress_reached_bar_height" format="dimension" />
-        <attr name="progress_unreached_bar_height" format="dimension" />
+        <attr name="xnpb_reached_bar_height" format="dimension" />
+        <attr name="xnpb_unreached_bar_height" format="dimension" />
 
-        <attr name="progress_text_size" format="dimension" />
-        <attr name="progress_text_color" format="color" />
+        <attr name="xnpb_text_size" format="dimension" />
+        <attr name="xnpb_text_color" format="color" />
 
-        <attr name="progress_text_offset" format="dimension" />
+        <attr name="xnpb_text_offset" format="dimension" />
 
-        <attr name="progress_text_visibility" format="enum">
+        <attr name="xnpb_text_visibility" format="enum">
             <enum name="visible" value="0" />
             <enum name="invisible" value="1" />
         </attr>
