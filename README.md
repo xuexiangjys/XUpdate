@@ -49,6 +49,8 @@
 
 * 支持Flutter插件使用：[flutter_xupdate](https://github.com/xuexiangjys/flutter_xupdate)。
 
+* 支持React-Native插件使用：[react-native-xupdate](https://github.com/xuexiangjys/react-native-xupdate)。
+
 ## 组成结构
 
 本框架借鉴了[AppUpdate](https://github.com/WVector/AppUpdate)中的部分思想和UI界面，将版本更新中的各部分环节抽离出来，形成了如下几个部分：
@@ -497,6 +499,7 @@ _XUpdate.startInstallApk(getContext(), FileUtils.getFileByPath(PathUtils.getFile
 * [XUpdate 管理服务](https://github.com/xuexiangjys/XUpdateService)
 * [XUpdate 后台管理系统](https://github.com/xuexiangjys/xupdate-management)
 * [XUpdate Flutter插件](https://github.com/xuexiangjys/flutter_xupdate)
+* [XUpdate React-Native插件](https://github.com/xuexiangjys/react-native-xupdate)
 
 ---
 
