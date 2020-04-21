@@ -18,11 +18,15 @@ package com.xuexiang.xupdatedemo.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.xuexiang.xaop.annotation.MemoryCache;
 import com.xuexiang.xaop.annotation.Permission;
+import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xaop.consts.PermissionConsts;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.base.XPageSimpleListFragment;
@@ -50,6 +54,7 @@ import com.xuexiang.xutil.tip.ToastUtils;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -69,6 +74,16 @@ public class MainFragment extends XPageSimpleListFragment {
     private String mDownloadUrl = "https://xuexiangjys.oss-cn-shanghai.aliyuncs.com/apk/xupdate_demo_1.0.2.apk";
 
     private final static int REQUEST_CODE_SELECT_APK_FILE = 1000;
+
+    private boolean mIsSimplifiedChinese;
+
+    @Override
+    protected void initArgs() {
+        Resources resource = getResources();
+        Configuration config = resource.getConfiguration();
+        mIsSimplifiedChinese = config.locale == Locale.SIMPLIFIED_CHINESE;
+    }
+
     @Override
     protected List<String> initSimpleData(List<String> lists) {
         lists.add("获取文件的MD5值");
@@ -139,6 +154,7 @@ public class MainFragment extends XPageSimpleListFragment {
                                 super.onBeforeCheck();
                                 CProgressDialogUtils.showProgressDialog(getActivity(), "查询中...");
                             }
+
                             @Override
                             public void onAfterCheck() {
                                 super.onAfterCheck();
@@ -223,15 +239,44 @@ public class MainFragment extends XPageSimpleListFragment {
     }
 
 
+    private TextView mAction;
 
     @Override
     protected TitleBar initTitleBar() {
-        return super.initTitleBar().setLeftClickListener(new View.OnClickListener() {
+        TitleBar titleBar = super.initTitleBar().setLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ClickUtils.exitBy2Click();
             }
         });
+        mAction = (TextView) titleBar.addAction(new TitleBar.TextAction(mIsSimplifiedChinese ? "简体中文" : "系统默认") {
+            @SingleClick
+            @Override
+            public void performAction(View view) {
+                if (mIsSimplifiedChinese) {
+                    changeLocale(Locale.getDefault());
+                } else {
+                    changeLocale(Locale.SIMPLIFIED_CHINESE);
+                }
+                mIsSimplifiedChinese = !mIsSimplifiedChinese;
+                mAction.setText(mIsSimplifiedChinese ? "简体中文" : "系统默认");
+
+            }
+        });
+        return titleBar;
+    }
+
+
+    /**
+     * 切换语言
+     *
+     * @param locale 需要切换的语言
+     */
+    private void changeLocale(Locale locale) {
+        Resources resource = getResources();
+        Configuration config = resource.getConfiguration();
+        config.setLocale(locale);
+        getResources().updateConfiguration(config, null);
     }
 
 
