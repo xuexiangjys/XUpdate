@@ -18,7 +18,6 @@ package com.xuexiang.xupdatedemo.http;
 
 import android.support.annotation.NonNull;
 
-
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -31,8 +30,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import okhttp3.Call;
+import okhttp3.MediaType;
 import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * 使用okhttp
@@ -80,6 +79,7 @@ public class OKHttpUpdateHttpService implements IUpdateHttpService {
             requestCall = OkHttpUtils.postString()
                     .url(url)
                     .content(UpdateUtils.toJson(params))
+                    .mediaType(MediaType.parse("application/json; charset=utf-8"))
                     .build();
         } else {
             requestCall = OkHttpUtils.post()
