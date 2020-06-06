@@ -39,6 +39,7 @@ import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.logs.UpdateLog;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.utils.ApkInstallUtils;
+import com.xuexiang.xupdate.utils.FileUtils;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 
 import java.io.File;
@@ -243,9 +244,16 @@ public class DownloadService extends Service {
         }
         String apkName = UpdateUtils.getApkNameByDownloadUrl(apkUrl);
 
-        File apkCacheDir = new File(updateEntity.getApkCacheDir());
-        if (!apkCacheDir.exists()) {
-            apkCacheDir.mkdirs();
+        File apkCacheDir = FileUtils.getFileByPath(updateEntity.getApkCacheDir());
+        if (apkCacheDir == null) {
+            apkCacheDir = UpdateUtils.getDefaultDiskCacheDir();
+        }
+        try {
+            if (!FileUtils.isFileExists(apkCacheDir)) {
+                apkCacheDir.mkdirs();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         String target = apkCacheDir + File.separator + updateEntity.getVersionName();
@@ -391,7 +399,7 @@ public class DownloadService extends Service {
     private void showDownloadCompleteNotification(File file) {
         //App后台运行
         //更新参数,注意flags要使用FLAG_UPDATE_CURRENT
-        Intent installAppIntent = ApkInstallUtils.getInstallAppIntent(DownloadService.this, file);
+        Intent installAppIntent = ApkInstallUtils.getInstallAppIntent(file);
         PendingIntent contentIntent = PendingIntent.getActivity(DownloadService.this, 0, installAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         if (mBuilder == null) {
             mBuilder = getNotificationBuilder();

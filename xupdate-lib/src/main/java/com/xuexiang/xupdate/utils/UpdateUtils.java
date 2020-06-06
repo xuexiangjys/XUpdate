@@ -37,6 +37,7 @@ import android.util.DisplayMetrics;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.xuexiang.xupdate.R;
+import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
@@ -59,6 +60,8 @@ public final class UpdateUtils {
 
     private static final String IGNORE_VERSION = "xupdate_ignore_version";
     private static final String PREFS_FILE = "xupdate_prefs";
+
+    private static final String KEY_XUPDATE = "xupdate";
 
     private UpdateUtils() {
         throw new UnsupportedOperationException("cannot be instantiated");
@@ -336,7 +339,7 @@ public final class UpdateUtils {
     public static boolean isApkDownloaded(UpdateEntity updateEntity) {
         File appFile = getApkFileByUpdateEntity(updateEntity);
         return !TextUtils.isEmpty(updateEntity.getMd5())
-                && appFile.exists()
+                && FileUtils.isFileExists(appFile)
                 && _XUpdate.isFileValid(updateEntity.getMd5(), appFile);
     }
 
@@ -362,11 +365,11 @@ public final class UpdateUtils {
     @NonNull
     public static String getApkNameByDownloadUrl(String downloadUrl) {
         if (TextUtils.isEmpty(downloadUrl)) {
-            return "temp.apk";
+            return "temp_" + System.currentTimeMillis() + ".apk";
         } else {
             String appName = downloadUrl.substring(downloadUrl.lastIndexOf("/") + 1);
             if (!appName.endsWith(".apk")) {
-                appName = "temp.apk";
+                appName = "temp_" + System.currentTimeMillis() + ".apk";
             }
             return appName;
         }
@@ -385,6 +388,21 @@ public final class UpdateUtils {
             cachePath = context.getCacheDir().getPath();
         }
         return cachePath + File.separator + uniqueName;
+    }
+
+
+    /**
+     * @return 版本更新的默认缓存路径
+     */
+    public static File getDefaultDiskCacheDir() {
+        return FileUtils.getFileByPath(getDefaultDiskCacheDirPath());
+    }
+
+    /**
+     * @return 版本更新的默认缓存路径
+     */
+    public static String getDefaultDiskCacheDirPath() {
+        return UpdateUtils.getDiskCacheDir(XUpdate.getContext(), KEY_XUPDATE);
     }
 
     private static boolean isSDCardEnable() {

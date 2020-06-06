@@ -17,8 +17,7 @@
 package com.xuexiang.xupdate.utils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 
 /**
@@ -40,13 +39,13 @@ public final class Md5Utils {
      * @return
      */
     public static String getFileMD5(File file) {
-        if (file == null || !file.exists()) {
+        if (!FileUtils.isFileExists(file)) {
             return "";
         }
-        FileInputStream fis = null;
+        InputStream fis = null;
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");
-            fis = new FileInputStream(file);
+            fis = FileUtils.getFileInputStream(file);
             byte[] buffer = new byte[8192];
             int len;
             while ((len = fis.read(buffer)) != -1) {
@@ -56,12 +55,7 @@ public final class Md5Utils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException ignored) {
-                }
-            }
+            FileUtils.closeIOQuietly(fis);
         }
         return "";
     }

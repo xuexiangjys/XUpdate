@@ -19,10 +19,12 @@ package com.xuexiang.xupdatedemo.custom;
 import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate.entity.CheckVersionResult;
 import com.xuexiang.xupdate.entity.UpdateEntity;
+import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.impl.AbstractUpdateParser;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 import com.xuexiang.xupdatedemo.entity.ApiResult;
 import com.xuexiang.xupdatedemo.entity.AppVersionInfo;
+import com.xuexiang.xupdatedemo.http.XHttpUpdateHttpService;
 import com.xuexiang.xupdatedemo.utils.SettingSPUtils;
 import com.xuexiang.xutil.net.JsonUtil;
 import com.xuexiang.xutil.net.type.TypeBuilder;
@@ -95,7 +97,6 @@ public class XUpdateServiceParser extends AbstractUpdateParser {
         } else {
             return baseUrl + "/update/checkVersion";
         }
-
     }
 
     public static String getDownLoadUrl(String url) {
@@ -105,5 +106,9 @@ public class XUpdateServiceParser extends AbstractUpdateParser {
         } else {
             return baseUrl + "/update/apk/" + url;
         }
+    }
+
+    public static IUpdateHttpService getUpdateHttpService() {
+        return new XHttpUpdateHttpService(SettingSPUtils.get().getServiceURL());
     }
 }

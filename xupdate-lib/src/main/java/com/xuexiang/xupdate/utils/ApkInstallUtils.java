@@ -127,8 +127,8 @@ public final class ApkInstallUtils {
      */
     @RequiresPermission(INSTALL_PACKAGES)
     private static boolean installAppSilentBelow24(Context context, String filePath) {
-        File file = getFileByPath(filePath);
-        if (!isFileExists(file)) {
+        File file = FileUtils.getFileByPath(filePath);
+        if (!FileUtils.isFileExists(file)) {
             return false;
         }
 
@@ -184,6 +184,8 @@ public final class ApkInstallUtils {
                         return APP_INSTALL_INTERNAL;
                     case APP_INSTALL_EXTERNAL:
                         return APP_INSTALL_EXTERNAL;
+                    default:
+                        break;
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
@@ -204,8 +206,8 @@ public final class ApkInstallUtils {
      */
     @RequiresPermission(INSTALL_PACKAGES)
     private static boolean installAppSilentAbove24(String packageName, String filePath) {
-        File file = getFileByPath(filePath);
-        if (!isFileExists(file)) {
+        File file = FileUtils.getFileByPath(filePath);
+        if (!FileUtils.isFileExists(file)) {
             return false;
         }
         boolean isRoot = isDeviceRooted();
@@ -223,8 +225,8 @@ public final class ApkInstallUtils {
      * @return whether apk exist
      */
     private static boolean installNormal(Context context, String filePath) {
-        File file = getFileByPath(filePath);
-        return isFileExists(file) && installNormal(context, file);
+        File file = FileUtils.getFileByPath(filePath);
+        return FileUtils.isFileExists(file) && installNormal(context, file);
     }
 
     /**
@@ -236,7 +238,7 @@ public final class ApkInstallUtils {
      */
     private static boolean installNormal(Context context, File appFile) {
         try {
-            Intent intent = getInstallAppIntent(context, appFile);
+            Intent intent = getInstallAppIntent(appFile);
             if (context.getPackageManager().queryIntentActivities(intent, 0).size() > 0) {
                 if (context instanceof Activity) {
                     ((Activity) context).startActivityForResult(intent, REQUEST_CODE_INSTALL_APP);
@@ -254,65 +256,24 @@ public final class ApkInstallUtils {
     /**
      * 获取安装apk的意图
      *
-     * @param context
      * @param appFile
      * @return
      */
-    public static Intent getInstallAppIntent(Context context, File appFile) {
+    public static Intent getInstallAppIntent(File appFile) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 //区别于 FLAG_GRANT_READ_URI_PERMISSION 跟 FLAG_GRANT_WRITE_URI_PERMISSION， URI权限会持久存在即使重启，直到明确的用 revokeUriPermission(Uri, int) 撤销。 这个flag只提供可能持久授权。但是接收的应用必须调用ContentResolver的takePersistableUriPermission(Uri, int)方法实现
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                Uri fileUri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".updateFileProvider", appFile);
-                intent.setDataAndType(fileUri, "application/vnd.android.package-archive");
-            } else {
-                intent.setDataAndType(Uri.fromFile(appFile), "application/vnd.android.package-archive");
             }
+            Uri fileUri = FileUtils.getUriByFile(appFile);
+            intent.setDataAndType(fileUri, "application/vnd.android.package-archive");
             return intent;
         } catch (Exception e) {
             _XUpdate.onUpdateError(INSTALL_FAILED, "获取安装的意图失败！");
         }
         return null;
-    }
-
-    /**
-     * 根据文件路径获取文件
-     *
-     * @param filePath 文件路径
-     * @return 文件
-     */
-    private static File getFileByPath(final String filePath) {
-        return isSpace(filePath) ? null : new File(filePath);
-    }
-
-    /**
-     * 判断字符串是否为 null 或全为空白字符
-     *
-     * @param s 待校验字符串
-     * @return {@code true}: null 或全空白字符<br> {@code false}: 不为 null 且不全空白字符
-     */
-    private static boolean isSpace(final String s) {
-        if (s == null) {
-            return true;
-        }
-        for (int i = 0, len = s.length(); i < len; ++i) {
-            if (!Character.isWhitespace(s.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * 判断文件是否存在
-     *
-     * @param file 文件
-     * @return {@code true}: 存在<br>{@code false}: 不存在
-     */
-    private static boolean isFileExists(final File file) {
-        return file != null && file.exists();
     }
 
     /**

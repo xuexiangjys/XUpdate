@@ -26,6 +26,7 @@ import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdatedemo.R;
 import com.xuexiang.xupdatedemo.custom.XUpdateServiceParser;
 import com.xuexiang.xupdatedemo.utils.SettingSPUtils;
+import com.xuexiang.xutil.app.PathUtils;
 import com.xuexiang.xutil.net.NetworkUtils;
 
 import java.util.List;
@@ -70,6 +71,8 @@ public class XUpdateServiceFragment extends XPageFragment {
                 break;
             case R.id.btn_update:
                 XUpdate.newBuild(getContext())
+                        .apkCacheDir(PathUtils.getExtDownloadsPath())
+                        .updateHttpService(XUpdateServiceParser.getUpdateHttpService())
                         .isGet(false)
                         .updateUrl(XUpdateServiceParser.getVersionCheckUrl())
                         .updateParser(new XUpdateServiceParser())

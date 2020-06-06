@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -754,7 +753,7 @@ public class UpdateManager implements IUpdateProxy {
             }
 
             if (TextUtils.isEmpty(apkCacheDir)) {
-                apkCacheDir = UpdateUtils.getDiskCacheDir(this.context, "xupdate");
+                apkCacheDir = UpdateUtils.getDefaultDiskCacheDirPath();
             }
             return new UpdateManager(this);
         }
