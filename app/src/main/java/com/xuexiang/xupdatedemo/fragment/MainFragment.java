@@ -111,7 +111,6 @@ public class MainFragment extends XPageSimpleListFragment {
             case 1:
                 XUpdate.newBuild(getActivity())
                         .updateUrl(mUpdateUrl)
-                        .apkCacheDir(PathUtils.getExtDownloadsPath())
                         .update();
                 break;
             case 2:
