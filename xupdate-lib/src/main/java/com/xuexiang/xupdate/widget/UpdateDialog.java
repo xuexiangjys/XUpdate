@@ -38,7 +38,7 @@ import com.xuexiang.xupdate.R;
 import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.PromptEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
-import com.xuexiang.xupdate.proxy.IUpdateProxy;
+import com.xuexiang.xupdate.proxy.IPrompterProxy;
 import com.xuexiang.xupdate.service.OnFileDownloadListener;
 import com.xuexiang.xupdate.utils.ColorUtils;
 import com.xuexiang.xupdate.utils.DrawableUtils;
@@ -101,7 +101,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
     /**
      * 更新代理
      */
-    private IUpdateProxy mIUpdateProxy;
+    private IPrompterProxy mIPrompterProxy;
     /**
      * 提示器参数信息
      */
@@ -110,14 +110,14 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
     /**
      * 获取更新提示
      *
-     * @param updateEntity 更新信息
-     * @param updateProxy  更新代理
-     * @param promptEntity 提示器参数信息
+     * @param updateEntity  更新信息
+     * @param prompterProxy 更新代理
+     * @param promptEntity  提示器参数信息
      * @return
      */
-    public static UpdateDialog newInstance(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, PromptEntity promptEntity) {
-        UpdateDialog dialog = new UpdateDialog(updateProxy.getContext());
-        dialog.setIUpdateProxy(updateProxy)
+    public static UpdateDialog newInstance(@NonNull Context context, @NonNull UpdateEntity updateEntity, @NonNull IPrompterProxy prompterProxy, PromptEntity promptEntity) {
+        UpdateDialog dialog = new UpdateDialog(context);
+        dialog.setIPrompterProxy(prompterProxy)
                 .setUpdateEntity(updateEntity)
                 .setPromptEntity(promptEntity);
         dialog.initTheme(promptEntity.getThemeColor(), promptEntity.getTopResId(), promptEntity.getWidthRatio(), promptEntity.getHeightRatio());
@@ -234,8 +234,8 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
     /**
      * 设置
      *
-     * @param themeColor    主色
-     * @param topResId 图片
+     * @param themeColor 主色
+     * @param topResId   图片
      */
     private void setDialogTheme(int themeColor, int topResId, float widthRatio, float heightRatio) {
         mIvTop.setImageResource(topResId);
@@ -262,8 +262,8 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
 
     //====================更新功能============================//
 
-    public UpdateDialog setIUpdateProxy(IUpdateProxy updateProxy) {
-        mIUpdateProxy = updateProxy;
+    public UpdateDialog setIPrompterProxy(IPrompterProxy prompterProxy) {
+        mIPrompterProxy = prompterProxy;
         return this;
     }
 
@@ -275,17 +275,17 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
             //权限判断是否有访问外部存储空间权限
             int flag = ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (flag != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions((Activity) mIUpdateProxy.getContext(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_REQUEST_PERMISSIONS);
+                ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_REQUEST_PERMISSIONS);
             } else {
                 installApp();
             }
         } else if (i == R.id.btn_background_update) {
             //点击后台更新按钮
-            mIUpdateProxy.backgroundDownload();
+            mIPrompterProxy.backgroundDownload();
             dismiss();
         } else if (i == R.id.iv_close) {
             //点击关闭按钮
-            mIUpdateProxy.cancelDownload();
+            mIPrompterProxy.cancelDownload();
             dismiss();
         } else if (i == R.id.tv_ignore) {
             //点击忽略按钮
@@ -305,8 +305,8 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
                 showInstallButton(UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity));
             }
         } else {
-            if (mIUpdateProxy != null) {
-                mIUpdateProxy.startDownload(mUpdateEntity, mOnFileDownloadListener);
+            if (mIPrompterProxy != null) {
+                mIPrompterProxy.startDownload(mUpdateEntity, mOnFileDownloadListener);
             }
             //忽略版本在点击更新按钮后隐藏
             if (mUpdateEntity.isIgnorable()) {

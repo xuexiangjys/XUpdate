@@ -23,7 +23,7 @@ import com.xuexiang.xupdate.entity.PromptEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdatePrompter;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
-import com.xuexiang.xupdate.widget.UpdateDialog;
+import com.xuexiang.xupdate.widget.UpdateDialogActivity;
 import com.xuexiang.xupdate.widget.UpdateDialogFragment;
 
 /**
@@ -61,11 +61,9 @@ public class DefaultUpdatePrompter implements IUpdatePrompter {
     @Override
     public void showPrompt(@NonNull UpdateEntity updateEntity, @NonNull IUpdateProxy updateProxy, @NonNull PromptEntity promptEntity) {
         if (mFragmentManager != null) {
-            UpdateDialogFragment.newInstance(updateEntity, updateProxy, promptEntity)
-                    .show(mFragmentManager);
+            UpdateDialogFragment.show(mFragmentManager, updateEntity, new DefaultPrompterProxyImpl(updateProxy), promptEntity);
         } else {
-            UpdateDialog.newInstance(updateEntity, updateProxy, promptEntity)
-                    .show();
+            UpdateDialogActivity.show(updateProxy.getContext(), updateEntity, new DefaultPrompterProxyImpl(updateProxy), promptEntity);
         }
     }
 }

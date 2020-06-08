@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application>
-        <service android:name="com.xuexiang.xupdate.service.DownloadService"/>
+        <service android:name="com.xuexiang.xupdate.service.DownloadService" />
 
         <provider
             android:name=".utils.UpdateFileProvider"
@@ -23,5 +23,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/update_file_paths" />
         </provider>
+
+        <activity
+            android:name=".widget.UpdateDialogActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
+            android:theme="@style/XUpdate_DialogTheme" />
+
     </application>
 </manifest>

@@ -121,7 +121,8 @@ public class UpdateEntity implements Parcelable {
 
     public UpdateEntity setForce(boolean force) {
         if (force) {
-            mIsIgnorable = false; //强制更新，不可以忽略
+            //强制更新，不可以忽略
+            mIsIgnorable = false;
         }
         mIsForce = force;
         return this;
@@ -133,7 +134,8 @@ public class UpdateEntity implements Parcelable {
 
     public UpdateEntity setIsIgnorable(boolean isIgnorable) {
         if (isIgnorable) {
-            mIsForce = false;  //可忽略的，不能是强制更新
+            //可忽略的，不能是强制更新
+            mIsForce = false;
         }
         mIsIgnorable = isIgnorable;
         return this;
@@ -177,9 +179,12 @@ public class UpdateEntity implements Parcelable {
      */
     public void setIsAutoMode(boolean isAutoMode) {
         if (isAutoMode) {
-            mIsSilent = true;  //自动下载
-            mIsAutoInstall = true; //自动安装
-            mDownloadEntity.setShowNotification(true); //自动模式下，默认下载进度条在通知栏显示
+            //自动下载
+            mIsSilent = true;
+            //自动安装
+            mIsAutoInstall = true;
+            //自动模式下，默认下载进度条在通知栏显示
+            mDownloadEntity.setShowNotification(true);
         }
     }
 

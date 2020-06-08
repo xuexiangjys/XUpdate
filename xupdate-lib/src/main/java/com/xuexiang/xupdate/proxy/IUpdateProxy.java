@@ -51,7 +51,7 @@ public interface IUpdateProxy {
      */
     void update();
 
-    //=============================//
+    //============ICheckerProxy=================//
 
     /**
      * 版本检查之前
@@ -83,7 +83,7 @@ public interface IUpdateProxy {
      */
     void noNewVersion(@NonNull Throwable throwable);
 
-    //=============================//
+    //=============IParserProxy================//
 
     /**
      * @return 是否是异步解析者
@@ -107,7 +107,7 @@ public interface IUpdateProxy {
      */
     void parseJson(@NonNull String json, final IUpdateParseCallback callback) throws Exception;
 
-    //=============================//
+    //=============IPrompterProxy================//
 
     /**
      * 开始下载更新

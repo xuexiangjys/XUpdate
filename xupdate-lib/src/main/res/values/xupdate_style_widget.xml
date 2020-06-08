@@ -55,4 +55,26 @@
         <item name="android:windowExitAnimation">@anim/xupdate_app_window_out</item>
     </style>
 
+    <!--DialogTheme，用于将Activity作为Dialog的主题-->
+    <style name="XUpdate_DialogTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--设置dialog的背景，此处为系统给定的透明值-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--Dialog的windowFrame框为无-->
+        <item name="android:windowFrame">@null</item>
+        <!--无标题-->
+        <item name="android:windowNoTitle">true</item>　　　　　
+        <!--是否浮现在activity之上-->
+        <item name="android:windowIsFloating">true</item>
+        <!--是否半透明-->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--是否有覆盖-->
+        <item name="android:windowContentOverlay">@null</item>
+        <!--设置Activity出现方式-->
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowEnterAnimation">@anim/xupdate_app_window_in</item>
+        <item name="android:windowExitAnimation">@anim/xupdate_app_window_out</item>
+        <!--背景是否模糊显示-->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
 </resources>
