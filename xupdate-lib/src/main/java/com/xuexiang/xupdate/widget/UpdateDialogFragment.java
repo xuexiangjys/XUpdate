@@ -139,10 +139,6 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         fragment.show(fragmentManager);
     }
 
-    static void setsIPrompterProxy(IPrompterProxy sIPrompterProxy) {
-        UpdateDialogFragment.sIPrompterProxy = sIPrompterProxy;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -473,8 +469,19 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     @Override
     public void onDestroyView() {
         _XUpdate.setIsShowUpdatePrompter(false);
-        setsIPrompterProxy(null);
+        clearIPrompterProxy();
         super.onDestroyView();
+    }
+
+    private static void setsIPrompterProxy(IPrompterProxy sIPrompterProxy) {
+        UpdateDialogFragment.sIPrompterProxy = sIPrompterProxy;
+    }
+
+    private static void clearIPrompterProxy() {
+        if (sIPrompterProxy != null) {
+            sIPrompterProxy.recycle();
+            sIPrompterProxy = null;
+        }
     }
 
 }

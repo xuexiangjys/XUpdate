@@ -119,10 +119,6 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
         context.startActivity(intent);
     }
 
-    static void setsIPrompterProxy(IPrompterProxy sIPrompterProxy) {
-        UpdateDialogActivity.sIPrompterProxy = sIPrompterProxy;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -417,8 +413,19 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
     protected void onStop() {
         if (isFinishing()) {
             _XUpdate.setIsShowUpdatePrompter(false);
-            setsIPrompterProxy(null);
+            clearIPrompterProxy();
         }
         super.onStop();
+    }
+
+    private static void setsIPrompterProxy(IPrompterProxy sIPrompterProxy) {
+        UpdateDialogActivity.sIPrompterProxy = sIPrompterProxy;
+    }
+
+    private static void clearIPrompterProxy() {
+        if (sIPrompterProxy != null) {
+            sIPrompterProxy.recycle();
+            sIPrompterProxy = null;
+        }
     }
 }

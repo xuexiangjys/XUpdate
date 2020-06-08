@@ -178,6 +178,10 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
     @Override
     public void dismiss() {
         _XUpdate.setIsShowUpdatePrompter(false);
+        if (mIPrompterProxy != null) {
+            mIPrompterProxy.recycle();
+            mIPrompterProxy = null;
+        }
         super.dismiss();
     }
 

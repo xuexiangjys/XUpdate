@@ -31,4 +31,9 @@ public interface IPrompterProxy {
      * 取消下载
      */
     void cancelDownload();
+
+    /**
+     * 资源回收
+     */
+    void recycle();
 }

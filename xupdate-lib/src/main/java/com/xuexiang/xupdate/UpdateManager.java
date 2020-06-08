@@ -362,6 +362,7 @@ public class UpdateManager implements IUpdateProxy {
     @Override
     public void startDownload(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener) {
         UpdateLog.i("开始下载更新文件:" + updateEntity);
+        updateEntity.setIUpdateHttpService(mIUpdateHttpService);
         if (mIUpdateProxy != null) {
             mIUpdateProxy.startDownload(updateEntity, downloadListener);
         } else {
@@ -390,6 +391,25 @@ public class UpdateManager implements IUpdateProxy {
         } else {
             mIUpdateDownloader.cancelDownload();
         }
+    }
+
+    @Override
+    public void recycle() {
+        UpdateLog.d("正在回收资源...");
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.recycle();
+            mIUpdateProxy = null;
+        }
+        mContext = null;
+        if (mParams != null) {
+            mParams.clear();
+        }
+        mIUpdateHttpService = null;
+        mIUpdateChecker = null;
+        mIUpdateParser = null;
+        mIUpdateDownloader = null;
+        mOnFileDownloadListener = null;
+        mIUpdatePrompter = null;
     }
 
     //============================对外提供的自定义使用api===============================//

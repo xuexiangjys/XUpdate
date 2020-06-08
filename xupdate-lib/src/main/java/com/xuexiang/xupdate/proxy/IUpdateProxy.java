@@ -127,4 +127,9 @@ public interface IUpdateProxy {
      */
     void cancelDownload();
 
+    /**
+     * 资源回收
+     */
+    void recycle();
+
 }

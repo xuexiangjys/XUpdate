@@ -8,8 +8,6 @@ import com.xuexiang.xupdate.proxy.IPrompterProxy;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
 import com.xuexiang.xupdate.service.OnFileDownloadListener;
 
-import java.lang.ref.WeakReference;
-
 /**
  * 默认版本更新提示器代理
  *
@@ -18,40 +16,39 @@ import java.lang.ref.WeakReference;
  */
 public class DefaultPrompterProxyImpl implements IPrompterProxy {
 
-    private WeakReference<IUpdateProxy> mWeakUpdateProxy;
+    private IUpdateProxy mIUpdateProxy;
 
     public DefaultPrompterProxyImpl(IUpdateProxy proxy) {
-        mWeakUpdateProxy = new WeakReference<>(proxy);
+        mIUpdateProxy = proxy;
     }
 
     @Override
     public void startDownload(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener) {
-        IUpdateProxy proxy = getUpdateProxy();
-        if (proxy != null) {
-            proxy.startDownload(updateEntity, downloadListener);
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.startDownload(updateEntity, downloadListener);
         }
     }
 
     @Override
     public void backgroundDownload() {
-        IUpdateProxy proxy = getUpdateProxy();
-        if (proxy != null) {
-            proxy.backgroundDownload();
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.backgroundDownload();
         }
     }
 
     @Override
     public void cancelDownload() {
-        IUpdateProxy proxy = getUpdateProxy();
-        if (proxy != null) {
-            proxy.cancelDownload();
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.cancelDownload();
         }
     }
 
-    private IUpdateProxy getUpdateProxy() {
-        if (mWeakUpdateProxy != null) {
-            return mWeakUpdateProxy.get();
+    @Override
+    public void recycle() {
+        if (mIUpdateProxy != null) {
+            mIUpdateProxy.recycle();
+            mIUpdateProxy = null;
         }
-        return null;
     }
+
 }
