@@ -240,6 +240,21 @@ public final class FileUtils {
     }
 
     /**
+     * 是否是私有目录
+     *
+     * @param path 需要判断的目录
+     * @return
+     */
+    public static boolean isPrivatePath(Context context, String path) {
+        if (isSpace(path)) {
+            return true;
+        }
+        String appIntPath = "/data/data/" + context.getPackageName();
+        String appExtPath = APP_EXT_STORAGE_PATH + "/data/" + context.getPackageName();
+        return path.startsWith(appIntPath) || path.startsWith(appExtPath);
+    }
+
+    /**
      * 是否是公有目录
      *
      * @return 是否是公有目录

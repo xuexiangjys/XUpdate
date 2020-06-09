@@ -305,7 +305,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         if (i == R.id.btn_update) {
             //权限判断是否有访问外部存储空间权限
             int flag = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (flag != PackageManager.PERMISSION_GRANTED) {
+            if (!UpdateUtils.isPrivateApkCacheDir(mUpdateEntity) && flag != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_REQUEST_PERMISSIONS);
             } else {
                 installApp();

@@ -390,12 +390,21 @@ public final class UpdateUtils {
         return cachePath + File.separator + uniqueName;
     }
 
-
     /**
      * @return 版本更新的默认缓存路径
      */
     public static File getDefaultDiskCacheDir() {
         return FileUtils.getFileByPath(getDefaultDiskCacheDirPath());
+    }
+
+    /**
+     * ApkCacheDir是否是私有目录
+     *
+     * @param updateEntity 版本更新信息实体
+     * @return
+     */
+    public static boolean isPrivateApkCacheDir(@NonNull UpdateEntity updateEntity) {
+        return FileUtils.isPrivatePath(XUpdate.getContext(), updateEntity.getApkCacheDir());
     }
 
     /**

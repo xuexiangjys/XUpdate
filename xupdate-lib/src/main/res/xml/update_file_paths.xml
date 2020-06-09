@@ -16,7 +16,23 @@
   -->
 
 <paths>
+    <files-path
+        name="update_files_path"
+        path="." />
+
+    <cache-path
+        name="update_cache_path"
+        path="." />
+
     <external-path
-        name="lib_update_app_files"
+        name="update_external_path"
+        path="." />
+
+    <external-files-path
+        name="update_external_files_path"
+        path="." />
+
+    <external-cache-path
+        name="update_external_cache_path"
         path="." />
 </paths>
