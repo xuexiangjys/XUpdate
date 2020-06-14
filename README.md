@@ -156,7 +156,7 @@ allprojects {
 ```
 dependencies {
   ...
-  implementation 'com.github.xuexiangjys:XUpdate:1.1.5'
+  implementation 'com.github.xuexiangjys:XUpdate:1.1.6'
 }
 ```
 
