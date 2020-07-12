@@ -16,7 +16,7 @@
 
 package com.xuexiang.xupdatedemo.custom;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.listener.IUpdateParseCallback;

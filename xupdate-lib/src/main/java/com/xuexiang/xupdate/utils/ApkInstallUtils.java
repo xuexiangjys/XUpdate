@@ -23,10 +23,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.RequiresPermission;
-import android.support.v4.content.FileProvider;
 
-import com.xuexiang.xupdate.XUpdate;
+import androidx.annotation.RequiresPermission;
+
 import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.utils.ShellUtils.CommandResult;
 

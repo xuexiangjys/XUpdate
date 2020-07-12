@@ -18,15 +18,16 @@ package com.xuexiang.xupdate.widget;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.IdRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatDialog;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import androidx.annotation.IdRes;
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.core.content.ContextCompat;
 
 import com.xuexiang.xupdate.R;
 

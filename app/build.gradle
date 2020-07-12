@@ -11,7 +11,7 @@ android {
         targetSdkVersion build_versions.target_sdk
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -50,28 +50,33 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation deps.support.app_compat
+    implementation deps.androidx.appcompat
     testImplementation deps.junit
     androidTestImplementation deps.runner
     androidTestImplementation deps.espresso.core
-//    implementation project(':xupdate-lib')
+    implementation project(':xupdate-lib')
 
-    implementation 'com.github.xuexiangjys:XUpdate:1.1.6'
+//    implementation 'com.github.xuexiangjys:XUpdate:1.1.6'
 
     implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.8'
     implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.8'
-    implementation 'com.github.xuexiangjys.XAOP:xaop-runtime:1.0.5'  //添加依赖
+    implementation 'com.github.xuexiangjys.XAOP:xaop-runtime:x1.0.5'  //添加依赖
 
     //XPage
     implementation 'com.github.xuexiangjys.XPage:xpage-lib:2.3.0'
     annotationProcessor 'com.github.xuexiangjys.XPage:xpage-compiler:2.3.0'
     //butterknife的sdk
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation deps.butterknife.runtime
+    annotationProcessor deps.butterknife.compiler
     //如果开启了内存泄漏监测leak,就需要加上这个依赖
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'

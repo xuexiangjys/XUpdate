@@ -37,6 +37,7 @@ public class MainActivity extends XPageActivity {
                     .setCancelable(false)
                     .setMessage("通知权限未打开，是否前去打开？")
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                        @Override
                         public void onClick(DialogInterface d, int w) {
                             NotifyUtils.openNotifyPermissionSetting(MainActivity.this);
                         }

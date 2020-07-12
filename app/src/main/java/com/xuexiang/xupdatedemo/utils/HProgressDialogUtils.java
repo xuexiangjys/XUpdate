@@ -39,8 +39,9 @@ public class HProgressDialogUtils {
             sHorizontalProgressDialog = new ProgressDialog(context);
             sHorizontalProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             sHorizontalProgressDialog.setCancelable(false);
-            if (isShowSize)
+            if (isShowSize) {
                 sHorizontalProgressDialog.setProgressNumberFormat("%2dMB/%1dMB");
+            }
 
         }
         if (!TextUtils.isEmpty(msg)) {

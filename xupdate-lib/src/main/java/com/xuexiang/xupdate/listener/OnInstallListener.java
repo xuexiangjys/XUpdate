@@ -17,10 +17,10 @@
 package com.xuexiang.xupdate.listener;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.xuexiang.xupdate.entity.DownloadEntity;
-import com.xuexiang.xupdate.entity.UpdateEntity;
 
 import java.io.File;
 

@@ -21,10 +21,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
@@ -33,6 +29,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
 import com.xuexiang.xupdate.R;
 import com.xuexiang.xupdate._XUpdate;

@@ -16,7 +16,7 @@
 
 package com.xuexiang.xupdate.proxy;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.File;
 import java.util.Map;

@@ -2,9 +2,9 @@ package com.xuexiang.xupdate.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.FloatRange;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
 
 /**
  * 版本更新提示器参数信息

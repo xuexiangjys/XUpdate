@@ -16,7 +16,7 @@
 
 package com.xuexiang.xupdatedemo.http;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.xuexiang.xhttp2.XHttp;
 import com.xuexiang.xhttp2.XHttpSDK;

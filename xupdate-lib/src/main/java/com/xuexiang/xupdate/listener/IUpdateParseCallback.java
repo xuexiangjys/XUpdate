@@ -13,7 +13,7 @@ public interface IUpdateParseCallback {
     /**
      * 解析结果
      *
-     * @param updateEntity
+     * @param updateEntity 版本更新信息实体
      */
     void onParseResult(UpdateEntity updateEntity);
 

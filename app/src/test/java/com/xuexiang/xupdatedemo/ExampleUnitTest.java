@@ -1,13 +1,12 @@
 package com.xuexiang.xupdatedemo;
 
 import com.xuexiang.xupdate.entity.CheckVersionResult;
-import com.xuexiang.xupdate.utils.Md5Utils;
 import com.xuexiang.xutil.data.DateUtils;
 import com.xuexiang.xutil.net.JsonUtil;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

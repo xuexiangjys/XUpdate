@@ -117,6 +117,18 @@
 #如果引用了v4或者v7包
 -dontwarn android.support.**
 
+# AndroidX 防止混淆
+-dontwarn com.google.android.material.**
+-dontnote com.google.android.material.**
+-dontwarn androidx.**
+-keep class com.google.android.material.** {*;}
+-keep class androidx.** {*;}
+-keep public class * extends androidx.**
+-keep interface androidx.** {*;}
+-keepclassmembers class * {
+    @androidx.annotation.Keep *;
+}
+
 #如果用到Gson解析包的，直接添加下面这几行就能成功混淆，不然会报错
 #gson
 -keepattributes Signature

@@ -16,7 +16,7 @@
 
 package com.xuexiang.xupdate.proxy.impl;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
