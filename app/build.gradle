@@ -72,8 +72,8 @@ dependencies {
     implementation 'com.github.xuexiangjys.XAOP:xaop-runtime:x1.0.5'  //添加依赖
 
     //XPage
-    implementation 'com.github.xuexiangjys.XPage:xpage-lib:2.3.0'
-    annotationProcessor 'com.github.xuexiangjys.XPage:xpage-compiler:2.3.0'
+    implementation 'com.github.xuexiangjys.XPage:xpage-lib:3.0.0'
+    annotationProcessor 'com.github.xuexiangjys.XPage:xpage-compiler:3.0.0'
     //butterknife的sdk
     implementation deps.butterknife.runtime
     annotationProcessor deps.butterknife.compiler
@@ -86,9 +86,9 @@ dependencies {
     implementation 'com.zhy:okhttputils:2.6.2'
 
     //网络请求的实现二
-    implementation 'com.github.xuexiangjys:XHttp2:1.0.4'
+    implementation 'com.github.xuexiangjys:XHttp2:2.0.0'
     implementation deps.gson
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
 }

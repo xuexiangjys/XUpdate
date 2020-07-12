@@ -157,13 +157,19 @@ allprojects {
 
 * androidx版本：2.0.0及以上
 
-* support版本：1.1.6及以下
-
 ```
 dependencies {
   ...
   // androidx版本
   implementation 'com.github.xuexiangjys:XUpdate:2.0.0'
+}
+```
+
+* support版本：1.1.6及以下
+
+```
+dependencies {
+  ...
   // support版本
   implementation 'com.github.xuexiangjys:XUpdate:1.1.6'
 }
