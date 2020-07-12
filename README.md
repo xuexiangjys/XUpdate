@@ -153,9 +153,18 @@ allprojects {
 
 2.然后在dependencies添加:
 
+以下是版本说明，选择一个即可。
+
+* androidx版本：2.0.0及以上
+
+* support版本：1.1.6及以下
+
 ```
 dependencies {
   ...
+  // androidx版本
+  implementation 'com.github.xuexiangjys:XUpdate:2.0.0'
+  // support版本
   implementation 'com.github.xuexiangjys:XUpdate:1.1.6'
 }
 ```
