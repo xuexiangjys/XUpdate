@@ -30,6 +30,7 @@ import com.xuexiang.xupdate.proxy.IUpdateChecker;
 import com.xuexiang.xupdate.proxy.IUpdateDownloader;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateParser;
+import com.xuexiang.xupdate.proxy.IUpdatePrompter;
 import com.xuexiang.xupdate.proxy.impl.DefaultFileEncryptor;
 import com.xuexiang.xupdate.utils.ApkInstallUtils;
 
@@ -75,6 +76,10 @@ public final class _XUpdate {
 
     public static IUpdateParser getIUpdateParser() {
         return XUpdate.get().mIUpdateParser;
+    }
+
+    public static IUpdatePrompter getIUpdatePrompter() {
+        return XUpdate.get().mIUpdatePrompter;
     }
 
     public static IUpdateDownloader getIUpdateDownLoader() {

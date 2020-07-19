@@ -17,8 +17,8 @@
 package com.xuexiang.xupdatedemo.custom;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
+
 import androidx.annotation.NonNull;
 
 import com.xuexiang.xupdate.entity.PromptEntity;
@@ -39,12 +39,6 @@ import java.io.File;
  */
 public class CustomUpdatePrompter implements IUpdatePrompter {
 
-    private Context mContext;
-
-    public CustomUpdatePrompter(Context context) {
-        mContext = context;
-    }
-
     /**
      * 显示自定义提示
      *
@@ -52,9 +46,9 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
      * @param updateProxy
      */
     private void showUpdatePrompt(final @NonNull UpdateEntity updateEntity, final @NonNull IUpdateProxy updateProxy) {
-        String updateInfo = UpdateUtils.getDisplayUpdateInfo(mContext, updateEntity);
+        String updateInfo = UpdateUtils.getDisplayUpdateInfo(updateProxy.getContext(), updateEntity);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
+        AlertDialog.Builder builder = new AlertDialog.Builder(updateProxy.getContext())
                 .setTitle(String.format("是否升级到%s版本？", updateEntity.getVersionName()))
                 .setMessage(updateInfo)
                 .setPositiveButton("升级", new DialogInterface.OnClickListener() {
@@ -63,7 +57,7 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
                         updateProxy.startDownload(updateEntity, new OnFileDownloadListener() {
                             @Override
                             public void onStart() {
-                                HProgressDialogUtils.showHorizontalProgressDialog(mContext, "下载进度", false);
+                                HProgressDialogUtils.showHorizontalProgressDialog(updateProxy.getContext(), "下载进度", false);
                             }
 
                             @Override
@@ -88,7 +82,7 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
             builder.setNegativeButton("暂不升级", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    UpdateUtils.saveIgnoreVersion(mContext, updateEntity.getVersionName());
+                    UpdateUtils.saveIgnoreVersion(updateProxy.getContext(), updateEntity.getVersionName());
                 }
             }).setCancelable(true);
         } else  {

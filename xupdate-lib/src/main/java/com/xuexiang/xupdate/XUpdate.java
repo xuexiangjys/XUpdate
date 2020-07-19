@@ -33,10 +33,12 @@ import com.xuexiang.xupdate.proxy.IUpdateChecker;
 import com.xuexiang.xupdate.proxy.IUpdateDownloader;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateParser;
+import com.xuexiang.xupdate.proxy.IUpdatePrompter;
 import com.xuexiang.xupdate.proxy.impl.DefaultFileEncryptor;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateChecker;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateDownloader;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateParser;
+import com.xuexiang.xupdate.proxy.impl.DefaultUpdatePrompter;
 import com.xuexiang.xupdate.utils.ApkInstallUtils;
 
 import java.util.Map;
@@ -88,6 +90,10 @@ public class XUpdate {
      */
     IUpdateParser mIUpdateParser;
     /**
+     * 版本更新提示器【有默认】
+     */
+    IUpdatePrompter mIUpdatePrompter;
+    /**
      * 版本更新下载器【有默认】
      */
     IUpdateDownloader mIUpdateDownloader;
@@ -114,6 +120,7 @@ public class XUpdate {
         mIUpdateChecker = new DefaultUpdateChecker();
         mIUpdateParser = new DefaultUpdateParser();
         mIUpdateDownloader = new DefaultUpdateDownloader();
+        mIUpdatePrompter = new DefaultUpdatePrompter();
         mIFileEncryptor = new DefaultFileEncryptor();
         mOnInstallListener = new DefaultInstallListener();
         mOnUpdateFailureListener = new DefaultUpdateFailureListener();
@@ -229,7 +236,7 @@ public class XUpdate {
 
 
     /**
-     * 设置版本更新网络请求服务API
+     * 设置全局版本更新网络请求服务API
      *
      * @param updateHttpService
      * @return
@@ -241,9 +248,9 @@ public class XUpdate {
     }
 
     /**
-     * 设置版本更新检查
+     * 设置全局版本更新检查
      *
-     * @param updateChecker
+     * @param updateChecker 版本更新检查器
      * @return
      */
     public XUpdate setIUpdateChecker(@NonNull IUpdateChecker updateChecker) {
@@ -252,9 +259,9 @@ public class XUpdate {
     }
 
     /**
-     * 设置版本更新的解析器
+     * 设置全局版本更新的解析器
      *
-     * @param updateParser
+     * @param updateParser 版本更新的解析器
      * @return
      */
     public XUpdate setIUpdateParser(@NonNull IUpdateParser updateParser) {
@@ -263,9 +270,20 @@ public class XUpdate {
     }
 
     /**
-     * 设置版本更新下载器
+     * 设置全局版本更新提示器
      *
-     * @param updateDownLoader
+     * @param updatePrompter 版本更新提示器
+     * @return
+     */
+    public XUpdate setIUpdatePrompter(IUpdatePrompter updatePrompter) {
+        mIUpdatePrompter = updatePrompter;
+        return this;
+    }
+
+    /**
+     * 设置全局版本更新下载器
+     *
+     * @param updateDownLoader 版本更新下载器
      * @return
      */
     public XUpdate setIUpdateDownLoader(@NonNull IUpdateDownloader updateDownLoader) {

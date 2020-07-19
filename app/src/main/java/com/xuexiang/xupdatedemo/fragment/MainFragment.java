@@ -162,7 +162,7 @@ public class MainFragment extends XPageSimpleListFragment {
                             }
                         })
                         .updateParser(new CustomUpdateParser())
-                        .updatePrompter(new CustomUpdatePrompter(getActivity()))
+                        .updatePrompter(new CustomUpdatePrompter())
                         .update();
                 break;
             case 8:

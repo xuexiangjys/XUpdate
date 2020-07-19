@@ -16,7 +16,6 @@
 
 package com.xuexiang.xupdate;
 
-import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 
@@ -333,10 +332,10 @@ public class UpdateManager implements IUpdateProxy {
                 mIUpdateProxy.findNewVersion(updateEntity, updateProxy);
             } else {
                 if (mIUpdatePrompter instanceof DefaultUpdatePrompter) {
-                    if (mContext != null && !((Activity) mContext).isFinishing()) {
-                        mIUpdatePrompter.showPrompt(updateEntity, updateProxy, mPromptEntity);
-                    } else {
+                    if (mContext != null && mContext instanceof FragmentActivity && ((FragmentActivity) mContext).isFinishing()) {
                         _XUpdate.onUpdateError(PROMPT_ACTIVITY_DESTROY);
+                    } else {
+                        mIUpdatePrompter.showPrompt(updateEntity, updateProxy, mPromptEntity);
                     }
                 } else {
                     mIUpdatePrompter.showPrompt(updateEntity, updateProxy, mPromptEntity);
@@ -523,6 +522,7 @@ public class UpdateManager implements IUpdateProxy {
 
             updateChecker = _XUpdate.getIUpdateChecker();
             updateParser = _XUpdate.getIUpdateParser();
+            updatePrompter = _XUpdate.getIUpdatePrompter();
             updateDownLoader = _XUpdate.getIUpdateDownLoader();
 
             isGet = _XUpdate.isGet();
@@ -623,7 +623,7 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置版本更新检查器
          *
-         * @param updateChecker
+         * @param updateChecker 版本更新检查器
          * @return
          */
         public Builder updateChecker(@NonNull IUpdateChecker updateChecker) {
@@ -634,7 +634,7 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置版本更新的解析器
          *
-         * @param updateParser
+         * @param updateParser 版本更新的解析器
          * @return
          */
         public Builder updateParser(@NonNull IUpdateParser updateParser) {
@@ -645,7 +645,7 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置版本更新提示器
          *
-         * @param updatePrompter
+         * @param updatePrompter 版本更新提示器
          * @return
          */
         public Builder updatePrompter(@NonNull IUpdatePrompter updatePrompter) {
@@ -656,7 +656,7 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置文件的下载监听
          *
-         * @param onFileDownloadListener
+         * @param onFileDownloadListener 文件下载监听
          * @return
          */
         public Builder setOnFileDownloadListener(OnFileDownloadListener onFileDownloadListener) {
@@ -667,7 +667,7 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置主题颜色
          *
-         * @param themeColor
+         * @param themeColor 主题颜色资源
          * @return
          */
         @Deprecated
@@ -679,7 +679,7 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置主题颜色
          *
-         * @param themeColor
+         * @param themeColor 主题颜色资源
          * @return
          */
         public Builder promptThemeColor(@ColorInt int themeColor) {
@@ -690,7 +690,7 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置顶部背景图片
          *
-         * @param topResId
+         * @param topResId 顶部背景图片资源
          * @return
          */
         @Deprecated
@@ -702,7 +702,7 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置顶部背景图片
          *
-         * @param topResId
+         * @param topResId 顶部背景图片资源
          * @return
          */
         public Builder promptTopResId(@DrawableRes int topResId) {
@@ -762,16 +762,6 @@ public class UpdateManager implements IUpdateProxy {
         public UpdateManager build() {
             UpdateUtils.requireNonNull(this.context, "[UpdateManager.Builder] : context == null");
             UpdateUtils.requireNonNull(this.updateHttpService, "[UpdateManager.Builder] : updateHttpService == null");
-
-            if (this.updatePrompter == null) {
-                if (context instanceof FragmentActivity) {
-                    updatePrompter = new DefaultUpdatePrompter(((FragmentActivity) context).getSupportFragmentManager());
-                } else if (context instanceof Activity) {
-                    updatePrompter = new DefaultUpdatePrompter();
-                } else {
-                    throw new UnsupportedOperationException("[UpdateManager.Builder] : 使用默认的版本更新提示器，context必须传Activity！");
-                }
-            }
 
             if (TextUtils.isEmpty(apkCacheDir)) {
                 apkCacheDir = UpdateUtils.getDefaultDiskCacheDirPath();
