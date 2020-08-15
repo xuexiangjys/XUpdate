@@ -161,7 +161,7 @@ allprojects {
 dependencies {
   ...
   // androidx版本
-  implementation 'com.github.xuexiangjys:XUpdate:2.0.1'
+  implementation 'com.github.xuexiangjys:XUpdate:2.0.2'
 }
 ```
 
@@ -236,6 +236,17 @@ mCacheDir | String | "" | 文件下载的目录
 mMd5 | String | "" | 下载文件的加密校验值(默认使用md5加密)，用于校验，防止下载的apk文件被替换（最新演示demo中有计算校验值的工具）
 mSize | long | 0 | 下载文件的大小【单位：KB】
 mIsShowNotification | boolean | false | 是否在通知栏上显示下载进度
+
+(3) PromptEntity字段属性
+
+字段名 | 类型 | 默认值 | 备注
+:-|:-:|:-:|:-
+mThemeColor | int | R.color.xupdate_default_theme_color | 主题色（进度条和按钮的背景色）
+mTopResId | int | R.drawable.xupdate_bg_app_top | 顶部背景图片资源id
+mButtonTextColor | int | 0 | 按钮文字颜色
+mSupportBackgroundUpdate | boolean | false | 是否支持后台更新
+mWidthRatio | float | -1（无约束） | 版本更新提示器宽度占屏幕的比例
+mHeightRatio | float | -1（无约束） | 版本更新提示器高度占屏幕的比例
 
 ### 2.4、文件加密校验方式
 

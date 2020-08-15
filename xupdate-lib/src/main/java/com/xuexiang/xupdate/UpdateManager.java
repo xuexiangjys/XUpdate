@@ -755,6 +755,17 @@ public class UpdateManager implements IUpdateProxy {
         }
 
         /**
+         * 设置版本更新提示器的样式
+         *
+         * @param promptEntity 版本更新提示器参数信息
+         * @return
+         */
+        public Builder promptStyle(@NonNull PromptEntity promptEntity) {
+            this.promptEntity = promptEntity;
+            return this;
+        }
+
+        /**
          * 设备版本更新下载器
          *
          * @param updateDownLoader
