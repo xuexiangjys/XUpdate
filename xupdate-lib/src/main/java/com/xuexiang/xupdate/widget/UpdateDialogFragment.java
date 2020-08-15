@@ -225,7 +225,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
                 //如果不存在就使用默认的
                 mPromptEntity = new PromptEntity();
             }
-            initTheme(mPromptEntity.getThemeColor(), mPromptEntity.getTopResId());
+            initTheme(mPromptEntity.getThemeColor(), mPromptEntity.getTopResId(), mPromptEntity.getButtonTextColor());
             mUpdateEntity = bundle.getParcelable(KEY_UPDATE_ENTITY);
             if (mUpdateEntity != null) {
                 initUpdateInfo(mUpdateEntity);
@@ -266,30 +266,33 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     /**
      * 初始化主题色
      */
-    private void initTheme(@ColorInt int themeColor, @DrawableRes int topResId) {
+    private void initTheme(@ColorInt int themeColor, @DrawableRes int topResId, @ColorInt int buttonTextColor) {
         if (themeColor == -1) {
             themeColor = ColorUtils.getColor(getContext(), R.color.xupdate_default_theme_color);
         }
         if (topResId == -1) {
             topResId = R.drawable.xupdate_bg_app_top;
         }
-        setDialogTheme(themeColor, topResId);
+        if (buttonTextColor == 0) {
+            buttonTextColor = ColorUtils.isColorDark(themeColor) ? Color.WHITE : Color.BLACK;
+        }
+        setDialogTheme(themeColor, topResId, buttonTextColor);
     }
 
     /**
      * 设置
      *
-     * @param color    主色
-     * @param topResId 图片
+     * @param themeColor 主题色
+     * @param topResId   图片
      */
-    private void setDialogTheme(int color, int topResId) {
+    private void setDialogTheme(int themeColor, int topResId, int buttonTextColor) {
         mIvTop.setImageResource(topResId);
-        mBtnUpdate.setBackgroundDrawable(DrawableUtils.getDrawable(UpdateUtils.dip2px(4, getActivity()), color));
-        mBtnBackgroundUpdate.setBackgroundDrawable(DrawableUtils.getDrawable(UpdateUtils.dip2px(4, getActivity()), color));
-        mNumberProgressBar.setProgressTextColor(color);
-        mNumberProgressBar.setReachedBarColor(color);
-        //随背景颜色变化
-        mBtnUpdate.setTextColor(ColorUtils.isColorDark(color) ? Color.WHITE : Color.BLACK);
+        DrawableUtils.setBackgroundCompat(mBtnUpdate, DrawableUtils.getDrawable(UpdateUtils.dip2px(4, getContext()), themeColor));
+        DrawableUtils.setBackgroundCompat(mBtnBackgroundUpdate, DrawableUtils.getDrawable(UpdateUtils.dip2px(4, getContext()), themeColor));
+        mNumberProgressBar.setProgressTextColor(themeColor);
+        mNumberProgressBar.setReachedBarColor(themeColor);
+        mBtnUpdate.setTextColor(buttonTextColor);
+        mBtnBackgroundUpdate.setTextColor(buttonTextColor);
     }
 
     private void initListeners() {

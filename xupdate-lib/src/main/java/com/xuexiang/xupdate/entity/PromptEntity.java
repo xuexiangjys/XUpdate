@@ -25,6 +25,11 @@ public class PromptEntity implements Parcelable {
     @DrawableRes
     private int mTopResId;
     /**
+     * 按钮文字颜色
+     */
+    @ColorInt
+    private int mButtonTextColor;
+    /**
      * 是否支持后台更新
      */
     private boolean mSupportBackgroundUpdate;
@@ -40,6 +45,7 @@ public class PromptEntity implements Parcelable {
     public PromptEntity() {
         mThemeColor = -1;
         mTopResId = -1;
+        mButtonTextColor = 0;
         mSupportBackgroundUpdate = false;
         mWidthRatio = -1;
         mHeightRatio = -1;
@@ -48,6 +54,7 @@ public class PromptEntity implements Parcelable {
     protected PromptEntity(Parcel in) {
         mThemeColor = in.readInt();
         mTopResId = in.readInt();
+        mButtonTextColor = in.readInt();
         mSupportBackgroundUpdate = in.readByte() != 0;
         mWidthRatio = in.readFloat();
         mHeightRatio = in.readFloat();
@@ -83,6 +90,15 @@ public class PromptEntity implements Parcelable {
         return this;
     }
 
+    public int getButtonTextColor() {
+        return mButtonTextColor;
+    }
+
+    public PromptEntity setButtonTextColor(int buttonTextColor) {
+        mButtonTextColor = buttonTextColor;
+        return this;
+    }
+
     public boolean isSupportBackgroundUpdate() {
         return mSupportBackgroundUpdate;
     }
@@ -115,6 +131,7 @@ public class PromptEntity implements Parcelable {
         return "PromptEntity{" +
                 "mThemeColor=" + mThemeColor +
                 ", mTopResId=" + mTopResId +
+                ", mButtonTextColor=" + mButtonTextColor +
                 ", mSupportBackgroundUpdate=" + mSupportBackgroundUpdate +
                 ", mWidthRatio=" + mWidthRatio +
                 ", mHeightRatio=" + mHeightRatio +
@@ -130,6 +147,7 @@ public class PromptEntity implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(mThemeColor);
         dest.writeInt(mTopResId);
+        dest.writeInt(mButtonTextColor);
         dest.writeByte((byte) (mSupportBackgroundUpdate ? 1 : 0));
         dest.writeFloat(mWidthRatio);
         dest.writeFloat(mHeightRatio);

@@ -20,6 +20,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -122,7 +123,8 @@ public class MainFragment extends XPageSimpleListFragment {
             case 3:
                 XUpdate.newBuild(getActivity())
                         .updateUrl(mUpdateUrl)
-                        .isAutoMode(true) //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
+                        //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
+                        .isAutoMode(true)
                         .update();
                 break;
             case 4:
@@ -135,6 +137,7 @@ public class MainFragment extends XPageSimpleListFragment {
                         .updateHttpService(new XHttpUpdateHttpService("https://gitee.com"))
                         .updateUrl("/xuexiangjys/XUpdate/raw/master/jsonapi/update_test.json")
                         .promptThemeColor(ResUtils.getColor(R.color.update_theme_color))
+                        .promptButtonTextColor(Color.WHITE)
                         .promptTopResId(R.mipmap.bg_update_top)
                         .promptWidthRatio(0.7F)
                         .update();

@@ -21,6 +21,8 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
+import android.view.View;
 import android.widget.TextView;
 
 /**
@@ -238,8 +240,9 @@ public final class DrawableUtils {
 
     /**
      * 默认空心 设置TextView 主题，随机颜色
+     *
      * @param textView 文本控件
-     * @param color 颜色
+     * @param color    颜色
      */
     public static void setTextStrokeTheme(TextView textView, int color) {
         setTextStrokeTheme(textView, 6, 10, color);
@@ -277,6 +280,20 @@ public final class DrawableUtils {
      */
     public static void setTextSolidTheme(TextView textView) {
         setTextSolidTheme(textView, 6, 10);
+    }
+
+    /**
+     * 设置控件背景
+     *
+     * @param view 控件
+     * @param d    背景资源
+     */
+    public static void setBackgroundCompat(View view, Drawable d) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            view.setBackgroundDrawable(d);
+        } else {
+            view.setBackground(d);
+        }
     }
 
 }

@@ -711,6 +711,17 @@ public class UpdateManager implements IUpdateProxy {
         }
 
         /**
+         * 设置按钮的文字颜色
+         *
+         * @param buttonTextColor 按钮的文字颜色
+         * @return
+         */
+        public Builder promptButtonTextColor(@ColorInt int buttonTextColor) {
+            promptEntity.setButtonTextColor(buttonTextColor);
+            return this;
+        }
+
+        /**
          * 设置是否支持后台更新
          *
          * @param supportBackgroundUpdate
