@@ -526,6 +526,7 @@ _XUpdate.startInstallApk(getContext(), FileUtils.getFileByPath(PathUtils.getFile
 * [XUpdate 后台管理系统](https://github.com/xuexiangjys/xupdate-management)
 * [XUpdate Flutter插件](https://github.com/xuexiangjys/flutter_xupdate)
 * [XUpdate React-Native插件](https://github.com/xuexiangjys/react-native-xupdate)
+* [Flutter版本更新弹窗组件](https://github.com/xuexiangjys/flutter_update_dialog)
 
 ---
 
@@ -545,6 +546,7 @@ https://github.com/WVector/AppUpdate
 姓名 | 金额 | 方式
 :-|:-|:-
 *天 | 100￥ | 微信
+*航 | 10￥ | 支付宝
 
 
 ## 联系方式
