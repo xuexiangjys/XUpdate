@@ -17,10 +17,10 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
-    if (isNeedPackage.toBoolean()) {
+    if (project.hasProperty("RELEASE_STORE_FILE")) {
         signingConfigs {
             release {
-                storeFile file(app_release.storeFile)
+                storeFile file(RELEASE_STORE_FILE)
                 storePassword app_release.storePassword
                 keyAlias app_release.keyAlias
                 keyPassword app_release.keyPassword
@@ -32,13 +32,13 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            if (isNeedPackage.toBoolean()) {
+            if (project.hasProperty("RELEASE_STORE_FILE")) {
                 signingConfig signingConfigs.release
             }
         }
     }
 
-    if (isNeedPackage.toBoolean()) {
+    if (project.hasProperty("RELEASE_STORE_FILE")) {
         applicationVariants.all { variant ->
             variant.outputs.all {
                 if (variant.buildType.name.equals('release')) {
