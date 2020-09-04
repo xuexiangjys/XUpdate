@@ -40,4 +40,4 @@ jobs:
         if: always()
         with:
           name: xupdate_apk
-          path: ${{ github.workspace }}/app/build/outputs/apk/app/release
+          path: ${{ github.workspace }}/app/build/outputs/apk/release
