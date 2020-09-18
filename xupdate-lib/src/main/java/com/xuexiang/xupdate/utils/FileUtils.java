@@ -9,6 +9,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
@@ -242,16 +245,20 @@ public final class FileUtils {
     /**
      * 是否是私有目录
      *
+     *  <pre>path: /data/data/package/</pre>
+     *  <pre>path: /storage/emulated/0/Android/data/package/</pre>
+     *
      * @param path 需要判断的目录
-     * @return
+     * @return 是否是私有目录
      */
-    public static boolean isPrivatePath(Context context, String path) {
+    public static boolean isPrivatePath(@NonNull Context context, @NonNull String path) {
         if (isSpace(path)) {
-            return true;
+            return false;
         }
-        String appIntPath = "/data/data/" + context.getPackageName();
-        String appExtPath = APP_EXT_STORAGE_PATH + "/data/" + context.getPackageName();
-        return path.startsWith(appIntPath) || path.startsWith(appExtPath);
+        String appIntPath = getAppIntPath(context);
+        String appExtPath = getAppExtPath(context);
+        return (!TextUtils.isEmpty(appIntPath) && path.startsWith(appIntPath))
+                || (!TextUtils.isEmpty(appExtPath) && path.startsWith(appExtPath));
     }
 
     /**
@@ -372,6 +379,50 @@ public final class FileUtils {
         return Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
                 .getAbsolutePath();
+    }
+
+    /**
+     * 获取此应用的私有存储目录
+     * <pre>path: /data/data/package/</pre>
+     *
+     * @return 此应用的缓存目录
+     */
+    public static String getAppIntPath(@NonNull Context context) {
+        File appIntCacheFile = context.getCacheDir();
+        if (appIntCacheFile != null) {
+            String appIntCachePath = appIntCacheFile.getAbsolutePath();
+            return getDirName(appIntCachePath);
+        }
+        return null;
+    }
+
+    /**
+     * 获取此应用在外置储存中的私有存储目录
+     * <pre>path: /storage/emulated/0/Android/data/package/</pre>
+     *
+     * @return 此应用在外置储存中的缓存目录
+     */
+    public static String getAppExtPath(@NonNull Context context) {
+        File appExtCacheFile = context.getExternalCacheDir();
+        if (appExtCacheFile != null) {
+            String appExtCachePath = appExtCacheFile.getAbsolutePath();
+            return getDirName(appExtCachePath);
+        }
+        return null;
+    }
+
+    /**
+     * 获取全路径中的最长目录
+     *
+     * @param filePath 文件路径
+     * @return filePath 最长目录
+     */
+    public static String getDirName(final String filePath) {
+        if (isSpace(filePath)) {
+            return filePath;
+        }
+        int lastSep = filePath.lastIndexOf(File.separator);
+        return lastSep == -1 ? "" : filePath.substring(0, lastSep + 1);
     }
 
 }
