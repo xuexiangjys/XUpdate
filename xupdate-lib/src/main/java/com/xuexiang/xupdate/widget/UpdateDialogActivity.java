@@ -173,6 +173,24 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
     }
 
     /**
+     * @return 版本更新提示器参数信息
+     */
+    private PromptEntity getPromptEntity() {
+        // 先从bundle中去取
+        if (mPromptEntity == null) {
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                mPromptEntity = bundle.getParcelable(KEY_UPDATE_PROMPT_ENTITY);
+            }
+        }
+        //如果还不存在就使用默认的
+        if (mPromptEntity == null) {
+            mPromptEntity = new PromptEntity();
+        }
+        return mPromptEntity;
+    }
+
+    /**
      * 初始化更新信息
      *
      * @param updateEntity 更新信息
@@ -249,18 +267,20 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
     private void initWindowStyle() {
         Window window = getWindow();
         if (window != null) {
+            PromptEntity promptEntity = getPromptEntity();
             window.setGravity(Gravity.CENTER);
             WindowManager.LayoutParams lp = window.getAttributes();
             DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-            if (mPromptEntity.getWidthRatio() > 0 && mPromptEntity.getWidthRatio() < 1) {
-                lp.width = (int) (displayMetrics.widthPixels * mPromptEntity.getWidthRatio());
+            if (promptEntity.getWidthRatio() > 0 && promptEntity.getWidthRatio() < 1) {
+                lp.width = (int) (displayMetrics.widthPixels * promptEntity.getWidthRatio());
             }
-            if (mPromptEntity.getHeightRatio() > 0 && mPromptEntity.getHeightRatio() < 1) {
-                lp.height = (int) (displayMetrics.heightPixels * mPromptEntity.getHeightRatio());
+            if (promptEntity.getHeightRatio() > 0 && promptEntity.getHeightRatio() < 1) {
+                lp.height = (int) (displayMetrics.heightPixels * promptEntity.getHeightRatio());
             }
             window.setAttributes(lp);
         }
     }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -345,7 +365,7 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
                 mNumberProgressBar.setVisibility(View.VISIBLE);
                 mNumberProgressBar.setProgress(0);
                 mBtnUpdate.setVisibility(View.GONE);
-                if (mPromptEntity.isSupportBackgroundUpdate()) {
+                if (getPromptEntity().isSupportBackgroundUpdate()) {
                     mBtnBackgroundUpdate.setVisibility(View.VISIBLE);
                 } else {
                     mBtnBackgroundUpdate.setVisibility(View.GONE);
