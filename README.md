@@ -99,19 +99,27 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
 
 * 默认版本更新
 
-![update_1.png](https://img.rruu.net/image/5f7d94985a53e)
+![xupdate_default.png](https://img.rruu.net/image/5f9d7b77af102)
+
+* 后台更新
+
+![xupdate_background.png](https://img.rruu.net/image/5f9d7b769901a)
 
 * 强制版本更新
 
-![update_2.png](https://img.rruu.net/image/5f7d94985cec9)
+![xupdate_force.png](https://img.rruu.net/image/5f9d7b774b990)
+
+* 可忽略版本更新
+
+![xupdate_ignore.png](https://img.rruu.net/image/5f9d7b77ad3be)
 
 * 自定义提示弹窗主题
 
-![update_3.png](https://img.rruu.net/image/5f7d94985f77c)
+![xupdate_custom.png](https://img.rruu.net/image/5f9d7b76cee50)
 
 * 使用系统弹窗提示
 
-![update_4.png](https://img.rruu.net/image/5f7d9498525c7)
+![xupdate_system.png](https://img.rruu.net/image/5f9d7b77ab42f)
 
 ### Demo更新后台服务
 
@@ -328,31 +336,44 @@ XUpdate.newBuild(getActivity())
         .update();
 ```
 
-### 3.3、强制版本更新
+### 3.3、支持后台更新
+
+开启支持后台更新后, 用户点击“后台更新”按钮后,就可以进入到后台更新,不用一直在更新界面等待.
+
+```
+XUpdate.newBuild(getActivity())
+        .updateUrl(mUpdateUrl)
+        .supportBackgroundUpdate(true)
+        .update();
+```
+
+### 3.4、强制版本更新
 
 就是用户不更新的话，程序将无法正常使用。只需要服务端返回`UpdateStatus`字段为2即可。
 
 当然如果你自定义请求返回api的话，只需要设置`UpdateEntity`的`mIsForce`字段为true即可。
 
-### 3.4、自定义版本更新提示弹窗的主题
+### 3.5、自定义版本更新提示弹窗的主题
 
-可设置弹窗的标题背景和按钮颜色。
+通过设置更新顶部图片、主题色、按钮文字颜色、宽高比率等来实现自定义主题样式.
 
-* promptThemeColor: 设置主题颜色（升级/安装按钮的背景色）
-* promptTopResId: 弹窗的标题背景的资源图片
-* promptWidthRatio: 弹窗宽度占屏幕宽度的比例，默认是-1，不做约束
-* promptHeightRatio: 弹窗高度占屏幕高度的比例，默认是-1，不做约束
+* promptThemeColor: 设置主题颜色
+* promptButtonTextColor: 设置按钮的文字颜色
+* promptTopResId: 设置顶部背景图片
+* promptWidthRatio: 设置版本更新提示器宽度占屏幕的比例，默认是-1，不做约束
+* promptHeightRatio: 设置版本更新提示器高度占屏幕的比例，默认是-1，不做约束
 
 ```
 XUpdate.newBuild(getActivity())
         .updateUrl(mUpdateUrl)
-        .themeColor(ResUtils.getColor(R.color.update_theme_color))
-        .topResId(R.mipmap.bg_update_top)
+        .promptThemeColor(ResUtils.getColor(R.color.update_theme_color))
+        .promptButtonTextColor(Color.WHITE)
+        .promptTopResId(R.mipmap.bg_update_top)
         .promptWidthRatio(0.7F)
         .update();
 ```
 
-### 3.5、自定义版本更新解析器
+### 3.6、自定义版本更新解析器
 
 实现IUpdateParser接口即可实现解析器的自定义。
 
@@ -382,7 +403,7 @@ public class CustomUpdateParser implements IUpdateParser {
 
 ```
 
-### 3.6、自定义版本更新检查器+版本更新解析器+版本更新提示器
+### 3.7、自定义版本更新检查器+版本更新解析器+版本更新提示器
 
 * 实现`IUpdateChecker`接口即可实现检查器的自定义。
 
@@ -469,7 +490,7 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
     }
 ```
 
-### 3.7、只使用XUpdate的下载器功能进行apk的下载
+### 3.8、只使用XUpdate的下载器功能进行apk的下载
 
 ```
 XUpdate.newBuild(getActivity())
@@ -500,7 +521,7 @@ XUpdate.newBuild(getActivity())
         });
 ```
 
-### 3.8、只使用XUpdate的APK安装的功能
+### 3.9、只使用XUpdate的APK安装的功能
 
 ```
 _XUpdate.startInstallApk(getContext(), FileUtils.getFileByPath(PathUtils.getFilePathByUri(getContext(), data.getData()))); //填写文件所在的路径
