@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="xupdate_bg_app_info_radius">3dp</dimen>
+    <dimen name="xupdate_close_icon_size">30dp</dimen>
+    <dimen name="xupdate_close_line_height">50dp</dimen>
+    <dimen name="xupdate_close_line_width">1dp</dimen>
+    <dimen name="xupdate_common_padding">10dp</dimen>
+    <dimen name="xupdate_content_padding">16dp</dimen>
+    <dimen name="xupdate_title_text_size">15sp</dimen>
+    <dimen name="xupdate_content_text_size">14sp</dimen>
+    <dimen name="xupdate_button_min_height">40dp</dimen>
+    <dimen name="xupdate_button_text_size">15sp</dimen>
+    <dimen name="xupdate_content_line_spacing_extra_size">5dp</dimen>
+    <dimen name="xupdate_button_min_height_mini">35dp</dimen>
+    <dimen name="xupdate_button_text_size_mini">13sp</dimen>
+
+
+</resources>

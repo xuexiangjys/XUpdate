@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2018 xuexiangjys(xuexiangjys@163.com)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +17,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners
-        android:bottomLeftRadius="3dp"
-        android:bottomRightRadius="3dp" />
-    <solid android:color="@android:color/white" />
+        android:bottomLeftRadius="@dimen/xupdate_bg_app_info_radius"
+        android:bottomRightRadius="@dimen/xupdate_bg_app_info_radius" />
+    <solid android:color="@color/xupdate_default_bg_color" />
 </shape>

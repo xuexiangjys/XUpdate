@@ -18,5 +18,10 @@
 <resources>
 
     <color name="xupdate_default_theme_color">#FFE94339</color>
+    <color name="xupdate_default_bg_color">#FFFFFFFF</color>
+    <color name="xupdate_close_line_color">#D8D8D8</color>
+    <color name="xupdate_button_text_color">#FFFFFFFF</color>
+    <color name="xupdate_title_text_color">#FF000000</color>
+    <color name="xupdate_content_text_color">#FF666666</color>
 
 </resources>
