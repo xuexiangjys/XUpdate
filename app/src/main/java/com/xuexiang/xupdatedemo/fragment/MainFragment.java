@@ -31,6 +31,7 @@ import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xaop.consts.PermissionConsts;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.base.XPageSimpleListFragment;
+import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xpage.utils.TitleBar;
 import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate._XUpdate;
@@ -63,7 +64,7 @@ import static android.app.Activity.RESULT_OK;
  * @author xuexiang
  * @since 2018/7/9 下午2:20
  */
-@Page(name = "XUpdate 版本更新")
+@Page(name = "XUpdate 版本更新", anim = CoreAnim.none)
 public class MainFragment extends XPageSimpleListFragment {
 
     private String mUpdateUrl = "https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_test.json";

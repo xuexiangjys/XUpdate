@@ -41,6 +41,7 @@ import com.xuexiang.xupdate.entity.PromptEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IPrompterProxy;
 import com.xuexiang.xupdate.service.OnFileDownloadListener;
+import com.xuexiang.xupdate.service.WeakFileDownloadListener;
 import com.xuexiang.xupdate.utils.ColorUtils;
 import com.xuexiang.xupdate.utils.DrawableUtils;
 import com.xuexiang.xupdate.utils.UpdateUtils;
@@ -183,6 +184,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
             mIPrompterProxy.recycle();
             mIPrompterProxy = null;
         }
+        mOnFileDownloadListener = null;
         super.dismiss();
     }
 
@@ -326,7 +328,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
     /**
      * 文件下载监听
      */
-    private OnFileDownloadListener mOnFileDownloadListener = new OnFileDownloadListener() {
+    private WeakFileDownloadListener mOnFileDownloadListener = new WeakFileDownloadListener(new OnFileDownloadListener() {
         @Override
         public void onStart() {
             if (isShowing()) {
@@ -358,7 +360,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
                     dismiss();
                 }
             }
-            //返回true，自动进行apk安装
+            // 返回true，自动进行apk安装
             return true;
         }
 
@@ -368,7 +370,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
                 dismiss();
             }
         }
-    };
+    });
 
     /**
      * 显示安装的按钮

@@ -18,7 +18,9 @@ package com.xuexiang.xupdate.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
+
 import android.text.TextUtils;
 
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
@@ -177,7 +179,7 @@ public class UpdateEntity implements Parcelable {
      *
      * @param isAutoMode
      */
-    public void setIsAutoMode(boolean isAutoMode) {
+    public UpdateEntity setIsAutoMode(boolean isAutoMode) {
         if (isAutoMode) {
             //自动下载
             mIsSilent = true;
@@ -186,6 +188,18 @@ public class UpdateEntity implements Parcelable {
             //自动模式下，默认下载进度条在通知栏显示
             mDownloadEntity.setShowNotification(true);
         }
+        return this;
+    }
+
+    /**
+     * 设置是否显示下载通知
+     *
+     * @param showNotification 是否显示下载通知
+     * @return
+     */
+    public UpdateEntity setShowNotification(boolean showNotification) {
+        mDownloadEntity.setShowNotification(showNotification);
+        return this;
     }
 
     public int getVersionCode() {
@@ -257,6 +271,7 @@ public class UpdateEntity implements Parcelable {
     }
 
     //======内部变量，请勿设置=====//
+
     private IUpdateHttpService mIUpdateHttpService;
 
     public UpdateEntity setIUpdateHttpService(IUpdateHttpService updateHttpService) {
