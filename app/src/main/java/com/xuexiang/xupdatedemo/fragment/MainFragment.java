@@ -49,6 +49,7 @@ import com.xuexiang.xupdatedemo.utils.HProgressDialogUtils;
 import com.xuexiang.xutil.app.IntentUtils;
 import com.xuexiang.xutil.app.PathUtils;
 import com.xuexiang.xutil.common.ClickUtils;
+import com.xuexiang.xutil.common.CollectionUtils;
 import com.xuexiang.xutil.file.FileUtils;
 import com.xuexiang.xutil.resource.ResUtils;
 import com.xuexiang.xutil.resource.ResourceUtils;
@@ -293,5 +294,11 @@ public class MainFragment extends XPageSimpleListFragment {
             ClickUtils.exitBy2Click();
         }
         return true;
+    }
+
+    @Override
+    public void onDestroyView() {
+        CollectionUtils.clear(mSimpleData);
+        super.onDestroyView();
     }
 }

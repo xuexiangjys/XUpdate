@@ -94,6 +94,8 @@ public class XUpdateServiceFragment extends XPageFragment {
                         .updateParser(new XUpdateServiceParser())
                         .update();
                 break;
+            default:
+                break;
         }
     }
 

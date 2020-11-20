@@ -347,7 +347,7 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
             }
         } else {
             if (sIPrompterProxy != null) {
-                sIPrompterProxy.startDownload(mUpdateEntity, mOnFileDownloadListener);
+                sIPrompterProxy.startDownload(mUpdateEntity, getFileDownloadListener());
             }
             //忽略版本在点击更新按钮后隐藏
             if (mUpdateEntity.isIgnorable()) {
@@ -356,53 +356,58 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+
     /**
-     * 文件下载监听
+     * 返回文件下载监听
+     *
+     * @return 获取文件下载监听
      */
-    private WeakFileDownloadListener mOnFileDownloadListener = new WeakFileDownloadListener(new OnFileDownloadListener() {
-        @Override
-        public void onStart() {
-            if (!isFinishing()) {
-                mNumberProgressBar.setVisibility(View.VISIBLE);
-                mNumberProgressBar.setProgress(0);
-                mBtnUpdate.setVisibility(View.GONE);
-                if (getPromptEntity().isSupportBackgroundUpdate()) {
-                    mBtnBackgroundUpdate.setVisibility(View.VISIBLE);
-                } else {
-                    mBtnBackgroundUpdate.setVisibility(View.GONE);
+    private OnFileDownloadListener getFileDownloadListener() {
+        return new WeakFileDownloadListener(new OnFileDownloadListener() {
+            @Override
+            public void onStart() {
+                if (!isFinishing()) {
+                    mNumberProgressBar.setVisibility(View.VISIBLE);
+                    mNumberProgressBar.setProgress(0);
+                    mBtnUpdate.setVisibility(View.GONE);
+                    if (getPromptEntity().isSupportBackgroundUpdate()) {
+                        mBtnBackgroundUpdate.setVisibility(View.VISIBLE);
+                    } else {
+                        mBtnBackgroundUpdate.setVisibility(View.GONE);
+                    }
                 }
             }
-        }
 
-        @Override
-        public void onProgress(float progress, long total) {
-            if (!isFinishing()) {
-                mNumberProgressBar.setProgress(Math.round(progress * 100));
-                mNumberProgressBar.setMax(100);
+            @Override
+            public void onProgress(float progress, long total) {
+                if (!isFinishing()) {
+                    mNumberProgressBar.setProgress(Math.round(progress * 100));
+                    mNumberProgressBar.setMax(100);
+                }
             }
-        }
 
-        @Override
-        public boolean onCompleted(File file) {
-            if (!isFinishing()) {
-                mBtnBackgroundUpdate.setVisibility(View.GONE);
-                if (mUpdateEntity.isForce()) {
-                    showInstallButton(file);
-                } else {
+            @Override
+            public boolean onCompleted(File file) {
+                if (!isFinishing()) {
+                    mBtnBackgroundUpdate.setVisibility(View.GONE);
+                    if (mUpdateEntity.isForce()) {
+                        showInstallButton(file);
+                    } else {
+                        dismissDialog();
+                    }
+                }
+                // 返回true，自动进行apk安装
+                return true;
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                if (!isFinishing()) {
                     dismissDialog();
                 }
             }
-            // 返回true，自动进行apk安装
-            return true;
-        }
-
-        @Override
-        public void onError(Throwable throwable) {
-            if (!isFinishing()) {
-                dismissDialog();
-            }
-        }
-    });
+        });
+    }
 
     /**
      * 显示安装的按钮
@@ -439,7 +444,6 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
         if (isFinishing()) {
             _XUpdate.setIsShowUpdatePrompter(false);
             clearIPrompterProxy();
-            mOnFileDownloadListener = null;
         }
         super.onStop();
     }
@@ -454,4 +458,5 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
             sIPrompterProxy = null;
         }
     }
+
 }

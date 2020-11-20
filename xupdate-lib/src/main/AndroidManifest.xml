@@ -26,7 +26,6 @@
 
         <activity
             android:name=".widget.UpdateDialogActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
             android:theme="@style/XUpdate_DialogTheme" />
 
     </application>
