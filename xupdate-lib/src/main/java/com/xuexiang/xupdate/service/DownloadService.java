@@ -104,6 +104,7 @@ public class DownloadService extends Service {
     }
 
     //=====================生命周期============================//
+
     /**
      * 下载服务是否在运行
      *
@@ -198,11 +199,12 @@ public class DownloadService extends Service {
         private FileDownloadCallBack mFileDownloadCallBack;
 
         private UpdateEntity mUpdateEntity;
+
         /**
          * 开始下载
          *
-         * @param updateEntity      新app信息
-         * @param downloadListener  下载监听
+         * @param updateEntity     新app信息
+         * @param downloadListener 下载监听
          */
         public void start(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener) {
             //下载
@@ -218,6 +220,7 @@ public class DownloadService extends Service {
         public void stop(String msg) {
             if (mFileDownloadCallBack != null) {
                 mFileDownloadCallBack.onCancel();
+                mFileDownloadCallBack = null;
             }
             mUpdateEntity.getIUpdateHttpService().cancelDownload(mUpdateEntity.getDownloadUrl());
             DownloadService.this.stop(msg);

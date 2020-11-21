@@ -17,6 +17,7 @@
 package com.xuexiang.xupdate.proxy;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -37,6 +38,7 @@ public interface IUpdateProxy {
      *
      * @return
      */
+    @Nullable
     Context getContext();
 
     /**

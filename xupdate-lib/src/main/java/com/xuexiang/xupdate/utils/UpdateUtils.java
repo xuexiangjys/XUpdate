@@ -30,7 +30,9 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
+
 import androidx.annotation.NonNull;
+
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
@@ -114,11 +116,10 @@ public final class UpdateUtils {
     /**
      * 检测当前网络是否是wifi
      *
-     * @param context
-     * @return
+     * @return 当前网络是否是wifi
      */
-    public static boolean checkWifi(Context context) {
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean checkWifi() {
+        ConnectivityManager connectivity = (ConnectivityManager) XUpdate.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity == null) {
             return false;
         }
@@ -129,11 +130,10 @@ public final class UpdateUtils {
     /**
      * 检查当前是否有网
      *
-     * @param context
-     * @return
+     * @return 当前是否有网
      */
-    public static boolean checkNetwork(Context context) {
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean checkNetwork() {
+        ConnectivityManager connectivity = (ConnectivityManager) XUpdate.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity == null) {
             return false;
         }

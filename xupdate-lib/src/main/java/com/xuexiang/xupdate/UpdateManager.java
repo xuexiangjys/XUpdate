@@ -39,6 +39,7 @@ import com.xuexiang.xupdate.proxy.impl.DefaultUpdatePrompter;
 import com.xuexiang.xupdate.service.OnFileDownloadListener;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -63,7 +64,7 @@ public class UpdateManager implements IUpdateProxy {
      */
     private UpdateEntity mUpdateEntity;
 
-    private Context mContext;
+    private WeakReference<Context> mContext;
     //============请求参数==============//
     /**
      * 版本更新的url地址
@@ -128,7 +129,7 @@ public class UpdateManager implements IUpdateProxy {
      * @param builder
      */
     private UpdateManager(Builder builder) {
-        mContext = builder.context;
+        mContext = new WeakReference<>(builder.context);
         mUpdateUrl = builder.updateUrl;
         mParams = builder.params;
         mApkCacheDir = builder.apkCacheDir;
@@ -159,9 +160,10 @@ public class UpdateManager implements IUpdateProxy {
         return this;
     }
 
+    @Nullable
     @Override
     public Context getContext() {
-        return mContext;
+        return mContext != null ? mContext.get() : null;
     }
 
     @Override
@@ -189,14 +191,14 @@ public class UpdateManager implements IUpdateProxy {
         onBeforeCheck();
 
         if (mIsWifiOnly) {
-            if (UpdateUtils.checkWifi(mContext)) {
+            if (UpdateUtils.checkWifi()) {
                 checkVersion();
             } else {
                 onAfterCheck();
                 _XUpdate.onUpdateError(CHECK_NO_WIFI);
             }
         } else {
-            if (UpdateUtils.checkNetwork(mContext)) {
+            if (UpdateUtils.checkNetwork()) {
                 checkVersion();
             } else {
                 onAfterCheck();
@@ -332,7 +334,8 @@ public class UpdateManager implements IUpdateProxy {
                 mIUpdateProxy.findNewVersion(updateEntity, updateProxy);
             } else {
                 if (mIUpdatePrompter instanceof DefaultUpdatePrompter) {
-                    if (mContext != null && mContext instanceof FragmentActivity && ((FragmentActivity) mContext).isFinishing()) {
+                    Context context = getContext();
+                    if (context instanceof FragmentActivity && ((FragmentActivity) context).isFinishing()) {
                         _XUpdate.onUpdateError(PROMPT_ACTIVITY_DESTROY);
                     } else {
                         mIUpdatePrompter.showPrompt(updateEntity, updateProxy, mPromptEntity);
@@ -400,7 +403,6 @@ public class UpdateManager implements IUpdateProxy {
             mIUpdateProxy.recycle();
             mIUpdateProxy = null;
         }
-        mContext = null;
         if (mParams != null) {
             mParams.clear();
         }
