@@ -56,4 +56,10 @@ public interface IUpdateChecker {
      */
     void processCheckResult(@NonNull String result, @NonNull IUpdateProxy updateProxy);
 
+    /**
+     * 未发现新版本
+     *
+     * @param throwable 未发现的原因
+     */
+    void noNewVersion(Throwable throwable);
 }

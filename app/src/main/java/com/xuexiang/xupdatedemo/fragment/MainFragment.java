@@ -165,6 +165,12 @@ public class MainFragment extends XPageSimpleListFragment {
                                 super.onAfterCheck();
                                 CProgressDialogUtils.cancelProgressDialog(getActivity());
                             }
+
+                            @Override
+                            public void noNewVersion(Throwable throwable) {
+                                super.noNewVersion(throwable);
+                                // 没有最新版本的处理
+                            }
                         })
                         .updateParser(new CustomUpdateParser())
                         .updatePrompter(new CustomUpdatePrompter())

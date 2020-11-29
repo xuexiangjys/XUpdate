@@ -16,8 +16,9 @@
 
 package com.xuexiang.xupdate.proxy.impl;
 
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
@@ -32,6 +33,7 @@ import java.util.Map;
 
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_JSON_EMPTY;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NET_REQUEST;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_PARSE;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_UPDATING;
 
@@ -91,8 +93,8 @@ public class DefaultUpdateChecker implements IUpdateChecker {
     /**
      * 查询成功
      *
-     * @param result
-     * @param updateProxy
+     * @param result      查询结果
+     * @param updateProxy 更新代理
      */
     private void onCheckSuccess(String result, @NonNull IUpdateProxy updateProxy) {
         updateProxy.onAfterCheck();
@@ -106,8 +108,8 @@ public class DefaultUpdateChecker implements IUpdateChecker {
     /**
      * 查询失败
      *
-     * @param updateProxy
-     * @param error
+     * @param updateProxy 更新代理
+     * @param error       错误
      */
     private void onCheckError(@NonNull IUpdateProxy updateProxy, Throwable error) {
         updateProxy.onAfterCheck();
@@ -140,5 +142,8 @@ public class DefaultUpdateChecker implements IUpdateChecker {
         }
     }
 
-
+    @Override
+    public void noNewVersion(Throwable throwable) {
+        _XUpdate.onUpdateError(CHECK_NO_NEW_VERSION, throwable != null ? throwable.getMessage() : null);
+    }
 }

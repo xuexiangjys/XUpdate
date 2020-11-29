@@ -16,8 +16,6 @@
 
 package com.xuexiang.xupdate.proxy.impl;
 
-import androidx.annotation.NonNull;
-
 import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
 
@@ -42,8 +40,8 @@ public abstract class AbstractUpdateProxy implements IUpdateProxy {
     }
 
     @Override
-    public void noNewVersion(@NonNull Throwable throwable) {
-        _XUpdate.onUpdateError(CHECK_NO_NEW_VERSION, throwable.getMessage());
+    public void noNewVersion(Throwable throwable) {
+        _XUpdate.onUpdateError(CHECK_NO_NEW_VERSION, throwable != null ? throwable.getMessage() : null);
     }
 
 }

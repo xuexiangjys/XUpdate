@@ -91,7 +91,7 @@ public final class UpdateUtils {
                     updateProxy.findNewVersion(updateEntity, updateProxy);
                 }
             } else {
-                _XUpdate.onUpdateError(CHECK_NO_NEW_VERSION);
+                updateProxy.noNewVersion(null);
             }
         } else {
             _XUpdate.onUpdateError(CHECK_PARSE, "json:" + result);
@@ -448,8 +448,9 @@ public final class UpdateUtils {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         String packageName = context.getPackageName();
         List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
-        if (appProcesses == null)
+        if (appProcesses == null) {
             return false;
+        }
         for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
             if (appProcess.processName.equals(packageName) && appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
                 return true;

@@ -36,7 +36,7 @@ public interface IUpdateProxy {
     /**
      * 获取上下文
      *
-     * @return
+     * @return 上下文
      */
     @Nullable
     Context getContext();
@@ -44,7 +44,7 @@ public interface IUpdateProxy {
     /**
      * 获取版本更新网络请求服务API
      *
-     * @return
+     * @return 网络请求服务API
      */
     IUpdateHttpService getIUpdateHttpService();
 
@@ -83,11 +83,13 @@ public interface IUpdateProxy {
      *
      * @param throwable 未发现的原因
      */
-    void noNewVersion(@NonNull Throwable throwable);
+    void noNewVersion(Throwable throwable);
 
     //=============IParserProxy================//
 
     /**
+     * 是否是异步解析者
+     *
      * @return 是否是异步解析者
      */
     boolean isAsyncParser();
@@ -95,17 +97,16 @@ public interface IUpdateProxy {
     /**
      * 将请求的json结果解析为版本更新信息实体【同步方法】
      *
-     * @param json
-     * @return
+     * @param json 请求的json数据
+     * @return 版本更新信息实体
      */
     UpdateEntity parseJson(@NonNull String json) throws Exception;
 
     /**
      * 将请求的json结果解析为版本更新信息实体【异步方法】
      *
-     * @param json
+     * @param json     请求的json数据
      * @param callback 解析回调
-     * @return
      */
     void parseJson(@NonNull String json, final IUpdateParseCallback callback) throws Exception;
 

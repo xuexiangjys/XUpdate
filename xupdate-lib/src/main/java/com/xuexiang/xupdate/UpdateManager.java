@@ -353,12 +353,12 @@ public class UpdateManager implements IUpdateProxy {
      * @param throwable 未发现的原因
      */
     @Override
-    public void noNewVersion(@NonNull Throwable throwable) {
-        UpdateLog.i("未发现新版本:" + throwable.getMessage());
+    public void noNewVersion(Throwable throwable) {
+        UpdateLog.i(throwable != null ? "未发现新版本:" + throwable.getMessage() : "未发现新版本!");
         if (mIUpdateProxy != null) {
             mIUpdateProxy.noNewVersion(throwable);
         } else {
-            _XUpdate.onUpdateError(CHECK_NO_NEW_VERSION, throwable.getMessage());
+            mIUpdateChecker.noNewVersion(throwable);
         }
     }
 
