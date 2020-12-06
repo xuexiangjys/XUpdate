@@ -5,137 +5,139 @@
 [![I](https://img.shields.io/github/issues/xuexiangjys/XUpdate.svg)](https://github.com/xuexiangjys/XUpdate/issues)
 [![Star](https://img.shields.io/github/stars/xuexiangjys/XUpdate.svg)](https://github.com/xuexiangjys/XUpdate)
 
-一个轻量级、高可用性的Android版本更新框架。赶紧点击[使用说明文档](https://github.com/xuexiangjys/XUpdate/wiki)，体验一下吧！
+## [English](./README.md) | [Chinese](./README_ZH.md)
 
-在提issue前，请先阅读[【提问的智慧】](https://xuexiangjys.blog.csdn.net/article/details/83344235)，并严格按照[issue模板](https://github.com/xuexiangjys/XUpdate/issues/new/choose)进行填写，节约大家的时间。
+A lightweight, high availability Android version update framework. Click [instruction document](https://github.com/xuexiangjys/XUpdate/wiki) to experience it！
 
-在使用前，请一定要仔细阅读[使用说明文档](https://github.com/xuexiangjys/XUpdate/wiki),重要的事情说三遍！！！
+Please read [【wisdom of asking questions】](https://xuexiangjys.blog.csdn.net/article/details/83344235) before raising the issue and strictly follow the [issue template](https://github.com/xuexiangjys/XUpdate/issues/new/choose) fill in and save everyone's time.
 
-在使用前，请一定要仔细阅读[使用说明文档](https://github.com/xuexiangjys/XUpdate/wiki),重要的事情说三遍！！！
+Please read the [instruction document](https://github.com/xuexiangjys/XUpdate/wiki) carefully before use, important things are to be repeated for three time!!！
 
-在使用前，请一定要仔细阅读[使用说明文档](https://github.com/xuexiangjys/XUpdate/wiki),重要的事情说三遍！！！
+Please read the [instruction document](https://github.com/xuexiangjys/XUpdate/wiki) carefully before use, important things are to be repeated for three time!!！
 
-## 关于我
+Please read the [instruction document](https://github.com/xuexiangjys/XUpdate/wiki) carefully before use, important things are to be repeated for three time!!！
 
-[![github](https://img.shields.io/badge/GitHub-xuexiangjys-blue.svg)](https://github.com/xuexiangjys)   [![csdn](https://img.shields.io/badge/CSDN-xuexiangjys-green.svg)](http://blog.csdn.net/xuexiangjys)   [![简书](https://img.shields.io/badge/简书-xuexiangjys-red.svg)](https://www.jianshu.com/u/6bf605575337)   [![掘金](https://img.shields.io/badge/掘金-xuexiangjys-brightgreen.svg)](https://juejin.im/user/598feef55188257d592e56ed)   [![知乎](https://img.shields.io/badge/知乎-xuexiangjys-violet.svg)](https://www.zhihu.com/people/xuexiangjys)
+## About me
 
-## X系列库快速集成
+[![github](https://img.shields.io/badge/GitHub-xuexiangjys-blue.svg)](https://github.com/xuexiangjys)   [![csdn](https://img.shields.io/badge/CSDN-xuexiangjys-green.svg)](http://blog.csdn.net/xuexiangjys)   [![jianshu](https://img.shields.io/badge/jianshu-xuexiangjys-red.svg)](https://www.jianshu.com/u/6bf605575337)   [![juejin](https://img.shields.io/badge/juejin-xuexiangjys-brightgreen.svg)](https://juejin.im/user/598feef55188257d592e56ed)   [![zhihu](https://img.shields.io/badge/zhihu-xuexiangjys-violet.svg)](https://www.zhihu.com/people/xuexiangjys)
 
-为了方便大家快速集成X系列框架库，我提供了一个空壳模版供大家参考使用: https://github.com/xuexiangjys/TemplateAppProject
+## Rapid integration of X-Library
 
----
-
-## 特征
-
-* 支持post和get两种版本检查方式，支持自定义网络请求。
-
-* 支持设置只在wifi下进行版本更新。
-
-* 支持静默下载（后台更新）、自动版本更新。
-
-* 提供界面友好的版本更新提示弹窗，可自定义其主题样式。
-
-* 支持自定义版本更新检查器、版本更新解析器、版本更新提示器、版本更新下载器、版本更新安装、出错处理。
-
-* 支持MD5文件校验、版本忽略、版本强制更新等功能。
-
-* 支持自定义文件校验方法【默认是MD5校验】。
-
-* 支持自定义请求API接口。
-
-* 兼容Android6.0、7.0、8.0、9.0和10.0。
-
-* 支持中文和英文两种语言显示（国际化）。
-
-* 支持Flutter插件使用：[flutter_xupdate](https://github.com/xuexiangjys/flutter_xupdate)。
-
-* 支持React-Native插件使用：[react-native-xupdate](https://github.com/xuexiangjys/react-native-xupdate)。
-
-## 组成结构
-
-本框架借鉴了[AppUpdate](https://github.com/WVector/AppUpdate)中的部分思想和UI界面，将版本更新中的各部分环节抽离出来，形成了如下几个部分：
-
-* 版本更新检查器`IUpdateChecker`：检查是否有最新版本。
-
-* 版本更新解析器`IUpdateParser`：解析服务端返回的数据结果。
-
-* 版本更新提示器`IUpdatePrompter`：展示最新的版本信息。
-
-* 版本更新下载器`IUpdateDownloader`：下载最新的版本APK安装包。
-
-* 网络请求服务接口`IUpdateHttpService`：定义了进行网络请求的相关接口。
-
-除此之外，还有两个监听器：
-
-* 版本更新失败的监听器`OnUpdateFailureListener`。
-
-* 版本更新apk安装的监听器`OnInstallListener`。
-
-更新调度核心：
-
-* 版本更新业务代理`IUpdateProxy`：负责版本更新的流程控制，调用update开始进行版本更新流程。
-
-## 更新流程
-
-调用update之后的流程：
-
-```
-IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，获取最新版本信息）---> IUpdateParser ---> (解析服务器返回的数据，并构建UpdateEntity版本更新实体）---> IUpdateProxy ---> (如无最新版本，直接结束，否则进行下面流程）
-
-    ---自动模式---> IUpdateDownloader ---> （下载最新的应用apk） ---> 安装应用
-
-    ---非自动模式---> IUpdatePrompter ---> 给出版本更新的提示
-
-                                                        ---> 用户点击更新 ---> IUpdateDownloader ---> （下载最新的应用apk） ---> 跳转到应用安装界面
-
-                                                        ---> 用户点击（取消或忽略） ---> 结束
-```
-
-[点击查看框架UML设计图](https://github.com/xuexiangjys/XUpdate/blob/master/img/xupdate_uml.png)
+In order to facilitate the rapid integration of X-Library, I provide a template project for your reference: [https://github.com/xuexiangjys/TemplateAppProject](https://github.com/xuexiangjys/TemplateAppProject)
 
 ---
 
-## 1、演示（请star支持）
+## Features
 
-* 默认版本更新
+* It supports `post` or `get` request to check version, and supports user-defined network requests.
+
+* Only version update under WiFi is supported。
+
+* Support silent download (background update) and automatic version update.
+
+* The user-friendly version update prompt pop-up window is provided to customize the theme style.
+
+* It supports user-defined version update checker, parser, prompter, downloader, install listener and error listener.
+
+* Support MD5 file verification, version ignore, version forced update and other functions.
+
+* It supports the user-defined file verification method【MD5 verification by default】.
+
+* Support custom request API interface.
+
+* Compatible with Android 6.0, 7.0, 8.0, 9.0 and 10.0.
+
+* Support Chinese and English language (internationalization).
+
+* Support the use of the flutter plugin：[flutter_xupdate](https://github.com/xuexiangjys/flutter_xupdate)。
+
+* Support the use of react native plugin：[react-native-xupdate](https://github.com/xuexiangjys/react-native-xupdate)。
+
+## Composition structure
+
+This framework refers to [AppUpdate](https://github.com/WVector/AppUpdate) some ideas and UI, the various parts of the version update are separated to form the following parts:
+
+* `IUpdateChecker`: Check for the latest version.
+
+* `IUpdateParser`: Parsing the data results returned by the server.
+
+* `IUpdatePrompter`: Display the latest version information.
+
+* `IUpdateDownloader`: Download the latest version of APK installation package.
+
+* `IUpdateHttpService`: The interface for network request.
+
+In addition, there are two listeners:
+
+* `OnUpdateFailureListener`: Listening error
+
+* `OnInstallListener`: Callback of application installation
+
+Update core manager:
+
+* `IUpdateProxy`: Responsible for the process control of version update, calling update to start the version update process.
+
+## Update process
+
+Process after calling `update`:
+
+```
+IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（Request the server to get the latest version information）---> IUpdateParser ---> (Parse the data returned by the server, and build the UpdateEntity）---> IUpdateProxy ---> (If there is no latest version, end it directly, otherwise proceed to the following process）
+
+    ---Automatic mode---> IUpdateDownloader ---> （Download the latest app apk） ---> Install application
+
+    ---Non automatic mode---> IUpdatePrompter ---> Prompt for version update
+
+                                                        ---> click Update ---> IUpdateDownloader ---> （Download the latest app apk） ---> Jump to application installation UI
+
+                                                        ---> Click cancel or ignore ---> End
+```
+
+[Click to view the framework UML design diagram](https://github.com/xuexiangjys/XUpdate/blob/master/img/xupdate_uml.png)
+
+---
+
+## 1、Demonstration
+
+* Default version update
 
 ![xupdate_default.png](https://img.rruu.net/image/5f9d7b77af102)
 
-* 后台更新
+* Background update
 
 ![xupdate_background.png](https://img.rruu.net/image/5f9d7b769901a)
 
-* 强制版本更新
+* Force version update
 
 ![xupdate_force.png](https://img.rruu.net/image/5f9d7b774b990)
 
-* 可忽略版本更新
+* Ignored version update
 
 ![xupdate_ignore.png](https://img.rruu.net/image/5f9d7b77ad3be)
 
-* 自定义提示弹窗主题
+* Custom pop up theme
 
 ![xupdate_custom.png](https://img.rruu.net/image/5f9d7b76cee50)
 
-* 使用系统弹窗提示
+* Use the system pop-up prompt
 
 ![xupdate_system.png](https://img.rruu.net/image/5f9d7b77ab42f)
 
-### Demo更新后台服务
+### Demo update background service
 
-由于github最近访问比较慢，如果需要更好地体验XUpdate，你可以[点击自己搭建一个简易的版本更新服务](https://github.com/xuexiangjys/XUpdateService)。
+Because GitHub is slow to visit recently, if you need to experience xupdate better, you can [Click to build a simple version update service](https://github.com/xuexiangjys/XUpdateService).
 
-### Demo下载
+### Demo Download
 
-#### 蒲公英下载
+#### Pgyer Download
 
-> 蒲公英下载的密码: xuexiangjys
+> Pgyer Download password: xuexiangjys
 
 [![downloads](https://img.shields.io/badge/downloads-2.1M-blue.svg)](https://www.pgyer.com/xupdate)
 
 ![xupdate_download_pugongying.png](https://img.rruu.net/image/5f7d94983032e)
 
-#### Github下载
+#### GitHub Download
 
 [![downloads](https://img.shields.io/badge/downloads-2.1M-blue.svg)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
 
@@ -143,13 +145,14 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
 
 ---
 
-## 2、快速集成指南
+## 2、Quick integration guide
 
-> 目前支持主流开发工具AndroidStudio的使用，直接配置build.gradle，增加依赖即可.
+> At present, it supports the use of the mainstream development tool AndroidStudio and add dependency by configures `build.gradle` directly.
 
-### 2.1、Android Studio导入方法，添加Gradle依赖
+### 2.1、Add gradle dependency
 
-1.先在项目根目录的 build.gradle 的 repositories 添加:
+1.In the project root directory `build.gradle`:
+
 ```
 allprojects {
      repositories {
@@ -159,117 +162,117 @@ allprojects {
 }
 ```
 
-2.然后在dependencies添加:
+2.Then, in the dependencies of the project:
 
-以下是版本说明，选择一个即可。
+The following is the version description. Choose one.
 
-* androidx版本：2.0.0及以上
+* androidx project: above 2.0.0
 
 ```
 dependencies {
   ...
-  // androidx版本
+  // androidx project
   implementation 'com.github.xuexiangjys:XUpdate:2.0.4'
 }
 ```
 
-* support版本：1.1.6及以下
+* support project: below 1.1.6
 
 ```
 dependencies {
   ...
-  // support版本
+  // support project
   implementation 'com.github.xuexiangjys:XUpdate:1.1.6'
 }
 ```
 
-### 2.2、初始化XUpdate
+### 2.2、Initialization
 
-在Application进行初始化配置：
+Initialize settings at the top of the application:
 
 ```
 XUpdate.get()
     .debug(true)
-    .isWifiOnly(true)                                               //默认设置只在wifi下检查版本更新
-    .isGet(true)                                                    //默认设置使用get请求检查版本
-    .isAutoMode(false)                                              //默认设置非自动模式，可根据具体使用配置
-    .param("versionCode", UpdateUtils.getVersionCode(this))         //设置默认公共请求参数
+    .isWifiOnly(true)                                               // By default, only version updates are checked under WiFi
+    .isGet(true)                                                    // The default setting uses get request to check versions
+    .isAutoMode(false)                                              // The default setting is non automatic mode
+    .param("versionCode", UpdateUtils.getVersionCode(this))         // Set default public request parameters
     .param("appKey", getPackageName())
-    .setOnUpdateFailureListener(new OnUpdateFailureListener() {     //设置版本更新出错的监听
+    .setOnUpdateFailureListener(new OnUpdateFailureListener() {     // Set listening for version update errors
         @Override
         public void onFailure(UpdateError error) {
-            if (error.getCode() != CHECK_NO_NEW_VERSION) {          //对不同错误进行处理
+            if (error.getCode() != CHECK_NO_NEW_VERSION) {          // Handling different errors
                 ToastUtils.toast(error.toString());
             }
         }
     })
-    .supportSilentInstall(true)                                     //设置是否支持静默安装，默认是true
-    .setIUpdateHttpService(new OKHttpUpdateHttpService())           //这个必须设置！实现网络请求功能。
-    .init(this);                                                    //这个必须初始化
+    .supportSilentInstall(true)                                     // Set whether silent installation is supported. The default is true
+    .setIUpdateHttpService(new OKHttpUpdateHttpService())           // This must be set! Realize the network request function.
+    .init(this);                                                    // This must be initialized
 ```
 
-【注意】：如果出现任何问题，可开启debug模式来追踪问题。如果你还需要将日志记录在磁盘上，可实现以下接口
+【note】: if there is any problem, you can open debug mode to track the problem. If you also need to log on disk, you can implement the following interface.
 
 ```
 XUpdate.get().setILogger(new ILogger() {
     @Override
     public void log(int priority, String tag, String message, Throwable t) {
-        //实现日志记录功能
+        // Realize the function of logging
     }
 });
 ```
 
-### 2.3、版本更新实体信息
+### 2.3、Version update entity information
 
-(1) UpdateEntity字段属性
+(1) UpdateEntity
 
-字段名 | 类型 | 默认值 | 备注
+Field name | Type | Default value | Description
 :-|:-:|:-:|:-
-mHasUpdate | boolean | false | 是否有新版本
-mIsForce | boolean | false | 是否强制安装：不安装无法使用app
-mIsIgnorable | boolean | false | 是否可忽略该版本
-mVersionCode | int | 0 | 最新版本code
-mVersionName | String | unknown_version | 最新版本名称
-mUpdateContent | String | "" | 更新内容
-mDownloadEntity | DownloadEntity | ／ | 下载信息实体
-mIsSilent | boolean | false | 是否静默下载：有新版本时不提示直接下载
-mIsAutoInstall | boolean | true | 是否下载完成后自动安装
+mHasUpdate | boolean | false | Whether have the latest version
+mIsForce | boolean | false | Force installation: app cannot be used without installation
+mIsIgnorable | boolean | false | Whether the version can be ignored
+mVersionCode | int | 0 | Latest version code
+mVersionName | String | unknown_version | Latest version name
+mUpdateContent | String | "" | Update content
+mDownloadEntity | DownloadEntity | ／ | Download information entity
+mIsSilent | boolean | false | Whether to download silently: when there is a new version, do not prompt to download directly
+mIsAutoInstall | boolean | true | Whether to automatic install app when the download is completed
 
-(2) DownloadEntity字段属性
+(2) DownloadEntity
 
-字段名 | 类型 | 默认值 | 备注
+Field name | Type | Default value | Description
 :-|:-:|:-:|:-
-mDownloadUrl | String | "" | 下载地址
-mCacheDir | String | "" | 文件下载的目录
-mMd5 | String | "" | 下载文件的加密校验值(默认使用md5加密)，用于校验，防止下载的apk文件被替换（最新演示demo中有计算校验值的工具）
-mSize | long | 0 | 下载文件的大小【单位：KB】
-mIsShowNotification | boolean | false | 是否在通知栏上显示下载进度
+mDownloadUrl | String | "" | Download address
+mCacheDir | String | "" | File download directory
+mMd5 | String | "" | The encrypted check value of the downloaded file (MD5 encryption is used by default), which is used to verify and prevent the downloaded APK file from being replaced (the latest demo has a tool for calculating the check value)
+mSize | long | 0 | Size of download file【unit: KB】
+mIsShowNotification | boolean | false | Whether to show download progress in the notification bar
 
-(3) PromptEntity字段属性
+(3) PromptEntity
 
-字段名 | 类型 | 默认值 | 备注
+Field name | Type | Default value | Description
 :-|:-:|:-:|:-
-mThemeColor | int | R.color.xupdate_default_theme_color | 主题色（进度条和按钮的背景色）
-mTopResId | int | R.drawable.xupdate_bg_app_top | 顶部背景图片资源id
-mButtonTextColor | int | 0 | 按钮文字颜色
-mSupportBackgroundUpdate | boolean | false | 是否支持后台更新
-mWidthRatio | float | -1（无约束） | 版本更新提示器宽度占屏幕的比例
-mHeightRatio | float | -1（无约束） | 版本更新提示器高度占屏幕的比例
+mThemeColor | int | R.color.xupdate_default_theme_color | Theme colors (background colors for progress bars and buttons)
+mTopResId | int | R.drawable.xupdate_bg_app_top | Top background image resource ID
+mButtonTextColor | int | 0 | Button text color
+mSupportBackgroundUpdate | boolean | false | Whether background updates are supported
+mWidthRatio | float | -1（Unconstrained） | The ratio of the width of the version update prompter to the screen
+mHeightRatio | float | -1（Unconstrained） | The ratio of the height of the version update prompter to the screen
 
-### 2.4、文件加密校验方式
+### 2.4、File encryption verification method
 
-本框架默认使用的文件加密校验方法是MD5加密方式，当然如果你不想使用MD5加密，你也可以自定义文件加密器`IFileEncryptor`,以下是MD5文件加密器的实现供参考：
+The default file encryption verification method used in this framework is MD5 encryption. Of course, if you don't want to use MD5 encryption, you can also customize the File Encryptor `IFileEncryptor`. The following is the implementation of MD5 File Encryptor for reference:
 
 ```
 /**
- * 默认的文件加密计算使用的是MD5加密
+ * The default file encryption calculation uses MD5 encryption
  *
  * @author xuexiang
  * @since 2019-09-06 14:21
  */
 public class DefaultFileEncryptor implements IFileEncryptor {
     /**
-     * 加密文件
+     * Encrypted files
      *
      * @param file
      * @return
@@ -280,11 +283,11 @@ public class DefaultFileEncryptor implements IFileEncryptor {
     }
 
     /**
-     * 检验文件是否有效（加密是否一致）
+     * Verify that the file is valid (whether the encryption is consistent)
      *
-     * @param encrypt 加密值, 如果encrypt为空，直接认为是有效的
-     * @param file    需要校验的文件
-     * @return 文件是否有效
+     * @param encrypt The encrypted value, is considered to be valid if encrypt is empty.
+     * @param file    File to be verified
+     * @return Whether the document is valid
      */
     @Override
     public boolean isFileValid(String encrypt, File file) {
@@ -293,52 +296,55 @@ public class DefaultFileEncryptor implements IFileEncryptor {
 }
 
 ```
-最后再调用`XUpdate.get().setIFileEncryptor`方法设置即可生效。
+
+Finally, call the `XUpdate.get().setIFileEncryptor` method, settings will take effect.
 
 ---
 
-## 3、版本更新
+## 3、Version update
 
-### 3.1、默认版本更新
+### 3.1、Default version update
 
-直接调用如下代码即可完成版本更新操作：
+You can directly call the following code to complete the version update operation:
 
 ```
 XUpdate.newBuild(getActivity())
         .updateUrl(mUpdateUrl)
         .update();
 ```
-需要注意的是，使用默认版本更新，请求服务器返回的json格式应包括如下内容：
+
+It should be noted that with the default version update, the JSON format returned by the request server should include the following contents:
 
 ```
 {
-  "Code": 0, //0代表请求成功，非0代表失败
-  "Msg": "", //请求出错的信息
-  "UpdateStatus": 1, //0代表不更新，1代表有版本更新，不需要强制升级，2代表有版本更新，需要强制升级
+  "Code": 0, // 0 means the request is successful, non-0 means failure
+  "Msg": "", // Request error information
+  "UpdateStatus": 1, // 0 means no update, 1 means version update, no forced upgrade is required, and 2 represents version update and forced upgrade is required
   "VersionCode": 3,
   "VersionName": "1.0.2",
   "ModifyContent": "1、优化api接口。\r\n2、添加使用demo演示。\r\n3、新增自定义更新服务API接口。\r\n4、优化更新提示界面。",
   "DownloadUrl": "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/apk/xupdate_demo_1.0.2.apk",
   "ApkSize": 2048
-  "ApkMd5": "..."  //md5值没有的话，就无法保证apk是否完整，每次都会重新下载。框架默认使用的是md5加密。
+  "ApkMd5": "..."  // If there is no MD5 value, there is no guarantee that the APK is complete and will be downloaded again every time. The framework uses MD5 encryption by default.
 }
 ```
 
-### 3.2、自动版本更新
+### 3.2、Automatic version update
 
-自动版本更新：自动检查版本 + 自动下载apk + 自动安装apk（静默安装）。
-只需要设置`isAutoMode(true)`,不过如果设备没有root权限的话，是无法做到完全的自动更新（因为静默安装需要root权限）。
+Automatic version update: auto check version + auto download APK + auto install APK (silent install).
+
+You only need to set `isAutoMode(true)`. However, if the device does not have root permission, it will not be able to complete automatic update (because the silent installation requires root permission).
 
 ```
 XUpdate.newBuild(getActivity())
         .updateUrl(mUpdateUrl)
-        .isAutoMode(true) //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
+        .isAutoMode(true) // If you need to be completely unattended and update automatically, you need root permission【required for silent installation】
         .update();
 ```
 
-### 3.3、支持后台更新
+### 3.3、Support background update
 
-开启支持后台更新后, 用户点击“后台更新”按钮后,就可以进入到后台更新,不用一直在更新界面等待.
+After enabling the background update, users can enter the background update after clicking the "background update" button.
 
 ```
 XUpdate.newBuild(getActivity())
@@ -347,21 +353,21 @@ XUpdate.newBuild(getActivity())
         .update();
 ```
 
-### 3.4、强制版本更新
+### 3.4、Force version update
 
-就是用户不更新的话，程序将无法正常使用。只需要服务端返回`UpdateStatus`字段为2即可。
+If the user does not update, the program will not work normally. The server only needs to return the `UpdateStatus` field to 2.
 
-当然如果你自定义请求返回api的话，只需要设置`UpdateEntity`的`mIsForce`字段为true即可。
+Of course, if you customize the request return API, you only need to set the `mIsForce` field of `UpdateEntity` to true.
 
-### 3.5、自定义版本更新提示弹窗的主题
+### 3.5、Custom version update prompt pop-up theme
 
-通过设置更新顶部图片、主题色、按钮文字颜色、宽高比率等来实现自定义主题样式.
+By setting the update top picture, theme color, button text color, width to height ratio, etc
 
-* promptThemeColor: 设置主题颜色
-* promptButtonTextColor: 设置按钮的文字颜色
-* promptTopResId: 设置顶部背景图片
-* promptWidthRatio: 设置版本更新提示器宽度占屏幕的比例，默认是-1，不做约束
-* promptHeightRatio: 设置版本更新提示器高度占屏幕的比例，默认是-1，不做约束
+* promptThemeColor: Set theme color
+* promptButtonTextColor: Set the text color of the button
+* promptTopResId: Set top background image Resource ID
+* promptWidthRatio: Set the ratio of the width of the version update prompt to the screen. The default value is -1(No constraint is required).
+* promptHeightRatio: Set the ratio of the height of the version update prompt to the screen. The default value is -1(No constraint is required).
 
 ```
 XUpdate.newBuild(getActivity())
@@ -373,14 +379,14 @@ XUpdate.newBuild(getActivity())
         .update();
 ```
 
-### 3.6、自定义版本更新解析器
+### 3.6、Custom version update parser
 
-实现IUpdateParser接口即可实现解析器的自定义。
+The implementation of `IUpdateParser` interface can realize the user-defined parser.
 
 ```
 XUpdate.newBuild(getActivity())
         .updateUrl(mUpdateUrl3)
-        .updateParser(new CustomUpdateParser()) //设置自定义的版本更新解析器
+        .updateParser(new CustomUpdateParser()) // Set up a custom version update parser
         .update();
 
 public class CustomUpdateParser implements IUpdateParser {
@@ -403,13 +409,13 @@ public class CustomUpdateParser implements IUpdateParser {
 
 ```
 
-### 3.7、自定义版本更新检查器+版本更新解析器+版本更新提示器
+### 3.7、Custom version update checker + version update parser + version update prompter
 
-* 实现`IUpdateChecker`接口即可实现检查器的自定义。
+* By implementing the 'IUpdateChecker' interface, the checker can be customized.
 
-* 实现`IUpdateParser`接口即可实现解析器的自定义。
+* By implementing the 'IUpdateParser' interface, the parser can be customized.
 
-* 实现`IUpdatePrompter`接口即可实现提示器的自定义。
+* By implementing the 'IUpdatePrompter' interface, the prompter can be customized.
 
 ```
 XUpdate.newBuild(getActivity())
@@ -445,7 +451,7 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
     }
 
     /**
-     * 显示自定义提示
+     * Show custom version update prompter
      *
      * @param updateEntity
      * @param updateProxy
@@ -490,13 +496,13 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
     }
 ```
 
-### 3.8、只使用XUpdate的下载器功能进行apk的下载
+### 3.8、Only use the downloader function to download APK
 
 ```
 XUpdate.newBuild(getActivity())
-        .apkCacheDir(PathUtils.getExtDownloadsPath()) //设置下载缓存的根目录
+        .apkCacheDir(PathUtils.getExtDownloadsPath())  // Set the root directory of the download cache
         .build()
-        .download(mDownloadUrl, new OnFileDownloadListener() {   //设置下载的地址和下载的监听
+        .download(mDownloadUrl, new OnFileDownloadListener() {   // Set the download address and download listener
             @Override
             public void onStart() {
                 HProgressDialogUtils.showHorizontalProgressDialog(getContext(), "下载进度", false);
@@ -521,63 +527,63 @@ XUpdate.newBuild(getActivity())
         });
 ```
 
-### 3.9、只使用XUpdate的APK安装的功能
+### 3.9、Only use the APK installed features of XUpdate
 
 ```
-_XUpdate.startInstallApk(getContext(), FileUtils.getFileByPath(PathUtils.getFilePathByUri(getContext(), data.getData()))); //填写文件所在的路径
+_XUpdate.startInstallApk(getContext(), FileUtils.getFileByPath(PathUtils.getFilePathByUri(getContext(), data.getData()))); // Set the path where the file is located
 ```
 
-如果你的apk安装与众不同，你可以实现自己的apk安装器。你只需要实现OnInstallListener接口，并通过`XUpdate.setOnInstallListener`进行设置即可生效。
+If your APK installation is different, you can implement your own APK installer. You only need to implement the `OnInstallListener` interface and use the `XUpdate.setOnInstallListener` set it to take effect.
 
 
-## 混淆配置
+## Proguard
 
 ```
 -keep class com.xuexiang.xupdate.entity.** { *; }
 
-//注意，如果你使用的是自定义Api解析器解析，还需要给你自定义Api实体配上混淆，如下是本demo中配置的自定义Api实体混淆规则：
+// Note: if you use a custom API parser for parsing, you need to add confusion to your custom API entities. Here are the custom API entity obfuscation rules configured in this demo:
 -keep class com.xuexiang.xupdatedemo.entity.** { *; }
 
 ```
 
-## 相关链接
+## Related links
 
-* [XUpdate 文档](https://github.com/xuexiangjys/XUpdate/wiki)
-* [XUpdate 管理服务](https://github.com/xuexiangjys/XUpdateService)
-* [XUpdate 后台管理系统](https://github.com/xuexiangjys/xupdate-management)
-* [XUpdate Flutter插件](https://github.com/xuexiangjys/flutter_xupdate)
-* [XUpdate React-Native插件](https://github.com/xuexiangjys/react-native-xupdate)
-* [Flutter版本更新弹窗组件](https://github.com/xuexiangjys/flutter_update_dialog)
+* [XUpdate Document](https://github.com/xuexiangjys/XUpdate/wiki)
+* [XUpdate Management Service](https://github.com/xuexiangjys/XUpdateService)
+* [XUpdate Background Management System](https://github.com/xuexiangjys/xupdate-management)
+* [XUpdate Flutter Plugin](https://github.com/xuexiangjys/flutter_xupdate)
+* [XUpdate React-Native Plugin](https://github.com/xuexiangjys/react-native-xupdate)
+* [Flutter Version update pop up components](https://github.com/xuexiangjys/flutter_update_dialog)
 
 ---
 
 
-## 特别感谢
+## Thanks
 
 https://github.com/WVector/AppUpdate
 
-## 如果觉得项目还不错，可以考虑打赏一波
+## Sponsor
 
-> 你的打赏是我维护的动力，我将会列出所有打赏人员的清单在下方作为凭证，打赏前请留下打赏项目的备注！
+> Your support is the driving force of my maintenance. I will list the list of all the reward personnel at the bottom as the voucher. Please leave the notes of the support items before rewarding!
 
 ![pay.png](https://img.rruu.net/image/5f871d00045da)
 
-感谢下面小伙伴的打赏：
+Thank you for your sponsorship：
 
-姓名 | 金额 | 方式
+Name | Money | Platform
 :-|:-|:-
-*天 | 100￥ | 微信
-*航 | 10￥ | 支付宝
+*天 | 100￥ | WeChat
+*航 | 10￥ | Alipay
 
-## 公众号
+## WeChat Subscription
 
-> 更多资讯内容，欢迎扫描关注我的个人微信公众号:【我的Android开源之旅】
+> More information, please scan my personal WeChat Subscription:【我的Android开源之旅】
 
 ![gzh_weixin.jpg](https://img.rruu.net/image/5f871cfff3194)
 
-## 联系方式
+## Contact
 
-[![](https://img.shields.io/badge/点击一键加入QQ交流群-720212425-blue.svg)](http://shang.qq.com/wpa/qunwpa?idkey=37ea606864cafa3c8a5d6b07f04fd672936a50fd6e535c13702baf705d57e6e8)
+[![](https://img.shields.io/badge/QQGroup-720212425-blue.svg)](http://shang.qq.com/wpa/qunwpa?idkey=37ea606864cafa3c8a5d6b07f04fd672936a50fd6e535c13702baf705d57e6e8)
 
 ![xupdate_qq.jpg](https://img.rruu.net/image/5f7d949844672)
 
