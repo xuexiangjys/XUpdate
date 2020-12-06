@@ -29,7 +29,7 @@ In order to facilitate the rapid integration of X-Library, I provide a template 
 
 ## Features
 
-* It supports `post` or `get` request to check version, and supports user-defined network requests.
+* It supports `Post` or `Get` request to check version, and supports user-defined network requests.
 
 * Only version update under WiFi is supported。
 
@@ -194,7 +194,7 @@ Initialize settings at the top of the application:
 XUpdate.get()
     .debug(true)
     .isWifiOnly(true)                                               // By default, only version updates are checked under WiFi
-    .isGet(true)                                                    // The default setting uses get request to check versions
+    .isGet(true)                                                    // The default setting uses Get request to check versions
     .isAutoMode(false)                                              // The default setting is non automatic mode
     .param("versionCode", UpdateUtils.getVersionCode(this))         // Set default public request parameters
     .param("appKey", getPackageName())
@@ -411,11 +411,11 @@ public class CustomUpdateParser implements IUpdateParser {
 
 ### 3.7、Custom version update checker + version update parser + version update prompter
 
-* By implementing the 'IUpdateChecker' interface, the checker can be customized.
+* By implementing the `IUpdateChecker` interface, the checker can be customized.
 
-* By implementing the 'IUpdateParser' interface, the parser can be customized.
+* By implementing the `IUpdateParser` interface, the parser can be customized.
 
-* By implementing the 'IUpdatePrompter' interface, the prompter can be customized.
+* By implementing the `IUpdatePrompter` interface, the prompter can be customized.
 
 ```
 XUpdate.newBuild(getActivity())
