@@ -259,17 +259,18 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
         mBtnBackgroundUpdate.setTextColor(buttonTextColor);
 
         Window window = getWindow();
-        if (window != null) {
-            WindowManager.LayoutParams lp = window.getAttributes();
-            DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-            if (widthRatio > 0 && widthRatio < 1) {
-                lp.width = (int) (displayMetrics.widthPixels * widthRatio);
-            }
-            if (heightRatio > 0 && heightRatio < 1) {
-                lp.height = (int) (displayMetrics.heightPixels * heightRatio);
-            }
-            window.setAttributes(lp);
+        if (window == null) {
+            return;
         }
+        WindowManager.LayoutParams lp = window.getAttributes();
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        if (widthRatio > 0 && widthRatio < 1) {
+            lp.width = (int) (displayMetrics.widthPixels * widthRatio);
+        }
+        if (heightRatio > 0 && heightRatio < 1) {
+            lp.height = (int) (displayMetrics.heightPixels * heightRatio);
+        }
+        window.setAttributes(lp);
     }
 
     //====================更新功能============================//

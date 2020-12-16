@@ -157,19 +157,20 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
      */
     private void initData() {
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            mPromptEntity = bundle.getParcelable(KEY_UPDATE_PROMPT_ENTITY);
-            //设置主题色
-            if (mPromptEntity == null) {
-                //如果不存在就使用默认的
-                mPromptEntity = new PromptEntity();
-            }
-            initTheme(mPromptEntity.getThemeColor(), mPromptEntity.getTopResId(), mPromptEntity.getButtonTextColor());
-            mUpdateEntity = bundle.getParcelable(KEY_UPDATE_ENTITY);
-            if (mUpdateEntity != null) {
-                initUpdateInfo(mUpdateEntity);
-                initListeners();
-            }
+        if (bundle == null) {
+           return;
+        }
+        mPromptEntity = bundle.getParcelable(KEY_UPDATE_PROMPT_ENTITY);
+        //设置主题色
+        if (mPromptEntity == null) {
+            //如果不存在就使用默认的
+            mPromptEntity = new PromptEntity();
+        }
+        initTheme(mPromptEntity.getThemeColor(), mPromptEntity.getTopResId(), mPromptEntity.getButtonTextColor());
+        mUpdateEntity = bundle.getParcelable(KEY_UPDATE_ENTITY);
+        if (mUpdateEntity != null) {
+            initUpdateInfo(mUpdateEntity);
+            initListeners();
         }
     }
 

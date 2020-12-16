@@ -20,6 +20,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -122,6 +123,10 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
      * 提示器参数信息
      */
     private PromptEntity mPromptEntity;
+    /**
+     * 当前屏幕方向
+     */
+    private int mCurrentOrientation;
 
     /**
      * 获取更新提示
@@ -130,7 +135,6 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
      * @param updateEntity    更新信息
      * @param prompterProxy   更新代理
      * @param promptEntity    提示器参数信息
-     * @return
      */
     public static void show(@NonNull FragmentManager fragmentManager, @NonNull UpdateEntity updateEntity, @NonNull IPrompterProxy prompterProxy, @NonNull PromptEntity promptEntity) {
         UpdateDialogFragment fragment = new UpdateDialogFragment();
@@ -147,6 +151,8 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         super.onCreate(savedInstanceState);
         _XUpdate.setIsShowUpdatePrompter(true);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.XUpdate_Fragment_Dialog);
+        mCurrentOrientation = getResources().getConfiguration().orientation;
+
     }
 
     @Override
@@ -169,19 +175,20 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
             }
         });
         Window window = dialog.getWindow();
-        if (window != null) {
-            PromptEntity promptEntity = getPromptEntity();
-            window.setGravity(Gravity.CENTER);
-            WindowManager.LayoutParams lp = window.getAttributes();
-            DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-            if (promptEntity.getWidthRatio() > 0 && promptEntity.getWidthRatio() < 1) {
-                lp.width = (int) (displayMetrics.widthPixels * promptEntity.getWidthRatio());
-            }
-            if (promptEntity.getHeightRatio() > 0 && promptEntity.getHeightRatio() < 1) {
-                lp.height = (int) (displayMetrics.heightPixels * promptEntity.getHeightRatio());
-            }
-            window.setAttributes(lp);
+        if (window == null) {
+            return;
         }
+        PromptEntity promptEntity = getPromptEntity();
+        window.setGravity(Gravity.CENTER);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        if (promptEntity.getWidthRatio() > 0 && promptEntity.getWidthRatio() < 1) {
+            lp.width = (int) (displayMetrics.widthPixels * promptEntity.getWidthRatio());
+        }
+        if (promptEntity.getHeightRatio() > 0 && promptEntity.getHeightRatio() < 1) {
+            lp.height = (int) (displayMetrics.heightPixels * promptEntity.getHeightRatio());
+        }
+        window.setAttributes(lp);
     }
 
     @Nullable
@@ -224,19 +231,20 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
      */
     private void initData() {
         Bundle bundle = getArguments();
-        if (bundle != null) {
-            mPromptEntity = bundle.getParcelable(KEY_UPDATE_PROMPT_ENTITY);
-            //设置主题色
-            if (mPromptEntity == null) {
-                //如果不存在就使用默认的
-                mPromptEntity = new PromptEntity();
-            }
-            initTheme(mPromptEntity.getThemeColor(), mPromptEntity.getTopResId(), mPromptEntity.getButtonTextColor());
-            mUpdateEntity = bundle.getParcelable(KEY_UPDATE_ENTITY);
-            if (mUpdateEntity != null) {
-                initUpdateInfo(mUpdateEntity);
-                initListeners();
-            }
+        if (bundle == null) {
+            return;
+        }
+        mPromptEntity = bundle.getParcelable(KEY_UPDATE_PROMPT_ENTITY);
+        //设置主题色
+        if (mPromptEntity == null) {
+            //如果不存在就使用默认的
+            mPromptEntity = new PromptEntity();
+        }
+        initTheme(mPromptEntity.getThemeColor(), mPromptEntity.getTopResId(), mPromptEntity.getButtonTextColor());
+        mUpdateEntity = bundle.getParcelable(KEY_UPDATE_ENTITY);
+        if (mUpdateEntity != null) {
+            initUpdateInfo(mUpdateEntity);
+            initListeners();
         }
     }
 
@@ -275,7 +283,6 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         if (UpdateUtils.isApkDownloaded(mUpdateEntity)) {
             showInstallButton(UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity));
         }
-
         //强制更新,不显示关闭按钮
         if (updateEntity.isForce()) {
             mLlClose.setVisibility(View.GONE);
@@ -478,7 +485,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     }
 
     @Override
-    public void show(FragmentManager manager, String tag) {
+    public void show(@NonNull FragmentManager manager, @Nullable String tag) {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
             if (manager.isDestroyed()) {
                 return;
@@ -514,6 +521,27 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         if (sIPrompterProxy != null) {
             sIPrompterProxy.recycle();
             sIPrompterProxy = null;
+        }
+    }
+
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation != mCurrentOrientation) {
+            reloadView();
+        }
+        mCurrentOrientation = newConfig.orientation;
+    }
+
+    private void reloadView() {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.xupdate_dialog_app, null);
+        ViewGroup root = (ViewGroup) getView();
+        if (root != null) {
+            root.removeAllViews();
+            root.addView(view);
+            initView(root);
+            initData();
         }
     }
 
