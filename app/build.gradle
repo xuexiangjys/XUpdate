@@ -74,8 +74,8 @@ dependencies {
     implementation 'com.github.xuexiangjys.XAOP:xaop-runtime:1.1.0'  //添加依赖
 
     //XPage
-    implementation 'com.github.xuexiangjys.XPage:xpage-lib:3.0.0'
-    annotationProcessor 'com.github.xuexiangjys.XPage:xpage-compiler:3.0.0'
+    implementation 'com.github.xuexiangjys.XPage:xpage-lib:3.0.3'
+    annotationProcessor 'com.github.xuexiangjys.XPage:xpage-compiler:3.0.3'
     //butterknife的sdk
     implementation deps.butterknife.runtime
     annotationProcessor deps.butterknife.compiler

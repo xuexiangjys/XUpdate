@@ -124,7 +124,7 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.xupdate_dialog_app);
+        setContentView(R.layout.xupdate_layout_update_prompter);
         _XUpdate.setIsShowUpdatePrompter(true);
         initView();
         initData();

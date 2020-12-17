@@ -194,7 +194,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.xupdate_dialog_app, container);
+        return inflater.inflate(R.layout.xupdate_layout_update_prompter, container);
     }
 
     @Override
@@ -535,7 +535,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     }
 
     private void reloadView() {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.xupdate_dialog_app, null);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.xupdate_layout_update_prompter, null);
         ViewGroup root = (ViewGroup) getView();
         if (root != null) {
             root.removeAllViews();

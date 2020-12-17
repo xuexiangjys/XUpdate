@@ -127,7 +127,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener {
     }
 
     private UpdateDialog(Context context) {
-        super(context, R.layout.xupdate_dialog_app);
+        super(context, R.layout.xupdate_dialog_update);
     }
 
     public UpdateDialog setPromptEntity(PromptEntity promptEntity) {

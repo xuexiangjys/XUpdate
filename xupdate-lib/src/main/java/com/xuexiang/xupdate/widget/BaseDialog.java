@@ -16,10 +16,16 @@
 
 package com.xuexiang.xupdate.widget;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -122,33 +128,137 @@ public abstract class BaseDialog extends AppCompatDialog {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (isShouldHideKeyboard(v, ev)) {
-                hideSoftInput(v);
+            if (isShouldHideInput(getWindow(), ev)) {
+                hideSoftInput(getCurrentFocus());
             }
         }
         return super.onTouchEvent(ev);
     }
 
     /**
-     * 根据 EditText 所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘
+     * 根据用户点击的坐标获取用户在窗口上触摸到的View，判断这个View是否是EditText来判断是否需要隐藏键盘
      *
-     * @param v
-     * @param event
-     * @return
+     * @param window 窗口
+     * @param event  用户点击事件
+     * @return 是否需要隐藏键盘
      */
-    private static boolean isShouldHideKeyboard(View v, MotionEvent event) {
-        if (v != null && (v instanceof EditText)) {
-            int[] l = {0, 0};
-            v.getLocationInWindow(l);
-            int left = l[0],
-                    top = l[1],
-                    bottom = top + v.getHeight(),
-                    right = left + v.getWidth();
-            return !(event.getX() > left && event.getX() < right
-                    && event.getY() > top && event.getY() < bottom);
+    public static boolean isShouldHideInput(Window window, MotionEvent event) {
+        if (window == null || event == null) {
+            return false;
+        }
+        if (!isSoftInputShow(window)) {
+            return false;
+        }
+        if (!(window.getCurrentFocus() instanceof EditText)) {
+            return false;
+        }
+        View decorView = window.getDecorView();
+        if (decorView instanceof ViewGroup) {
+            return findTouchEditText((ViewGroup) decorView, event) == null;
         }
         return false;
+    }
+
+    private static View findTouchEditText(ViewGroup viewGroup, MotionEvent event) {
+        if (viewGroup == null) {
+            return null;
+        }
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child == null || !child.isShown()) {
+                continue;
+            }
+            if (!isTouchView(child, event)) {
+                continue;
+            }
+            if (child instanceof EditText) {
+                return child;
+            } else if (child instanceof ViewGroup) {
+                return findTouchEditText((ViewGroup) child, event);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 判断view是否在触摸区域内
+     *
+     * @param view  view
+     * @param event 点击事件
+     * @return view是否在触摸区域内
+     */
+    private static boolean isTouchView(View view, MotionEvent event) {
+        if (view == null || event == null) {
+            return false;
+        }
+        Rect rect = new Rect();
+        view.getGlobalVisibleRect(rect);
+        return rect.contains((int) event.getX(), (int) event.getY());
+    }
+
+    /**
+     * 输入键盘是否在显示
+     *
+     * @param window 应用窗口
+     */
+    public static boolean isSoftInputShow(Window window) {
+        if (window != null && window.getDecorView() instanceof ViewGroup) {
+            return isSoftInputShow((ViewGroup) window.getDecorView());
+        }
+        return false;
+    }
+
+    /**
+     * 输入键盘是否在显示
+     *
+     * @param rootView 根布局
+     */
+    public static boolean isSoftInputShow(ViewGroup rootView) {
+        if (rootView == null) {
+            return false;
+        }
+        int viewHeight = rootView.getHeight();
+        //获取View可见区域的bottom
+        Rect rect = new Rect();
+        rootView.getWindowVisibleDisplayFrame(rect);
+        int space = viewHeight - rect.bottom - getNavigationBarHeight(rootView.getContext());
+        return space > 0;
+    }
+
+    /**
+     * 获取系统底部导航栏的高度
+     *
+     * @param context 上下文
+     * @return 系统状态栏的高度
+     */
+    public static int getNavigationBarHeight(Context context) {
+        WindowManager windowManager;
+        if (context instanceof Activity) {
+            windowManager = ((Activity) context).getWindowManager();
+        } else {
+            windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        }
+        if (windowManager == null) {
+            return 0;
+        }
+        Display defaultDisplay = windowManager.getDefaultDisplay();
+        DisplayMetrics realDisplayMetrics = new DisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            defaultDisplay.getRealMetrics(realDisplayMetrics);
+        }
+        int realHeight = realDisplayMetrics.heightPixels;
+        int realWidth = realDisplayMetrics.widthPixels;
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        defaultDisplay.getMetrics(displayMetrics);
+
+        int displayHeight = displayMetrics.heightPixels;
+        int displayWidth = displayMetrics.widthPixels;
+
+        if (realHeight - displayHeight > 0) {
+            return realHeight - displayHeight;
+        }
+        return Math.max(realWidth - displayWidth, 0);
     }
 
     /**
@@ -157,6 +267,9 @@ public abstract class BaseDialog extends AppCompatDialog {
      * @param view 视图
      */
     private static void hideSoftInput(final View view) {
+        if (view == null) {
+            return;
+        }
         InputMethodManager imm =
                 (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm == null) {
