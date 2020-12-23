@@ -15,9 +15,11 @@
  *
  */
 
-package com.xuexiang.xupdate.service;
+package com.xuexiang.xupdate.widget;
 
 import androidx.annotation.NonNull;
+
+import com.xuexiang.xupdate.service.OnFileDownloadListener;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -30,30 +32,30 @@ import java.lang.ref.WeakReference;
  */
 public class WeakFileDownloadListener implements OnFileDownloadListener {
 
-    private WeakReference<OnFileDownloadListener> mDownloadListenerRef;
+    private WeakReference<IDownloadEventHandler> mDownloadHandlerRef;
 
-    public WeakFileDownloadListener(@NonNull OnFileDownloadListener fileDownloadListener) {
-        mDownloadListenerRef = new WeakReference<>(fileDownloadListener);
+    public WeakFileDownloadListener(@NonNull IDownloadEventHandler handler) {
+        mDownloadHandlerRef = new WeakReference<>(handler);
     }
 
     @Override
     public void onStart() {
-        if (getDownloadListener() != null) {
-            getDownloadListener().onStart();
+        if (getEventHandler() != null) {
+            getEventHandler().handleStart();
         }
     }
 
     @Override
     public void onProgress(float progress, long total) {
-        if (getDownloadListener() != null) {
-            getDownloadListener().onProgress(progress, total);
+        if (getEventHandler() != null) {
+            getEventHandler().handleProgress(progress);
         }
     }
 
     @Override
     public boolean onCompleted(File file) {
-        if (getDownloadListener() != null) {
-            return getDownloadListener().onCompleted(file);
+        if (getEventHandler() != null) {
+            return getEventHandler().handleCompleted(file);
         } else {
             // 下载好了，返回true，自动进行apk安装
             return true;
@@ -62,12 +64,12 @@ public class WeakFileDownloadListener implements OnFileDownloadListener {
 
     @Override
     public void onError(Throwable throwable) {
-        if (getDownloadListener() != null) {
-            getDownloadListener().onError(throwable);
+        if (getEventHandler() != null) {
+            getEventHandler().handleError(throwable);
         }
     }
 
-    private OnFileDownloadListener getDownloadListener() {
-        return mDownloadListenerRef != null ? mDownloadListenerRef.get() : null;
+    private IDownloadEventHandler getEventHandler() {
+        return mDownloadHandlerRef != null ? mDownloadHandlerRef.get() : null;
     }
 }

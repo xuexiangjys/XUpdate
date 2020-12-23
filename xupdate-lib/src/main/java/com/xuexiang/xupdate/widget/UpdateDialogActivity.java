@@ -30,8 +30,6 @@ import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.PromptEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IPrompterProxy;
-import com.xuexiang.xupdate.service.OnFileDownloadListener;
-import com.xuexiang.xupdate.service.WeakFileDownloadListener;
 import com.xuexiang.xupdate.utils.ColorUtils;
 import com.xuexiang.xupdate.utils.DrawableUtils;
 import com.xuexiang.xupdate.utils.UpdateUtils;
@@ -49,7 +47,7 @@ import static com.xuexiang.xupdate.widget.UpdateDialogFragment.REQUEST_CODE_REQU
  * @author xuexiang
  * @since 2020/6/8 10:47 PM
  */
-public class UpdateDialogActivity extends AppCompatActivity implements View.OnClickListener {
+public class UpdateDialogActivity extends AppCompatActivity implements View.OnClickListener, IDownloadEventHandler {
 
     //======顶部========//
     /**
@@ -158,7 +156,7 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
     private void initData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
-           return;
+            return;
         }
         mPromptEntity = bundle.getParcelable(KEY_UPDATE_PROMPT_ENTITY);
         //设置主题色
@@ -348,7 +346,7 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
             }
         } else {
             if (sIPrompterProxy != null) {
-                sIPrompterProxy.startDownload(mUpdateEntity, getFileDownloadListener());
+                sIPrompterProxy.startDownload(mUpdateEntity, new WeakFileDownloadListener(this));
             }
             //忽略版本在点击更新按钮后隐藏
             if (mUpdateEntity.isIgnorable()) {
@@ -357,57 +355,47 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-
-    /**
-     * 返回文件下载监听
-     *
-     * @return 获取文件下载监听
-     */
-    private OnFileDownloadListener getFileDownloadListener() {
-        return new WeakFileDownloadListener(new OnFileDownloadListener() {
-            @Override
-            public void onStart() {
-                if (!isFinishing()) {
-                    mNumberProgressBar.setVisibility(View.VISIBLE);
-                    mNumberProgressBar.setProgress(0);
-                    mBtnUpdate.setVisibility(View.GONE);
-                    if (getPromptEntity().isSupportBackgroundUpdate()) {
-                        mBtnBackgroundUpdate.setVisibility(View.VISIBLE);
-                    } else {
-                        mBtnBackgroundUpdate.setVisibility(View.GONE);
-                    }
-                }
+    @Override
+    public void handleStart() {
+        if (!isFinishing()) {
+            mNumberProgressBar.setVisibility(View.VISIBLE);
+            mNumberProgressBar.setProgress(0);
+            mBtnUpdate.setVisibility(View.GONE);
+            if (getPromptEntity().isSupportBackgroundUpdate()) {
+                mBtnBackgroundUpdate.setVisibility(View.VISIBLE);
+            } else {
+                mBtnBackgroundUpdate.setVisibility(View.GONE);
             }
+        }
+    }
 
-            @Override
-            public void onProgress(float progress, long total) {
-                if (!isFinishing()) {
-                    mNumberProgressBar.setProgress(Math.round(progress * 100));
-                    mNumberProgressBar.setMax(100);
-                }
-            }
+    @Override
+    public void handleProgress(float progress) {
+        if (!isFinishing()) {
+            mNumberProgressBar.setProgress(Math.round(progress * 100));
+            mNumberProgressBar.setMax(100);
+        }
+    }
 
-            @Override
-            public boolean onCompleted(File file) {
-                if (!isFinishing()) {
-                    mBtnBackgroundUpdate.setVisibility(View.GONE);
-                    if (mUpdateEntity.isForce()) {
-                        showInstallButton(file);
-                    } else {
-                        dismissDialog();
-                    }
-                }
-                // 返回true，自动进行apk安装
-                return true;
+    @Override
+    public boolean handleCompleted(File file) {
+        if (!isFinishing()) {
+            mBtnBackgroundUpdate.setVisibility(View.GONE);
+            if (mUpdateEntity.isForce()) {
+                showInstallButton(file);
+            } else {
+                dismissDialog();
             }
+        }
+        // 返回true，自动进行apk安装
+        return true;
+    }
 
-            @Override
-            public void onError(Throwable throwable) {
-                if (!isFinishing()) {
-                    dismissDialog();
-                }
-            }
-        });
+    @Override
+    public void handleError(Throwable throwable) {
+        if (!isFinishing()) {
+            dismissDialog();
+        }
     }
 
     /**

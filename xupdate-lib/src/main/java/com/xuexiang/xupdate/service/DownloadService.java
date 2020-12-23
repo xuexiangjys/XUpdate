@@ -378,7 +378,7 @@ public class DownloadService extends Service {
                 return;
             }
 
-            _XUpdate.onUpdateError(DOWNLOAD_FAILED, throwable.getMessage());
+            _XUpdate.onUpdateError(DOWNLOAD_FAILED, throwable != null ? throwable.getMessage() : "unknown error!");
             //App前台运行
             if (mOnFileDownloadListener != null) {
                 mOnFileDownloadListener.onError(throwable);
