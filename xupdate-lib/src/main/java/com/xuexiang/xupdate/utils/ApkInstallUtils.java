@@ -231,9 +231,9 @@ public final class ApkInstallUtils {
     /**
      * 使用系统的意图进行apk安装
      *
-     * @param context
-     * @param appFile
-     * @return
+     * @param context 上下文
+     * @param appFile 应用文件
+     * @return 安装是否成功
      */
     private static boolean installNormal(Context context, File appFile) {
         try {
@@ -247,7 +247,7 @@ public final class ApkInstallUtils {
                 return true;
             }
         } catch (Exception e) {
-            _XUpdate.onUpdateError(INSTALL_FAILED, "使用系统的意图进行apk安装失败！");
+            _XUpdate.onUpdateError(INSTALL_FAILED, "Apk installation failed using the intent of the system!");
         }
         return false;
     }
@@ -270,7 +270,7 @@ public final class ApkInstallUtils {
             intent.setDataAndType(fileUri, "application/vnd.android.package-archive");
             return intent;
         } catch (Exception e) {
-            _XUpdate.onUpdateError(INSTALL_FAILED, "获取安装的意图失败！");
+            _XUpdate.onUpdateError(INSTALL_FAILED, "Failed to get intent for installation！");
         }
         return null;
     }

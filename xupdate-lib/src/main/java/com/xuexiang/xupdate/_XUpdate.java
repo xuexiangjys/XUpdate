@@ -17,6 +17,7 @@
 package com.xuexiang.xupdate;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import com.xuexiang.xupdate.entity.DownloadEntity;
@@ -204,8 +205,8 @@ public final class _XUpdate {
     /**
      * 更新出现错误
      *
-     * @param errorCode
-     * @param message
+     * @param errorCode 错误码
+     * @param message   错误信息
      */
     public static void onUpdateError(int errorCode, String message) {
         onUpdateError(new UpdateError(errorCode, message));
