@@ -21,6 +21,10 @@
 
 [![github](https://img.shields.io/badge/GitHub-xuexiangjys-blue.svg)](https://github.com/xuexiangjys)   [![csdn](https://img.shields.io/badge/CSDN-xuexiangjys-green.svg)](http://blog.csdn.net/xuexiangjys)   [![简书](https://img.shields.io/badge/简书-xuexiangjys-red.svg)](https://www.jianshu.com/u/6bf605575337)   [![掘金](https://img.shields.io/badge/掘金-xuexiangjys-brightgreen.svg)](https://juejin.im/user/598feef55188257d592e56ed)   [![知乎](https://img.shields.io/badge/知乎-xuexiangjys-violet.svg)](https://www.zhihu.com/people/xuexiangjys)
 
+## 简化使用
+
+想要更快地使用XUpdate，降低集成的难度，支持断点续传下载等拓展功能，可以尝试使用[XUpdateAPI](https://github.com/xuexiangjys/XUpdateAPI).
+
 ## X系列库快速集成
 
 为了方便大家快速集成X系列框架库，我提供了一个空壳模版供大家参考使用: https://github.com/xuexiangjys/TemplateAppProject
@@ -545,6 +549,7 @@ _XUpdate.startInstallApk(getContext(), FileUtils.getFileByPath(PathUtils.getFile
 ## 相关链接
 
 * [XUpdate 文档](https://github.com/xuexiangjys/XUpdate/wiki)
+* [XUpdate 简化库](https://github.com/xuexiangjys/XUpdateAPI)
 * [XUpdate 管理服务](https://github.com/xuexiangjys/XUpdateService)
 * [XUpdate 后台管理系统](https://github.com/xuexiangjys/xupdate-management)
 * [XUpdate Flutter插件](https://github.com/xuexiangjys/flutter_xupdate)

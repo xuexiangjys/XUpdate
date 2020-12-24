@@ -21,6 +21,10 @@ Please read the [instruction document](https://github.com/xuexiangjys/XUpdate/wi
 
 [![github](https://img.shields.io/badge/GitHub-xuexiangjys-blue.svg)](https://github.com/xuexiangjys)   [![csdn](https://img.shields.io/badge/CSDN-xuexiangjys-green.svg)](http://blog.csdn.net/xuexiangjys)   [![jianshu](https://img.shields.io/badge/jianshu-xuexiangjys-red.svg)](https://www.jianshu.com/u/6bf605575337)   [![juejin](https://img.shields.io/badge/juejin-xuexiangjys-brightgreen.svg)](https://juejin.im/user/598feef55188257d592e56ed)   [![zhihu](https://img.shields.io/badge/zhihu-xuexiangjys-violet.svg)](https://www.zhihu.com/people/xuexiangjys)
 
+## Simplify use
+
+If you want to use xupdate faster, reduce the difficulty of integration, support breakpoint continuation download and other expansion functions, you can try to use [XUpdateAPI](https://github.com/xuexiangjys/XUpdateAPI).
+
 ## Rapid integration of X-Library
 
 In order to facilitate the rapid integration of X-Library, I provide a template project for your reference: [https://github.com/xuexiangjys/TemplateAppProject](https://github.com/xuexiangjys/TemplateAppProject)
@@ -549,6 +553,7 @@ If your APK installation is different, you can implement your own APK installer.
 ## Related links
 
 * [XUpdate Document](https://github.com/xuexiangjys/XUpdate/wiki)
+* [XUpdate Easy Use](https://github.com/xuexiangjys/XUpdateAPI)
 * [XUpdate Management Service](https://github.com/xuexiangjys/XUpdateService)
 * [XUpdate Background Management System](https://github.com/xuexiangjys/xupdate-management)
 * [XUpdate Flutter Plugin](https://github.com/xuexiangjys/flutter_xupdate)
