@@ -5,7 +5,7 @@
 [![I](https://img.shields.io/github/issues/xuexiangjys/XUpdate.svg)](https://github.com/xuexiangjys/XUpdate/issues)
 [![Star](https://img.shields.io/github/stars/xuexiangjys/XUpdate.svg)](https://github.com/xuexiangjys/XUpdate)
 
-## [English](./README.md) | [Chinese](./README_ZH.md)
+## [English](./README.md) | [Chinese](./README_ZH.md) ｜ [Video tutorial](https://space.bilibili.com/483850585/channel/detail?cid=164280)
 
 A lightweight, high availability Android version update framework. Click [instruction document](https://github.com/xuexiangjys/XUpdate/wiki) to experience it！
 

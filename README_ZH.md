@@ -5,7 +5,7 @@
 [![I](https://img.shields.io/github/issues/xuexiangjys/XUpdate.svg)](https://github.com/xuexiangjys/XUpdate/issues)
 [![Star](https://img.shields.io/github/stars/xuexiangjys/XUpdate.svg)](https://github.com/xuexiangjys/XUpdate)
 
-## [英文](./README.md) | [中文](./README_ZH.md)
+## [英文](./README.md) | [中文](./README_ZH.md) ｜ [视频教程](https://space.bilibili.com/483850585/channel/detail?cid=164280)
 
 一个轻量级、高可用性的Android版本更新框架。赶紧点击[使用说明文档](https://github.com/xuexiangjys/XUpdate/wiki)，体验一下吧！
 
