@@ -194,7 +194,8 @@ public class DownloadService extends Service {
     /**
      * DownloadBinder中定义了一些实用的方法
      *
-     * @author user
+     * @author xuexiang
+     * @since 2021/1/24 1:59 AM
      */
     public class DownloadBinder extends Binder {
 
@@ -300,27 +301,73 @@ public class DownloadService extends Service {
 
         @Override
         public void onStart() {
+            if (mIsCancel) {
+                return;
+            }
+
+            //清空通知栏状态
+            mNotificationManager.cancel(DOWNLOAD_NOTIFY_ID);
+            mBuilder = null;
+
+            //初始化通知栏
+            setUpNotification(mDownloadEntity);
+            dispatchOnStart();
+        }
+
+        private void dispatchOnStart() {
             if (UpdateUtils.isMainThread()) {
-                handleOnStart();
+                if (mOnFileDownloadListener != null) {
+                    mOnFileDownloadListener.onStart();
+                }
             } else {
                 mMainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        handleOnStart();
+                        if (mOnFileDownloadListener != null) {
+                            mOnFileDownloadListener.onStart();
+                        }
                     }
                 });
             }
         }
 
         @Override
-        public void onProgress(final float progress, final long total) {
+        public void onProgress(float progress, long total) {
+            if (mIsCancel) {
+                return;
+            }
+
+            //做一下判断，防止自回调过于频繁，造成更新通知栏进度过于频繁，而出现卡顿的问题。
+            int rate = Math.round(progress * 100);
+            if (mOldRate != rate) {
+                dispatchOnProgress(progress, total);
+
+                if (mBuilder != null) {
+                    mBuilder.setContentTitle(getString(R.string.xupdate_lab_downloading) + UpdateUtils.getAppName(DownloadService.this))
+                            .setContentText(rate + "%")
+                            .setProgress(100, rate, false)
+                            .setWhen(System.currentTimeMillis());
+                    Notification notification = mBuilder.build();
+                    notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_ONLY_ALERT_ONCE;
+                    mNotificationManager.notify(DOWNLOAD_NOTIFY_ID, notification);
+                }
+                //重新赋值
+                mOldRate = rate;
+            }
+        }
+
+        private void dispatchOnProgress(final float progress, final long total) {
             if (UpdateUtils.isMainThread()) {
-                handleOnProgress(progress, total);
+                if (mOnFileDownloadListener != null) {
+                    mOnFileDownloadListener.onProgress(progress, total);
+                }
             } else {
                 mMainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        handleOnProgress(progress, total);
+                        if (mOnFileDownloadListener != null) {
+                            mOnFileDownloadListener.onProgress(progress, total);
+                        }
                     }
                 });
             }
@@ -337,62 +384,6 @@ public class DownloadService extends Service {
                         handleOnSuccess(file);
                     }
                 });
-            }
-        }
-
-        @Override
-        public void onError(final Throwable throwable) {
-            if (UpdateUtils.isMainThread()) {
-                handleOnError(throwable);
-            } else {
-                mMainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        handleOnError(throwable);
-                    }
-                });
-            }
-        }
-
-        private void handleOnStart() {
-            if (mIsCancel) {
-                return;
-            }
-
-            //清空通知栏状态
-            mNotificationManager.cancel(DOWNLOAD_NOTIFY_ID);
-            mBuilder = null;
-
-            //初始化通知栏
-            setUpNotification(mDownloadEntity);
-            if (mOnFileDownloadListener != null) {
-                mOnFileDownloadListener.onStart();
-            }
-        }
-
-        private void handleOnProgress(float progress, long total) {
-            if (mIsCancel) {
-                return;
-            }
-
-            //做一下判断，防止自回调过于频繁，造成更新通知栏进度过于频繁，而出现卡顿的问题。
-            int rate = Math.round(progress * 100);
-            if (mOldRate != rate) {
-                if (mOnFileDownloadListener != null) {
-                    mOnFileDownloadListener.onProgress(progress, total);
-                }
-
-                if (mBuilder != null) {
-                    mBuilder.setContentTitle(getString(R.string.xupdate_lab_downloading) + UpdateUtils.getAppName(DownloadService.this))
-                            .setContentText(rate + "%")
-                            .setProgress(100, rate, false)
-                            .setWhen(System.currentTimeMillis());
-                    Notification notification = mBuilder.build();
-                    notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_ONLY_ALERT_ONCE;
-                    mNotificationManager.notify(DOWNLOAD_NOTIFY_ID, notification);
-                }
-                //重新赋值
-                mOldRate = rate;
             }
         }
 
@@ -430,21 +421,38 @@ public class DownloadService extends Service {
             }
         }
 
-        private void handleOnError(Throwable throwable) {
+        @Override
+        public void onError(Throwable throwable) {
             if (mIsCancel) {
                 return;
             }
 
             _XUpdate.onUpdateError(DOWNLOAD_FAILED, throwable != null ? throwable.getMessage() : "unknown error!");
             //App前台运行
-            if (mOnFileDownloadListener != null) {
-                mOnFileDownloadListener.onError(throwable);
-            }
+            dispatchOnError(throwable);
             try {
                 mNotificationManager.cancel(DOWNLOAD_NOTIFY_ID);
                 close();
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        }
+
+
+        private void dispatchOnError(final Throwable throwable) {
+            if (UpdateUtils.isMainThread()) {
+                if (mOnFileDownloadListener != null) {
+                    mOnFileDownloadListener.onError(throwable);
+                }
+            } else {
+                mMainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mOnFileDownloadListener != null) {
+                            mOnFileDownloadListener.onError(throwable);
+                        }
+                    }
+                });
             }
         }
 
