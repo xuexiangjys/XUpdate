@@ -25,7 +25,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -287,14 +289,72 @@ public class DownloadService extends Service {
 
         private boolean mIsCancel;
 
+        private Handler mMainHandler;
+
         FileDownloadCallBack(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener listener) {
             mDownloadEntity = updateEntity.getDownLoadEntity();
             mIsAutoInstall = updateEntity.isAutoInstall();
             mOnFileDownloadListener = listener;
+            mMainHandler = new Handler(Looper.getMainLooper());
         }
 
         @Override
         public void onStart() {
+            if (UpdateUtils.isMainThread()) {
+                handleOnStart();
+            } else {
+                mMainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        handleOnStart();
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onProgress(final float progress, final long total) {
+            if (UpdateUtils.isMainThread()) {
+                handleOnProgress(progress, total);
+            } else {
+                mMainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        handleOnProgress(progress, total);
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onSuccess(final File file) {
+            if (UpdateUtils.isMainThread()) {
+                handleOnSuccess(file);
+            } else {
+                mMainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        handleOnSuccess(file);
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onError(final Throwable throwable) {
+            if (UpdateUtils.isMainThread()) {
+                handleOnError(throwable);
+            } else {
+                mMainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        handleOnError(throwable);
+                    }
+                });
+            }
+        }
+
+        private void handleOnStart() {
             if (mIsCancel) {
                 return;
             }
@@ -310,8 +370,7 @@ public class DownloadService extends Service {
             }
         }
 
-        @Override
-        public void onProgress(float progress, long total) {
+        private void handleOnProgress(float progress, long total) {
             if (mIsCancel) {
                 return;
             }
@@ -337,8 +396,7 @@ public class DownloadService extends Service {
             }
         }
 
-        @Override
-        public void onSuccess(File file) {
+        private void handleOnSuccess(File file) {
             if (mIsCancel) {
                 return;
             }
@@ -372,8 +430,7 @@ public class DownloadService extends Service {
             }
         }
 
-        @Override
-        public void onError(Throwable throwable) {
+        private void handleOnError(Throwable throwable) {
             if (mIsCancel) {
                 return;
             }

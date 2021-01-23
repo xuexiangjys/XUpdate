@@ -144,7 +144,7 @@ public class NumberProgressBar extends View {
     private boolean mIfDrawText = true;
 
     /**
-     * Listener
+     * 进度条监听
      */
     private OnProgressBarListener mListener;
 
@@ -246,8 +246,6 @@ public class NumberProgressBar extends View {
         if (mIfDrawText) {
             canvas.drawText(mCurrentDrawText, mDrawTextStart, mDrawTextEnd, mTextPaint);
         }
-
-
     }
 
     private void initializePainters() {
@@ -334,9 +332,9 @@ public class NumberProgressBar extends View {
     }
 
     public void setProgressTextSize(float textSize) {
-        this.mTextSize = textSize;
+        mTextSize = textSize;
         mTextPaint.setTextSize(mTextSize);
-        invalidate();
+        postInvalidate();
     }
 
     public int getUnreachedBarColor() {
@@ -344,9 +342,9 @@ public class NumberProgressBar extends View {
     }
 
     public void setUnreachedBarColor(int barColor) {
-        this.mUnreachedBarColor = barColor;
+        mUnreachedBarColor = barColor;
         mUnreachedBarPaint.setColor(mUnreachedBarColor);
-        invalidate();
+        postInvalidate();
     }
 
     public int getReachedBarColor() {
@@ -354,9 +352,9 @@ public class NumberProgressBar extends View {
     }
 
     public void setReachedBarColor(int progressColor) {
-        this.mReachedBarColor = progressColor;
+        mReachedBarColor = progressColor;
         mReachedBarPaint.setColor(mReachedBarColor);
-        invalidate();
+        postInvalidate();
     }
 
     public int getProgress() {
@@ -365,8 +363,8 @@ public class NumberProgressBar extends View {
 
     public void setProgress(int progress) {
         if (progress <= getMax() && progress >= 0) {
-            this.mCurrentProgress = progress;
-            invalidate();
+            mCurrentProgress = progress;
+            postInvalidate();
         }
     }
 
@@ -376,8 +374,8 @@ public class NumberProgressBar extends View {
 
     public void setMax(int maxProgress) {
         if (maxProgress > 0) {
-            this.mMaxProgress = maxProgress;
-            invalidate();
+            mMaxProgress = maxProgress;
+            postInvalidate();
         }
     }
 
@@ -400,7 +398,7 @@ public class NumberProgressBar extends View {
     public void setProgressTextColor(int textColor) {
         this.mTextColor = textColor;
         mTextPaint.setColor(mTextColor);
-        invalidate();
+        postInvalidate();
     }
 
     public String getSuffix() {
@@ -493,7 +491,7 @@ public class NumberProgressBar extends View {
 
     public void setProgressTextVisibility(ProgressTextVisibility visibility) {
         mIfDrawText = visibility == ProgressTextVisibility.VISIBLE;
-        invalidate();
+        postInvalidate();
     }
 
     public void setOnProgressBarListener(OnProgressBarListener listener) {
@@ -507,6 +505,7 @@ public class NumberProgressBar extends View {
     public interface OnProgressBarListener {
         /**
          * 进度变化
+         *
          * @param current
          * @param max
          */

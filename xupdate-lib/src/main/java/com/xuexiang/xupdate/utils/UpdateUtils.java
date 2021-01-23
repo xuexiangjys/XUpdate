@@ -33,6 +33,7 @@ import android.os.Environment;
 
 import androidx.annotation.NonNull;
 
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
@@ -457,6 +458,15 @@ public final class UpdateUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * 是否是主线程
+     *
+     * @return 是否是主线程
+     */
+    public static boolean isMainThread() {
+        return Looper.getMainLooper() == Looper.myLooper();
     }
 
 }
