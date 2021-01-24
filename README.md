@@ -176,7 +176,7 @@ The following is the version description. Choose one.
 dependencies {
   ...
   // androidx project
-  implementation 'com.github.xuexiangjys:XUpdate:2.0.6'
+  implementation 'com.github.xuexiangjys:XUpdate:2.0.7'
 }
 ```
 
