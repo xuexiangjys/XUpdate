@@ -63,13 +63,15 @@ public class DefaultUpdateParser extends AbstractUpdateParser {
     /**
      * 进行本地版本判断[防止服务端出错，本来是不需要更新，但是服务端返回是需要更新]
      *
-     * @param checkResult
-     * @return
+     * @param checkResult 版本更新检查返回的结果
+     * @return 版本更新结果
      */
-    private CheckVersionResult doLocalCompare(CheckVersionResult checkResult) {
-        if (checkResult.getUpdateStatus() != CheckVersionResult.NO_NEW_VERSION) { //服务端返回需要更新
+    protected CheckVersionResult doLocalCompare(CheckVersionResult checkResult) {
+        //服务端返回需要更新
+        if (checkResult.getUpdateStatus() != CheckVersionResult.NO_NEW_VERSION) {
             int lastVersionCode = checkResult.getVersionCode();
-            if (lastVersionCode <= UpdateUtils.getVersionCode(XUpdate.getContext())) { //最新版本小于等于现在的版本，不需要更新
+            //最新版本小于等于现在的版本，不需要更新
+            if (lastVersionCode <= UpdateUtils.getVersionCode(XUpdate.getContext())) {
                 checkResult.setRequireUpgrade(CheckVersionResult.NO_NEW_VERSION);
             }
         }

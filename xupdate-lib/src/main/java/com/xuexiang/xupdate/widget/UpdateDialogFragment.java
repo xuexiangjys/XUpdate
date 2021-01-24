@@ -401,20 +401,27 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     @Override
     public void handleStart() {
         if (!UpdateDialogFragment.this.isRemoving()) {
-            mNumberProgressBar.setVisibility(View.VISIBLE);
-            mNumberProgressBar.setProgress(0);
-            mBtnUpdate.setVisibility(View.GONE);
-            if (getPromptEntity().isSupportBackgroundUpdate()) {
-                mBtnBackgroundUpdate.setVisibility(View.VISIBLE);
-            } else {
-                mBtnBackgroundUpdate.setVisibility(View.GONE);
-            }
+            doStart();
+        }
+    }
+
+    private void doStart() {
+        mNumberProgressBar.setVisibility(View.VISIBLE);
+        mNumberProgressBar.setProgress(0);
+        mBtnUpdate.setVisibility(View.GONE);
+        if (mPromptEntity.isSupportBackgroundUpdate()) {
+            mBtnBackgroundUpdate.setVisibility(View.VISIBLE);
+        } else {
+            mBtnBackgroundUpdate.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void handleProgress(float progress) {
         if (!UpdateDialogFragment.this.isRemoving()) {
+            if (mNumberProgressBar.getVisibility() == View.GONE) {
+                doStart();
+            }
             mNumberProgressBar.setProgress(Math.round(progress * 100));
             mNumberProgressBar.setMax(100);
         }
