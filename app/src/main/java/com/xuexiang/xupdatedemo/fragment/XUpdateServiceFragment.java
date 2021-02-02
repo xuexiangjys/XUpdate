@@ -83,7 +83,8 @@ public class XUpdateServiceFragment extends XPageFragment {
                         .isGet(false)
                         .updateUrl(XUpdateServiceParser.getVersionCheckUrl())
                         .updateParser(new XUpdateServiceParser())
-                        .isAutoMode(true) //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
+                        //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
+                        .isAutoMode(true)
                         .update();
                 break;
             case R.id.btn_force_update:

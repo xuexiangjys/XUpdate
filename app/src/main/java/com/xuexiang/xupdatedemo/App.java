@@ -55,8 +55,10 @@ public class App extends Application {
                 .debug("PageLog")
                 .init(this);
 
-        XAOP.init(this); //初始化插件
-        XAOP.debug(true); //日志打印切片开启
+        // 初始化插件
+        XAOP.init(this);
+        // 日志打印切片开启
+        XAOP.debug(true);
         //设置动态申请权限切片 申请权限被拒绝的事件响应监听
         XAOP.setOnPermissionDeniedListener(new PermissionUtils.OnPermissionDeniedListener() {
             @Override
@@ -76,29 +78,40 @@ public class App extends Application {
     private void initUpdate() {
         XUpdate.get()
                 .debug(true)
-                .isWifiOnly(false)                                               //默认设置只在wifi下检查版本更新
-                .isGet(true)                                                    //默认设置使用get请求检查版本
-                .isAutoMode(false)                                              //默认设置非自动模式，可根据具体使用配置
-                .param("versionCode", UpdateUtils.getVersionCode(this))  //设置默认公共请求参数
+                //默认设置只在wifi下检查版本更新
+                .isWifiOnly(false)
+                //默认设置使用get请求检查版本
+                .isGet(true)
+                //默认设置非自动模式，可根据具体使用配置
+                .isAutoMode(false)
+                //设置默认公共请求参数
+                .param("versionCode", UpdateUtils.getVersionCode(this))
                 .param("appKey", getPackageName())
-                .setOnUpdateFailureListener(new OnUpdateFailureListener() { //设置版本更新出错的监听
+                //设置版本更新出错的监听
+                .setOnUpdateFailureListener(new OnUpdateFailureListener() {
                     @Override
                     public void onFailure(UpdateError error) {
                         error.printStackTrace();
-                        if (error.getCode() != CHECK_NO_NEW_VERSION) {          //对不同错误进行处理
+                        //对不同错误进行处理
+                        if (error.getCode() != CHECK_NO_NEW_VERSION) {
                             ToastUtils.toast(error.toString());
                         }
                     }
                 })
-                .supportSilentInstall(false)                                     //设置是否支持静默安装，默认是true
-                .setIUpdateHttpService(new OKHttpUpdateHttpService())           //这个必须设置！实现网络请求功能。
-                .init(this);                                          //这个必须初始化
+                //设置是否支持静默安装，默认是true
+                .supportSilentInstall(false)
+                //这个必须设置！实现网络请求功能。
+                .setIUpdateHttpService(new OKHttpUpdateHttpService())
+                //这个必须初始化
+                .init(this);
 
     }
 
     private void initXHttp() {
-        XHttpSDK.init(this);   //初始化网络请求框架，必须首先执行
-        XHttpSDK.debug("XHttp");  //需要调试的时候执行
+        //初始化网络请求框架，必须首先执行
+        XHttpSDK.init(this);
+        //需要调试的时候执行
+        XHttpSDK.debug("XHttp");
         XHttp.getInstance().setTimeout(20000);
     }
 

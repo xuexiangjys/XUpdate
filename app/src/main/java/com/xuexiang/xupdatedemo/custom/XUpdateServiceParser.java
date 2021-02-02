@@ -50,7 +50,8 @@ public class XUpdateServiceParser extends AbstractUpdateParser {
                     updateEntity.setForce(true);
                 }
                 updateEntity.setHasUpdate(true)
-                        .setUpdateContent(appVersionInfo.getModifyContent().replaceAll("\\\\r\\\\n", "\r\n"))//兼容一下
+                        //兼容一下
+                        .setUpdateContent(appVersionInfo.getModifyContent().replaceAll("\\\\r\\\\n", "\r\n"))
                         .setVersionCode(appVersionInfo.getVersionCode())
                         .setVersionName(appVersionInfo.getVersionName())
                         .setDownloadUrl(getDownLoadUrl(appVersionInfo.getDownloadUrl()))
