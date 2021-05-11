@@ -248,7 +248,7 @@ Field name | Type | Default value | Description
 :-|:-:|:-:|:-
 mDownloadUrl | String | "" | Download address
 mCacheDir | String | "" | File download directory
-mMd5 | String | "" | The encrypted check value of the downloaded file (MD5 encryption is used by default), which is used to verify and prevent the downloaded APK file from being replaced (the latest demo has a tool for calculating the check value)
+mMd5 | String | "" | The encrypted check value of the downloaded file (MD5 encryption is used by default), which is used to verify and prevent the downloaded APK file from being replaced (the latest demo has a tool for calculating the check value). Note that the MD5 value here is not the MD5 value of the application signature file!
 mSize | long | 0 | Size of download file【unit: KB】
 mIsShowNotification | boolean | false | Whether to show download progress in the notification bar
 
@@ -329,7 +329,7 @@ It should be noted that with the default version update, the JSON format returne
   "ModifyContent": "1、优化api接口。\r\n2、添加使用demo演示。\r\n3、新增自定义更新服务API接口。\r\n4、优化更新提示界面。",
   "DownloadUrl": "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/apk/xupdate_demo_1.0.2.apk",
   "ApkSize": 2048
-  "ApkMd5": "..."  // If there is no MD5 value, there is no guarantee that the APK is complete and will be downloaded again every time. The framework uses MD5 encryption by default.
+  "ApkMd5": "..."  // If the MD5 value of APK is not available, there is no guarantee that the APK is complete and will be downloaded again every time. The framework uses MD5 encryption by default.
 }
 ```
 

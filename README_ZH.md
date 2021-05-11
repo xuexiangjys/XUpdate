@@ -247,7 +247,7 @@ mIsAutoInstall | boolean | true | 是否下载完成后自动安装
 :-|:-:|:-:|:-
 mDownloadUrl | String | "" | 下载地址
 mCacheDir | String | "" | 文件下载的目录
-mMd5 | String | "" | 下载文件的加密校验值(默认使用md5加密)，用于校验，防止下载的apk文件被替换（最新演示demo中有计算校验值的工具）
+mMd5 | String | "" | 下载文件的加密校验值(默认使用md5加密)，用于校验，防止下载的apk文件被替换（最新演示demo中有计算校验值的工具），注意这里的md5值非应用签名文件的md5值！
 mSize | long | 0 | 下载文件的大小【单位：KB】
 mIsShowNotification | boolean | false | 是否在通知栏上显示下载进度
 
@@ -326,7 +326,7 @@ XUpdate.newBuild(getActivity())
   "ModifyContent": "1、优化api接口。\r\n2、添加使用demo演示。\r\n3、新增自定义更新服务API接口。\r\n4、优化更新提示界面。",
   "DownloadUrl": "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/apk/xupdate_demo_1.0.2.apk",
   "ApkSize": 2048
-  "ApkMd5": "..."  //md5值没有的话，就无法保证apk是否完整，每次都会重新下载。框架默认使用的是md5加密。
+  "ApkMd5": "..."  //应用apk的md5值没有的话，就无法保证apk是否完整，每次都会重新下载。框架默认使用的是md5加密。
 }
 ```
 
