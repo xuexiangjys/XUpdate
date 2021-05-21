@@ -17,10 +17,10 @@
 package com.xuexiang.xupdatedemo.custom;
 
 import com.xuexiang.xupdate.XUpdate;
-import com.xuexiang.xupdate.entity.CheckVersionResult;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.impl.AbstractUpdateParser;
+import com.xuexiang.xupdate.proxy.impl.DefaultUpdateParser;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 import com.xuexiang.xupdatedemo.entity.ApiResult;
 import com.xuexiang.xupdatedemo.entity.AppVersionInfo;
@@ -43,10 +43,10 @@ public class XUpdateServiceParser extends AbstractUpdateParser {
             AppVersionInfo appVersionInfo = doLocalCompare(apiResult.getData());
 
             UpdateEntity updateEntity = new UpdateEntity();
-            if (appVersionInfo.getUpdateStatus() == CheckVersionResult.NO_NEW_VERSION) {
+            if (appVersionInfo.getUpdateStatus() == DefaultUpdateParser.APIConstant.NO_NEW_VERSION) {
                 updateEntity.setHasUpdate(false);
             } else {
-                if (appVersionInfo.getUpdateStatus() == CheckVersionResult.HAVE_NEW_VERSION_FORCED_UPLOAD) {
+                if (appVersionInfo.getUpdateStatus() == DefaultUpdateParser.APIConstant.HAVE_NEW_VERSION_FORCED_UPLOAD) {
                     updateEntity.setForce(true);
                 }
                 updateEntity.setHasUpdate(true)
@@ -65,6 +65,7 @@ public class XUpdateServiceParser extends AbstractUpdateParser {
 
     /**
      * 为请求的返回类型加上ApiResult包装类
+     *
      * @param type
      * @return
      */
@@ -82,10 +83,12 @@ public class XUpdateServiceParser extends AbstractUpdateParser {
      * @return
      */
     private AppVersionInfo doLocalCompare(AppVersionInfo appVersionInfo) {
-        if (appVersionInfo.getUpdateStatus() != CheckVersionResult.NO_NEW_VERSION) { //服务端返回需要更新
+        //服务端返回需要更新
+        if (appVersionInfo.getUpdateStatus() != DefaultUpdateParser.APIConstant.NO_NEW_VERSION) {
             int lastVersionCode = appVersionInfo.getVersionCode();
-            if (lastVersionCode <= UpdateUtils.getVersionCode(XUpdate.getContext())) { //最新版本小于等于现在的版本，不需要更新
-                appVersionInfo.setUpdateStatus(CheckVersionResult.NO_NEW_VERSION);
+            //最新版本小于等于现在的版本，不需要更新
+            if (lastVersionCode <= UpdateUtils.getVersionCode(XUpdate.getContext())) {
+                appVersionInfo.setUpdateStatus(DefaultUpdateParser.APIConstant.NO_NEW_VERSION);
             }
         }
         return appVersionInfo;

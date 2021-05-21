@@ -30,15 +30,12 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
-
-import androidx.annotation.NonNull;
-
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
+import androidx.annotation.NonNull;
+
 import com.xuexiang.xupdate.R;
 import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate._XUpdate;
@@ -50,7 +47,6 @@ import java.util.List;
 
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_APK_CACHE_DIR_EMPTY;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_IGNORED_VERSION;
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_PARSE;
 
 /**
@@ -190,33 +186,8 @@ public final class UpdateUtils {
         return diff;
     }
 
-    /**
-     * 把 JSON 字符串 转换为 单个指定类型的对象
-     *
-     * @param json     包含了单个对象数据的JSON字符串
-     * @param classOfT 指定类型对象的Class
-     * @return 指定类型对象
-     */
-    public static <T> T fromJson(String json, Class<T> classOfT) {
-        try {
-            return new Gson().fromJson(json, classOfT);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * 把 单个指定类型的对象 转换为 JSON 字符串
-     *
-     * @param src
-     * @return
-     */
-    public static String toJson(Object src) {
-        return new Gson().toJson(src);
-    }
-
     //=============显示====================//
+
     public static int dip2px(int dip, Context context) {
         return (int) (dip * getDensity(context) + 0.5f);
     }

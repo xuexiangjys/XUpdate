@@ -86,9 +86,9 @@ dependencies {
     implementation 'com.zhy:okhttputils:2.6.2'
 
     //网络请求的实现二
-    implementation 'com.github.xuexiangjys:XHttp2:2.0.1'
+    implementation 'com.github.xuexiangjys:XHttp2:2.0.4'
     implementation deps.gson
-    implementation 'com.squareup.okhttp3:okhttp:3.14.9'
+    implementation 'com.squareup.okhttp3:okhttp:4.8.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 }
