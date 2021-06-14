@@ -105,27 +105,27 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（Request the server 
 
 * Default version update
 
-![xupdate_default.png](https://img.rruu.net/image/5f9d7b77af102)
+![xupdate_default.png](https://ss.im5i.com/2021/06/14/6TPSz.png)
 
 * Background update
 
-![xupdate_background.png](https://img.rruu.net/image/5f9d7b769901a)
+![xupdate_background.png](https://ss.im5i.com/2021/06/14/6TgXW.png)
 
 * Force version update
 
-![xupdate_force.png](https://img.rruu.net/image/5f9d7b774b990)
+![xupdate_force.png](https://ss.im5i.com/2021/06/14/6Tlw8.png)
 
 * Ignored version update
 
-![xupdate_ignore.png](https://img.rruu.net/image/5f9d7b77ad3be)
+![xupdate_ignore.png](https://ss.im5i.com/2021/06/14/6TVu5.png)
 
 * Custom pop up theme
 
-![xupdate_custom.png](https://img.rruu.net/image/5f9d7b76cee50)
+![xupdate_custom.png](https://ss.im5i.com/2021/06/14/6TGDG.png)
 
 * Use the system pop-up prompt
 
-![xupdate_system.png](https://img.rruu.net/image/5f9d7b77ab42f)
+![xupdate_system.png](https://ss.im5i.com/2021/06/14/6Td86.png)
 
 ### Demo update background service
 
@@ -139,13 +139,13 @@ Because GitHub is slow to visit recently, if you need to experience xupdate bett
 
 [![downloads](https://img.shields.io/badge/downloads-2.1M-blue.svg)](https://www.pgyer.com/xupdate)
 
-![xupdate_download_pugongying.png](https://img.rruu.net/image/5f7d94983032e)
+[![xupdate_download_pugongying.png](https://ss.im5i.com/2021/06/14/6jaJj.png)](https://www.pgyer.com/xupdate)
 
 #### GitHub Download
 
 [![downloads](https://img.shields.io/badge/downloads-2.1M-blue.svg)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
 
-![xupdate_download.png](https://img.rruu.net/image/5f7d949839379)
+[![xupdate_download.png](https://ss.im5i.com/2021/06/14/6jDhD.png)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
 
 ---
 
@@ -571,7 +571,7 @@ https://github.com/WVector/AppUpdate
 
 > Your support is the driving force of my maintenance. I will list the list of all the reward personnel at the bottom as the voucher. Please leave the notes of the support items before rewarding!
 
-![pay.png](https://img.rruu.net/image/5f871d00045da)
+![pay.png](https://ss.im5i.com/2021/06/14/6twG6.png)
 
 Thank you for your sponsorship：
 
@@ -584,11 +584,11 @@ Name | Money | Platform
 
 > More information, please scan my personal WeChat Subscription:【我的Android开源之旅】
 
-![gzh_weixin.jpg](https://img.rruu.net/image/5f871cfff3194)
+![](https://ss.im5i.com/2021/06/14/65yoL.jpg)
 
 ## Contact
 
 [![](https://img.shields.io/badge/QQGroup-720212425-blue.svg)](http://shang.qq.com/wpa/qunwpa?idkey=37ea606864cafa3c8a5d6b07f04fd672936a50fd6e535c13702baf705d57e6e8)
 
-![xupdate_qq.jpg](https://img.rruu.net/image/5f7d949844672)
+![xupdate_qq.jpg](https://ss.im5i.com/2021/06/14/6TQuQ.jpg)
 
