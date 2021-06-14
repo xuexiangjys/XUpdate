@@ -178,6 +178,7 @@ public class MainFragment extends XPageSimpleListFragment {
                 break;
             case 8:
                 XUpdate.newBuild(getActivity())
+                        .supportBackgroundUpdate(true)
                         .build()
                         .update(getUpdateEntityFromAssets());
                 break;

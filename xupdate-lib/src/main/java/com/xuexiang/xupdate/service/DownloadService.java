@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -159,7 +160,7 @@ public class DownloadService extends Service {
      * 初始化通知
      */
     private void initNotification() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
             //设置绕过免打扰模式
 //            channel.setBypassDnd(false);
@@ -172,7 +173,6 @@ public class DownloadService extends Service {
 //            channel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
             channel.enableVibration(false);
             channel.enableLights(false);
-
             mNotificationManager.createNotificationChannel(channel);
         }
 
@@ -337,9 +337,9 @@ public class DownloadService extends Service {
                 return;
             }
 
-            //做一下判断，防止自回调过于频繁，造成更新通知栏进度过于频繁，而出现卡顿的问题。
             int rate = Math.round(progress * 100);
-            if (mOldRate != rate) {
+            //做一下判断，防止自回调过于频繁，造成更新通知栏进度过于频繁，而出现卡顿的问题。
+            if (canRefreshProgress(rate)) {
                 dispatchOnProgress(progress, total);
 
                 if (mBuilder != null) {
@@ -355,6 +355,23 @@ public class DownloadService extends Service {
                 mOldRate = rate;
             }
         }
+
+        /**
+         * 是否可以刷新进度
+         *
+         * @param newRate 最新进度
+         * @return 是否可以刷新进度
+         */
+        private boolean canRefreshProgress(int newRate) {
+            if (mBuilder != null) {
+                // 系统通知栏对单个应用通知队列通长度进行了限制。
+                // notify方法会将Notification加入系统的通知队列，当前应用发出的Notification数量超过50时，不再继续向系统的通知队列添加Notification，即造成了notificationManagerCompat.notify(TAG, NOTIFY_ID, notify)无效的现象。
+                return Math.abs(newRate - mOldRate) >= 4;
+            } else {
+                return Math.abs(newRate - mOldRate) >= 1;
+            }
+        }
+
 
         private void dispatchOnProgress(final float progress, final long total) {
             if (UpdateUtils.isMainThread()) {
@@ -412,13 +429,11 @@ public class DownloadService extends Service {
                 } else {
                     showDownloadCompleteNotification(file);
                 }
-                //下载完自杀
-                close();
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
-                close();
             }
+            //下载完自杀
+            close();
         }
 
         @Override
