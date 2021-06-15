@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/xupdate_bg_app_top" />
+            tools:srcCompat="@drawable/xupdate_bg_app_top" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

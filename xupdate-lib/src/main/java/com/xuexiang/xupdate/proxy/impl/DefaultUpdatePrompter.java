@@ -51,6 +51,7 @@ public class DefaultUpdatePrompter implements IUpdatePrompter {
             UpdateLog.e("showPrompt failed, context is null!");
             return;
         }
+        UpdateLog.d("[DefaultUpdatePrompter] showPrompt, " + promptEntity);
         if (context instanceof FragmentActivity) {
             UpdateDialogFragment.show(((FragmentActivity) context).getSupportFragmentManager(), updateEntity, new DefaultPrompterProxyImpl(updateProxy), promptEntity);
         } else {
