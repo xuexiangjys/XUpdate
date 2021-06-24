@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2018 xuexiangjys(xuexiangjys@163.com)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,7 @@
   -->
 
 <resources>
+    <!--  更新界面使用到的内容，界面国际化需要配置这些内容  -->
     <string name="xupdate_lab_update">Upgrade</string>
     <string name="xupdate_lab_background_update">Background Upgrade</string>
     <string name="xupdate_lab_install">Install</string>
@@ -29,6 +29,7 @@
     <string name="xupdate_lab_downloading">Downloading：</string>
     <string name="xupdate_tip_download_url_error">New version download path error</string>
 
+    <!--  更新错误信息  -->
     <string name="xupdate_error_install_failed">Failed to install APK!</string>
     <string name="xupdate_error_download_permission_denied">Unable to download: storage permission request rejected!</string>
     <string name="xupdate_error_download_failed">Download failed!</string>

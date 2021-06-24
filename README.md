@@ -57,6 +57,10 @@ In order to facilitate the rapid integration of X-Library, I provide a template 
 
 * Support the use of react native plugin：[react-native-xupdate](https://github.com/xuexiangjys/react-native-xupdate)。
 
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/xuexiangjys/XUpdate.svg)](https://starchart.cc/xuexiangjys/XUpdate)
+
 ## Composition structure
 
 This framework refers to [AppUpdate](https://github.com/WVector/AppUpdate) some ideas and UI, the various parts of the version update are separated to form the following parts:
