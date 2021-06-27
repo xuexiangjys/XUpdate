@@ -201,7 +201,12 @@ public class MainFragment extends XPageSimpleListFragment {
 
     @MemoryCache
     private UpdateEntity getUpdateEntityFromAssets() {
-        return new DefaultUpdateParser().parseJson(ResourceUtils.readStringFromAssert("update_test.json"));
+        try {
+            return new DefaultUpdateParser().parseJson(ResourceUtils.readStringFromAssert("update_test.json"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Permission(PermissionConsts.STORAGE)
