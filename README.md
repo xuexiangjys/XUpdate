@@ -49,7 +49,7 @@ In order to facilitate the rapid integration of X-Library, I provide a template 
 
 * Support custom request API interface.
 
-* Compatible with Android 6.0, 7.0, 8.0, 9.0 and 10.0.
+* Compatible with Android 6.0 ~ 11.0.
 
 * Support Chinese and English language (internationalization).
 
