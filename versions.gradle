@@ -21,6 +21,7 @@ versions.rxbinding = "2.2.0"
 versions.butterknife = "10.1.0"
 versions.runner = "1.2.0"
 versions.gson = "2.8.5"
+versions.okhttp3 = "3.12.12"
 
 def deps = [:]
 
@@ -97,6 +98,7 @@ deps.rxjava2 = "io.reactivex.rxjava2:rxjava:$versions.rxjava2"
 deps.rxandroid = "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
 deps.rxbinding = "com.jakewharton.rxbinding2:rxbinding:$versions.rxbinding"
 deps.gson = "com.google.code.gson:gson:$versions.gson"
+deps.okhttp3 = "com.squareup.okhttp3:okhttp:$versions.okhttp3"
 
 ext.deps = deps
 

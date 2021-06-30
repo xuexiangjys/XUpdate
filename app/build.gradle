@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.xuexiang.xupdatedemo"
-        minSdkVersion 21
+        minSdkVersion 14
         targetSdkVersion build_versions.target_sdk
         versionCode 1
         versionName "1.0"
@@ -57,6 +57,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    configurations.all {
+        resolutionStrategy.force deps.okhttp3
+    }
 }
 
 dependencies {
@@ -65,9 +69,9 @@ dependencies {
     testImplementation deps.junit
     androidTestImplementation deps.runner
     androidTestImplementation deps.espresso.core
-//    implementation project(':xupdate-lib')
+    implementation project(':xupdate-lib')
 
-    implementation 'com.github.xuexiangjys:XUpdate:2.0.8'
+//    implementation 'com.github.xuexiangjys:XUpdate:2.0.8'
 
     implementation 'com.github.xuexiangjys.XUtil:xutil-core:2.0.0'
     implementation 'com.github.xuexiangjys.XUtil:xutil-sub:2.0.0'
@@ -88,7 +92,7 @@ dependencies {
     //网络请求的实现二
     implementation 'com.github.xuexiangjys:XHttp2:2.0.4'
     implementation deps.gson
-    implementation 'com.squareup.okhttp3:okhttp:4.8.1'
+    implementation deps.okhttp3
     implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 }
