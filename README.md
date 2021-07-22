@@ -543,6 +543,13 @@ _XUpdate.startInstallApk(getContext(), FileUtils.getFileByPath(PathUtils.getFile
 
 If your APK installation is different, you can implement your own APK installer. You only need to implement the `OnInstallListener` interface and use the `XUpdate.setOnInstallListener` set it to take effect.
 
+### 3.10、International
+
+Due to the limited level of the author, only Chinese and English are supported【the default language is English】. If you need to support other languages, you only need to create a new corresponding language file under the `res` of your own project to translate in multiple languages.
+
+Please refer to ***[xupdate_strings.xml](https://github.com/xuexiangjys/XUpdate/blob/master/xupdate-lib/src/main/res/values-zh-rCN/xupdate_strings.xml)***。
+
+What? You don't know Android's multilingual configuration yet? I suggest you take a look at this article：[Android项目国际化多国语言适配](https://blog.csdn.net/qq_29769851/article/details/90606437)
 
 ## Proguard
 
@@ -583,6 +590,9 @@ Name | Money | Platform
 :-|:-|:-
 *天 | 100￥ | WeChat
 *航 | 10￥ | Alipay
+X*? | 18.88￥ | WeChat
+*网 | 1￥ | WeChat
+Joe | 88.88￥ | WeChat
 
 ## WeChat Subscription
 

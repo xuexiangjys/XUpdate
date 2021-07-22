@@ -15,7 +15,7 @@
   -->
 
 <resources>
-    <!--  更新界面使用到的内容，界面国际化需要配置这些内容  -->
+    <!--  Update the content used in the interface, which needs to be configured for the internationalization of the interface  -->
     <string name="xupdate_lab_update">Upgrade</string>
     <string name="xupdate_lab_background_update">Background Upgrade</string>
     <string name="xupdate_lab_install">Install</string>
@@ -29,7 +29,7 @@
     <string name="xupdate_lab_downloading">Downloading：</string>
     <string name="xupdate_tip_download_url_error">New version download path error</string>
 
-    <!--  更新错误信息  -->
+    <!--  Update error message  -->
     <string name="xupdate_error_install_failed">Failed to install APK!</string>
     <string name="xupdate_error_download_permission_denied">Unable to download: storage permission request rejected!</string>
     <string name="xupdate_error_download_failed">Download failed!</string>

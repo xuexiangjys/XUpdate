@@ -16,6 +16,7 @@
   -->
 
 <resources>
+    <!--  更新界面使用到的内容，界面国际化需要配置这些内容  -->
     <string name="xupdate_lab_update">升级</string>
     <string name="xupdate_lab_background_update">后台更新</string>
     <string name="xupdate_lab_install">安装</string>
@@ -29,6 +30,7 @@
     <string name="xupdate_lab_downloading">正在下载：</string>
     <string name="xupdate_tip_download_url_error">新版本下载路径错误</string>
 
+    <!--  更新错误信息  -->
     <string name="xupdate_error_install_failed">安装APK失败！</string>
     <string name="xupdate_error_download_permission_denied">无法下载：存储权限申请被拒绝！</string>
     <string name="xupdate_error_download_failed">下载失败!</string>

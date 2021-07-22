@@ -539,6 +539,13 @@ _XUpdate.startInstallApk(getContext(), FileUtils.getFileByPath(PathUtils.getFile
 
 如果你的apk安装与众不同，你可以实现自己的apk安装器。你只需要实现OnInstallListener接口，并通过`XUpdate.setOnInstallListener`进行设置即可生效。
 
+### 3.10、国际化配置
+
+由于作者水平有限, 目前只支持中文和英文两种语言的显示【默认语言是英语】。需要支持其他语言的，只需要在自己项目的`res`下新建对应的语言文件，进行多语言的翻译即可。
+
+需要翻译的详细内容参见 ***[xupdate_strings.xml](https://github.com/xuexiangjys/XUpdate/blob/master/xupdate-lib/src/main/res/values-zh-rCN/xupdate_strings.xml)*** 文件。
+
+什么？你还不会Android的多语言配置？建议你看一下这篇文章：[Android项目国际化多国语言适配](https://blog.csdn.net/qq_29769851/article/details/90606437)
 
 ## 混淆配置
 
@@ -579,6 +586,9 @@ https://github.com/WVector/AppUpdate
 :-|:-|:-
 *天 | 100￥ | 微信
 *航 | 10￥ | 支付宝
+X*? | 18.88￥ | 微信
+*网 | 1￥ | 微信
+Joe | 88.88￥ | 微信
 
 ## 公众号
 
