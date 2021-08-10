@@ -71,7 +71,7 @@ dependencies {
     androidTestImplementation deps.espresso.core
     implementation project(':xupdate-lib')
 
-//    implementation 'com.github.xuexiangjys:XUpdate:2.0.8'
+//    implementation 'com.github.xuexiangjys:XUpdate:2.0.9'
 
     implementation 'com.github.xuexiangjys.XUtil:xutil-core:2.0.0'
     implementation 'com.github.xuexiangjys.XUtil:xutil-sub:2.0.0'
