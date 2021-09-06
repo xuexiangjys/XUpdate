@@ -180,8 +180,8 @@ public class MainFragment extends XPageSimpleListFragment {
             case 8:
                 XUpdate.newBuild(getActivity())
                         .supportBackgroundUpdate(true)
-                        // 忽略下载异常，不关闭更新提示窗
-                        .promptIgnoreDownloadError(true)
+//                        // 忽略下载异常，不关闭更新提示窗
+//                        .promptIgnoreDownloadError(true)
                         .build()
                         .update(getUpdateEntityFromAssets());
                 break;

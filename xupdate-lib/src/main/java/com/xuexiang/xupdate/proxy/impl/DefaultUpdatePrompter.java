@@ -51,11 +51,25 @@ public class DefaultUpdatePrompter implements IUpdatePrompter {
             UpdateLog.e("showPrompt failed, context is null!");
             return;
         }
+        beforeShowPrompt(updateEntity, promptEntity);
         UpdateLog.d("[DefaultUpdatePrompter] showPrompt, " + promptEntity);
         if (context instanceof FragmentActivity) {
             UpdateDialogFragment.show(((FragmentActivity) context).getSupportFragmentManager(), updateEntity, new DefaultPrompterProxyImpl(updateProxy), promptEntity);
         } else {
             UpdateDialogActivity.show(context, updateEntity, new DefaultPrompterProxyImpl(updateProxy), promptEntity);
+        }
+    }
+
+    /**
+     * 显示版本更新提示之前的处理【可自定义属于自己的显示逻辑】
+     *
+     * @param updateEntity 更新信息
+     * @param promptEntity 提示界面参数
+     */
+    protected void beforeShowPrompt(@NonNull UpdateEntity updateEntity, @NonNull PromptEntity promptEntity) {
+        // 如果是强制更新的话，默认设置是否忽略下载异常为true，保证即使是下载异常也不退出提示。
+        if (updateEntity.isForce()) {
+            promptEntity.setIgnoreDownloadError(true);
         }
     }
 }
