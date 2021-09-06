@@ -41,6 +41,10 @@ public class PromptEntity implements Parcelable {
      * 版本更新提示器高度占屏幕的比例
      */
     private float mHeightRatio;
+    /**
+     * 是否忽略下载异常【为true时，下载失败更新提示框不消失，默认是false】
+     */
+    private boolean mIgnoreDownloadError;
 
     public PromptEntity() {
         mThemeColor = -1;
@@ -49,6 +53,7 @@ public class PromptEntity implements Parcelable {
         mSupportBackgroundUpdate = false;
         mWidthRatio = -1;
         mHeightRatio = -1;
+        mIgnoreDownloadError = false;
     }
 
     protected PromptEntity(Parcel in) {
@@ -58,6 +63,7 @@ public class PromptEntity implements Parcelable {
         mSupportBackgroundUpdate = in.readByte() != 0;
         mWidthRatio = in.readFloat();
         mHeightRatio = in.readFloat();
+        mIgnoreDownloadError = in.readByte() != 0;
     }
 
     public static final Creator<PromptEntity> CREATOR = new Creator<PromptEntity>() {
@@ -126,6 +132,15 @@ public class PromptEntity implements Parcelable {
         return mHeightRatio;
     }
 
+    public PromptEntity setIgnoreDownloadError(boolean ignoreDownloadError) {
+        mIgnoreDownloadError = ignoreDownloadError;
+        return this;
+    }
+
+    public boolean isIgnoreDownloadError() {
+        return mIgnoreDownloadError;
+    }
+
     @Override
     public String toString() {
         return "PromptEntity{" +
@@ -135,6 +150,7 @@ public class PromptEntity implements Parcelable {
                 ", mSupportBackgroundUpdate=" + mSupportBackgroundUpdate +
                 ", mWidthRatio=" + mWidthRatio +
                 ", mHeightRatio=" + mHeightRatio +
+                ", mIgnoreDownloadError=" + mIgnoreDownloadError +
                 '}';
     }
 
@@ -151,5 +167,6 @@ public class PromptEntity implements Parcelable {
         dest.writeByte((byte) (mSupportBackgroundUpdate ? 1 : 0));
         dest.writeFloat(mWidthRatio);
         dest.writeFloat(mHeightRatio);
+        dest.writeByte((byte) (mIgnoreDownloadError ? 1 : 0));
     }
 }

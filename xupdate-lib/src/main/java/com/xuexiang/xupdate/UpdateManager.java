@@ -129,7 +129,7 @@ public class UpdateManager implements IUpdateProxy {
     /**
      * 构造函数
      *
-     * @param builder
+     * @param builder 版本更新管理构建者
      */
     private UpdateManager(Builder builder) {
         mContext = new WeakReference<>(builder.context);
@@ -511,7 +511,7 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 构建者
          *
-         * @param context
+         * @param context 上下文
          */
         Builder(@NonNull Context context) {
             this.context = context;
@@ -539,8 +539,8 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置版本更新检查的url
          *
-         * @param updateUrl
-         * @return
+         * @param updateUrl 版本更新检查的url
+         * @return this
          */
         public Builder updateUrl(@NonNull String updateUrl) {
             this.updateUrl = updateUrl;
@@ -550,8 +550,8 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置请求参数
          *
-         * @param params
-         * @return
+         * @param params 请求参数
+         * @return this
          */
         public Builder params(@NonNull Map<String, Object> params) {
             this.params.putAll(params);
@@ -561,9 +561,9 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置请求参数
          *
-         * @param key
-         * @param value
-         * @return
+         * @param key   键
+         * @param value 值
+         * @return this
          */
         public Builder param(@NonNull String key, @NonNull Object value) {
             this.params.put(key, value);
@@ -573,8 +573,8 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置网络请求的请求服务API
          *
-         * @param updateHttpService
-         * @return
+         * @param updateHttpService 网络请求的请求服务API
+         * @return this
          */
         public Builder updateHttpService(@NonNull IUpdateHttpService updateHttpService) {
             this.updateHttpService = updateHttpService;
@@ -584,8 +584,8 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置apk下载的缓存目录
          *
-         * @param apkCacheDir
-         * @return
+         * @param apkCacheDir apk下载的缓存目录
+         * @return this
          */
         public Builder apkCacheDir(@NonNull String apkCacheDir) {
             this.apkCacheDir = apkCacheDir;
@@ -595,8 +595,8 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 是否使用Get请求
          *
-         * @param isGet
-         * @return
+         * @param isGet 是否使用Get请求
+         * @return this
          */
         public Builder isGet(boolean isGet) {
             this.isGet = isGet;
@@ -604,10 +604,10 @@ public class UpdateManager implements IUpdateProxy {
         }
 
         /**
-         * 是否是自动版本更新模式【无人干预,有版本更新直接下载、安装，需要root权限】
+         * 设置是否是自动版本更新模式【无人干预,有版本更新直接下载、安装，需要root权限】
          *
-         * @param isAutoMode
-         * @return
+         * @param isAutoMode 是否是自动版本更新模式
+         * @return this
          */
         public Builder isAutoMode(boolean isAutoMode) {
             this.isAutoMode = isAutoMode;
@@ -615,10 +615,10 @@ public class UpdateManager implements IUpdateProxy {
         }
 
         /**
-         * 是否只在wifi下进行版本更新检查
+         * 设置是否只在wifi下进行版本更新检查
          *
-         * @param isWifiOnly
-         * @return
+         * @param isWifiOnly 是否只在wifi下进行版本更新检查
+         * @return this
          */
         public Builder isWifiOnly(boolean isWifiOnly) {
             this.isWifiOnly = isWifiOnly;
@@ -629,7 +629,7 @@ public class UpdateManager implements IUpdateProxy {
          * 设置版本更新检查器
          *
          * @param updateChecker 版本更新检查器
-         * @return
+         * @return this
          */
         public Builder updateChecker(@NonNull IUpdateChecker updateChecker) {
             this.updateChecker = updateChecker;
@@ -640,7 +640,7 @@ public class UpdateManager implements IUpdateProxy {
          * 设置版本更新的解析器
          *
          * @param updateParser 版本更新的解析器
-         * @return
+         * @return this
          */
         public Builder updateParser(@NonNull IUpdateParser updateParser) {
             this.updateParser = updateParser;
@@ -651,7 +651,7 @@ public class UpdateManager implements IUpdateProxy {
          * 设置版本更新提示器
          *
          * @param updatePrompter 版本更新提示器
-         * @return
+         * @return this
          */
         public Builder updatePrompter(@NonNull IUpdatePrompter updatePrompter) {
             this.updatePrompter = updatePrompter;
@@ -662,7 +662,7 @@ public class UpdateManager implements IUpdateProxy {
          * 设置文件的下载监听
          *
          * @param onFileDownloadListener 文件下载监听
-         * @return
+         * @return this
          */
         public Builder setOnFileDownloadListener(OnFileDownloadListener onFileDownloadListener) {
             this.onFileDownloadListener = onFileDownloadListener;
@@ -673,7 +673,7 @@ public class UpdateManager implements IUpdateProxy {
          * 设置主题颜色
          *
          * @param themeColor 主题颜色资源
-         * @return
+         * @return this
          */
         @Deprecated
         public Builder themeColor(@ColorInt int themeColor) {
@@ -685,7 +685,7 @@ public class UpdateManager implements IUpdateProxy {
          * 设置主题颜色
          *
          * @param themeColor 主题颜色资源
-         * @return
+         * @return this
          */
         public Builder promptThemeColor(@ColorInt int themeColor) {
             promptEntity.setThemeColor(themeColor);
@@ -696,7 +696,7 @@ public class UpdateManager implements IUpdateProxy {
          * 设置顶部背景图片
          *
          * @param topResId 顶部背景图片资源
-         * @return
+         * @return this
          */
         @Deprecated
         public Builder topResId(@DrawableRes int topResId) {
@@ -708,7 +708,7 @@ public class UpdateManager implements IUpdateProxy {
          * 设置顶部背景图片
          *
          * @param topResId 顶部背景图片资源
-         * @return
+         * @return this
          */
         public Builder promptTopResId(@DrawableRes int topResId) {
             promptEntity.setTopResId(topResId);
@@ -719,7 +719,7 @@ public class UpdateManager implements IUpdateProxy {
          * 设置按钮的文字颜色
          *
          * @param buttonTextColor 按钮的文字颜色
-         * @return
+         * @return this
          */
         public Builder promptButtonTextColor(@ColorInt int buttonTextColor) {
             promptEntity.setButtonTextColor(buttonTextColor);
@@ -729,8 +729,8 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置是否支持后台更新
          *
-         * @param supportBackgroundUpdate
-         * @return
+         * @param supportBackgroundUpdate 是否支持后台更新
+         * @return this
          */
         public Builder supportBackgroundUpdate(boolean supportBackgroundUpdate) {
             promptEntity.setSupportBackgroundUpdate(supportBackgroundUpdate);
@@ -740,8 +740,8 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置版本更新提示器宽度占屏幕的比例，默认是-1，不做约束
          *
-         * @param widthRatio
-         * @return
+         * @param widthRatio 提示器宽度占屏幕的比例
+         * @return this
          */
         public Builder promptWidthRatio(float widthRatio) {
             promptEntity.setWidthRatio(widthRatio);
@@ -751,8 +751,8 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设置版本更新提示器高度占屏幕的比例，默认是-1，不做约束
          *
-         * @param heightRatio
-         * @return
+         * @param heightRatio 提示器高度占屏幕的比例
+         * @return this
          */
         public Builder promptHeightRatio(float heightRatio) {
             promptEntity.setHeightRatio(heightRatio);
@@ -760,10 +760,21 @@ public class UpdateManager implements IUpdateProxy {
         }
 
         /**
+         * 设置是否忽略下载异常【【为true时，下载失败更新提示框不消失，默认是false】】
+         *
+         * @param ignoreDownloadError 提器高度占屏幕的比例
+         * @return this
+         */
+        public Builder promptIgnoreDownloadError(boolean ignoreDownloadError) {
+            promptEntity.setIgnoreDownloadError(ignoreDownloadError);
+            return this;
+        }
+
+        /**
          * 设置版本更新提示器的样式
          *
          * @param promptEntity 版本更新提示器参数信息
-         * @return
+         * @return this
          */
         public Builder promptStyle(@NonNull PromptEntity promptEntity) {
             this.promptEntity = promptEntity;
@@ -773,8 +784,8 @@ public class UpdateManager implements IUpdateProxy {
         /**
          * 设备版本更新下载器
          *
-         * @param updateDownLoader
-         * @return
+         * @param updateDownLoader 版本更新下载器
+         * @return this
          */
         public Builder updateDownLoader(@NonNull IUpdateDownloader updateDownLoader) {
             this.updateDownLoader = updateDownLoader;

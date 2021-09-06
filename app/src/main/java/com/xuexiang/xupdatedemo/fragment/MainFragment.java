@@ -180,6 +180,8 @@ public class MainFragment extends XPageSimpleListFragment {
             case 8:
                 XUpdate.newBuild(getActivity())
                         .supportBackgroundUpdate(true)
+                        // 忽略下载异常，不关闭更新提示窗
+                        .promptIgnoreDownloadError(true)
                         .build()
                         .update(getUpdateEntityFromAssets());
                 break;
@@ -213,6 +215,7 @@ public class MainFragment extends XPageSimpleListFragment {
     @Permission(PermissionConsts.STORAGE)
     private void useApkDownLoadFunction() {
         XUpdate.newBuild(getActivity())
+                // 注意在Android10及以上存在存储权限问题，不建议设置在外部存储下载目录
                 .apkCacheDir(PathUtils.getAppExtCachePath())
                 .build()
                 .download(mDownloadUrl, new OnFileDownloadListener() {

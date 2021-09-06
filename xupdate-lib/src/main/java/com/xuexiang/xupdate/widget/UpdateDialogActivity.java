@@ -106,7 +106,6 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
      * @param updateEntity  更新信息
      * @param prompterProxy 更新代理
      * @param promptEntity  提示器参数信息
-     * @return
      */
     public static void show(@NonNull Context context, @NonNull UpdateEntity updateEntity, @NonNull IPrompterProxy prompterProxy, @NonNull PromptEntity promptEntity) {
         Intent intent = new Intent(context, UpdateDialogActivity.class);
@@ -129,24 +128,24 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initView() {
-        //顶部图片
+        // 顶部图片
         mIvTop = findViewById(R.id.iv_top);
-        //标题
+        // 标题
         mTvTitle = findViewById(R.id.tv_title);
-        //提示内容
+        // 提示内容
         mTvUpdateInfo = findViewById(R.id.tv_update_info);
-        //更新按钮
+        // 更新按钮
         mBtnUpdate = findViewById(R.id.btn_update);
-        //后台更新按钮
+        // 后台更新按钮
         mBtnBackgroundUpdate = findViewById(R.id.btn_background_update);
-        //忽略
+        // 忽略
         mTvIgnore = findViewById(R.id.tv_ignore);
-        //进度条
+        // 进度条
         mNumberProgressBar = findViewById(R.id.npb_progress);
 
-        //关闭按钮+线 的整个布局
+        // 关闭按钮+线 的整个布局
         mLlClose = findViewById(R.id.ll_close);
-        //关闭按钮
+        // 关闭按钮
         mIvClose = findViewById(R.id.iv_close);
     }
 
@@ -159,9 +158,9 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
             return;
         }
         mPromptEntity = bundle.getParcelable(KEY_UPDATE_PROMPT_ENTITY);
-        //设置主题色
+        // 设置主题色
         if (mPromptEntity == null) {
-            //如果不存在就使用默认的
+            // 如果不存在就使用默认的
             mPromptEntity = new PromptEntity();
         }
         initTheme(mPromptEntity.getThemeColor(), mPromptEntity.getTopResId(), mPromptEntity.getButtonTextColor());
@@ -183,7 +182,7 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
                 mPromptEntity = bundle.getParcelable(KEY_UPDATE_PROMPT_ENTITY);
             }
         }
-        //如果还不存在就使用默认的
+        // 如果还不存在就使用默认的
         if (mPromptEntity == null) {
             mPromptEntity = new PromptEntity();
         }
@@ -196,26 +195,19 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
      * @param updateEntity 更新信息
      */
     private void initUpdateInfo(UpdateEntity updateEntity) {
-        //弹出对话框
+        // 弹出对话框
         final String newVersion = updateEntity.getVersionName();
         String updateInfo = UpdateUtils.getDisplayUpdateInfo(this, updateEntity);
-        //更新内容
+        // 更新内容
         mTvUpdateInfo.setText(updateInfo);
         mTvTitle.setText(String.format(getString(R.string.xupdate_lab_ready_update), newVersion));
 
-        //如果文件已下载，直接显示安装
-        if (UpdateUtils.isApkDownloaded(mUpdateEntity)) {
-            showInstallButton(UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity));
-        }
+        // 刷新升级按钮显示
+        refreshUpdateButton();
 
-        //强制更新,不显示关闭按钮
+        // 强制更新,不显示关闭按钮
         if (updateEntity.isForce()) {
             mLlClose.setVisibility(View.GONE);
-        } else {
-            //不是强制更新时，才生效
-            if (updateEntity.isIgnorable()) {
-                mTvIgnore.setVisibility(View.VISIBLE);
-            }
         }
     }
 
@@ -284,16 +276,16 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        //如果是强制更新的话，就禁用返回键
+        // 如果是强制更新的话，就禁用返回键
         return keyCode == KeyEvent.KEYCODE_BACK && mUpdateEntity != null && mUpdateEntity.isForce();
     }
 
     @Override
     public void onClick(View view) {
         int i = view.getId();
-        //点击版本升级按钮【下载apk】
+        // 点击版本升级按钮【下载apk】
         if (i == R.id.btn_update) {
-            //权限判断是否有访问外部存储空间权限
+            // 权限判断是否有访问外部存储空间权限
             int flag = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (!UpdateUtils.isPrivateApkCacheDir(mUpdateEntity) && flag != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_REQUEST_PERMISSIONS);
@@ -301,19 +293,19 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
                 installApp();
             }
         } else if (i == R.id.btn_background_update) {
-            //点击后台更新按钮
+            // 点击后台更新按钮
             if (sIPrompterProxy != null) {
                 sIPrompterProxy.backgroundDownload();
             }
             dismissDialog();
         } else if (i == R.id.iv_close) {
-            //点击关闭按钮
+            // 点击关闭按钮
             if (sIPrompterProxy != null) {
                 sIPrompterProxy.cancelDownload();
             }
             dismissDialog();
         } else if (i == R.id.tv_ignore) {
-            //点击忽略按钮
+            // 点击忽略按钮
             UpdateUtils.saveIgnoreVersion(this, mUpdateEntity.getVersionName());
             dismissDialog();
         }
@@ -324,7 +316,7 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CODE_REQUEST_PERMISSIONS) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //升级
+                // 升级
                 installApp();
             } else {
                 _XUpdate.onUpdateError(DOWNLOAD_PERMISSION_DENIED);
@@ -337,18 +329,18 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
     private void installApp() {
         if (UpdateUtils.isApkDownloaded(mUpdateEntity)) {
             onInstallApk();
-            //安装完自杀
-            //如果上次是强制更新，但是用户在下载完，强制杀掉后台，重新启动app后，则会走到这一步，所以要进行强制更新的判断。
+            // 安装完自杀
+            // 如果上次是强制更新，但是用户在下载完，强制杀掉后台，重新启动app后，则会走到这一步，所以要进行强制更新的判断。
             if (!mUpdateEntity.isForce()) {
                 dismissDialog();
             } else {
-                showInstallButton(UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity));
+                showInstallButton();
             }
         } else {
             if (sIPrompterProxy != null) {
                 sIPrompterProxy.startDownload(mUpdateEntity, new WeakFileDownloadListener(this));
             }
-            //忽略版本在点击更新按钮后隐藏
+            // 忽略版本在点击更新按钮后隐藏
             if (mUpdateEntity.isIgnorable()) {
                 mTvIgnore.setVisibility(View.GONE);
             }
@@ -389,7 +381,7 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
         if (!isFinishing()) {
             mBtnBackgroundUpdate.setVisibility(View.GONE);
             if (mUpdateEntity.isForce()) {
-                showInstallButton(file);
+                showInstallButton();
             } else {
                 dismissDialog();
             }
@@ -401,31 +393,50 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void handleError(Throwable throwable) {
         if (!isFinishing()) {
-            dismissDialog();
+            if (mPromptEntity.isIgnoreDownloadError()) {
+                refreshUpdateButton();
+            } else {
+                dismissDialog();
+            }
         }
+    }
+
+    /**
+     * 刷新升级按钮显示
+     */
+    private void refreshUpdateButton() {
+        if (UpdateUtils.isApkDownloaded(mUpdateEntity)) {
+            showInstallButton();
+        } else {
+            showUpdateButton();
+        }
+        mTvIgnore.setVisibility(mUpdateEntity.isIgnorable() ? View.VISIBLE : View.GONE);
     }
 
     /**
      * 显示安装的按钮
      */
-    private void showInstallButton(final File apkFile) {
+    private void showInstallButton() {
         mNumberProgressBar.setVisibility(View.GONE);
+        mBtnBackgroundUpdate.setVisibility(View.GONE);
         mBtnUpdate.setText(R.string.xupdate_lab_install);
         mBtnUpdate.setVisibility(View.VISIBLE);
-        mBtnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onInstallApk(apkFile);
-            }
-        });
+        mBtnUpdate.setOnClickListener(this);
+    }
+
+    /**
+     * 显示升级的按钮
+     */
+    private void showUpdateButton() {
+        mNumberProgressBar.setVisibility(View.GONE);
+        mBtnBackgroundUpdate.setVisibility(View.GONE);
+        mBtnUpdate.setText(R.string.xupdate_lab_update);
+        mBtnUpdate.setVisibility(View.VISIBLE);
+        mBtnUpdate.setOnClickListener(this);
     }
 
     private void onInstallApk() {
         _XUpdate.startInstallApk(this, UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity), mUpdateEntity.getDownLoadEntity());
-    }
-
-    private void onInstallApk(File apkFile) {
-        _XUpdate.startInstallApk(this, apkFile, mUpdateEntity.getDownLoadEntity());
     }
 
     /**

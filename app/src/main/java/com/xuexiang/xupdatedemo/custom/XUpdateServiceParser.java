@@ -46,7 +46,7 @@ public class XUpdateServiceParser extends AbstractUpdateParser {
             if (appVersionInfo.getUpdateStatus() == DefaultUpdateParser.APIConstant.NO_NEW_VERSION) {
                 updateEntity.setHasUpdate(false);
             } else {
-                if (appVersionInfo.getUpdateStatus() == DefaultUpdateParser.APIConstant.HAVE_NEW_VERSION_FORCED_UPLOAD) {
+                if (appVersionInfo.getUpdateStatus() == DefaultUpdateParser.APIConstant.HAVE_NEW_VERSION_FORCED_UPDATE) {
                     updateEntity.setForce(true);
                 }
                 updateEntity.setHasUpdate(true)

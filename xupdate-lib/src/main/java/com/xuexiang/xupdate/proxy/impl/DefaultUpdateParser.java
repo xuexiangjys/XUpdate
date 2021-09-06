@@ -67,8 +67,10 @@ public class DefaultUpdateParser extends AbstractUpdateParser {
             if (updateStatus == APIConstant.NO_NEW_VERSION) {
                 updateEntity.setHasUpdate(false);
             } else {
-                if (updateStatus == APIConstant.HAVE_NEW_VERSION_FORCED_UPLOAD) {
+                if (updateStatus == APIConstant.HAVE_NEW_VERSION_FORCED_UPDATE) {
                     updateEntity.setForce(true);
+                } else if (updateStatus == APIConstant.HAVE_NEW_VERSION_IGNORE_UPDATE) {
+                    updateEntity.setIsIgnorable(true);
                 }
                 updateEntity.setHasUpdate(true)
                         .setUpdateContent(jsonObject.getString(APIKeyUpper.MODIFY_CONTENT))
@@ -103,8 +105,10 @@ public class DefaultUpdateParser extends AbstractUpdateParser {
             if (updateStatus == APIConstant.NO_NEW_VERSION) {
                 updateEntity.setHasUpdate(false);
             } else {
-                if (updateStatus == APIConstant.HAVE_NEW_VERSION_FORCED_UPLOAD) {
+                if (updateStatus == APIConstant.HAVE_NEW_VERSION_FORCED_UPDATE) {
                     updateEntity.setForce(true);
+                } else if (updateStatus == APIConstant.HAVE_NEW_VERSION_IGNORE_UPDATE) {
+                    updateEntity.setIsIgnorable(true);
                 }
                 updateEntity.setHasUpdate(true)
                         .setUpdateContent(jsonObject.getString(APIKeyLower.MODIFY_CONTENT))
@@ -219,7 +223,11 @@ public class DefaultUpdateParser extends AbstractUpdateParser {
         /**
          * 有版本更新，需要强制升级
          */
-        int HAVE_NEW_VERSION_FORCED_UPLOAD = 2;
+        int HAVE_NEW_VERSION_FORCED_UPDATE = 2;
+        /**
+         * 有版本更新, 可忽略的版本升级
+         */
+        int HAVE_NEW_VERSION_IGNORE_UPDATE = 3;
     }
 
 }

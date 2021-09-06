@@ -113,7 +113,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
      * @param updateEntity  更新信息
      * @param prompterProxy 更新代理
      * @param promptEntity  提示器参数信息
-     * @return
+     * @return 更新提示
      */
     public static UpdateDialog newInstance(@NonNull Context context, @NonNull UpdateEntity updateEntity, @NonNull IPrompterProxy prompterProxy, PromptEntity promptEntity) {
         UpdateDialog dialog = new UpdateDialog(context);
@@ -135,24 +135,24 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
 
     @Override
     protected void initViews() {
-        //顶部图片
+        // 顶部图片
         mIvTop = findViewById(R.id.iv_top);
-        //标题
+        // 标题
         mTvTitle = findViewById(R.id.tv_title);
-        //提示内容
+        // 提示内容
         mTvUpdateInfo = findViewById(R.id.tv_update_info);
-        //更新按钮
+        // 更新按钮
         mBtnUpdate = findViewById(R.id.btn_update);
-        //后台更新按钮
+        // 后台更新按钮
         mBtnBackgroundUpdate = findViewById(R.id.btn_background_update);
-        //忽略
+        // 忽略
         mTvIgnore = findViewById(R.id.tv_ignore);
-        //进度条
+        // 进度条
         mNumberProgressBar = findViewById(R.id.npb_progress);
 
-        //关闭按钮+线 的整个布局
+        // 关闭按钮+线 的整个布局
         mLlClose = findViewById(R.id.ll_close);
-        //关闭按钮
+        // 关闭按钮
         mIvClose = findViewById(R.id.iv_close);
     }
 
@@ -199,29 +199,22 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
     /**
      * 初始化更新信息
      *
-     * @param updateEntity
+     * @param updateEntity 版本更新信息
      */
     private void initUpdateInfo(UpdateEntity updateEntity) {
-        //弹出对话框
+        // 弹出对话框
         final String newVersion = updateEntity.getVersionName();
         String updateInfo = UpdateUtils.getDisplayUpdateInfo(getContext(), updateEntity);
-        //更新内容
+        // 更新内容
         mTvUpdateInfo.setText(updateInfo);
         mTvTitle.setText(String.format(getString(R.string.xupdate_lab_ready_update), newVersion));
 
-        //如果文件已下载，直接显示安装
-        if (UpdateUtils.isApkDownloaded(mUpdateEntity)) {
-            showInstallButton(UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity));
-        }
+        // 刷新升级按钮显示
+        refreshUpdateButton();
 
-        //强制更新,不显示关闭按钮
+        // 强制更新,不显示关闭按钮
         if (updateEntity.isForce()) {
             mLlClose.setVisibility(View.GONE);
-        } else {
-            //不是强制更新时，才生效
-            if (updateEntity.isIgnorable()) {
-                mTvIgnore.setVisibility(View.VISIBLE);
-            }
         }
     }
 
@@ -242,10 +235,13 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
     }
 
     /**
-     * 设置
+     * 设置⏏弹窗主题
      *
-     * @param themeColor 主色
-     * @param topResId   图片
+     * @param themeColor      主色
+     * @param topResId        图片
+     * @param buttonTextColor 按钮文字颜色
+     * @param widthRatio      宽和屏幕的比例
+     * @param heightRatio     高和屏幕的比例
      */
     private void setDialogTheme(int themeColor, int topResId, int buttonTextColor, float widthRatio, float heightRatio) {
         mIvTop.setImageResource(topResId);
@@ -313,7 +309,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
             if (!mUpdateEntity.isForce()) {
                 dismiss();
             } else {
-                showInstallButton(UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity));
+                showInstallButton();
             }
         } else {
             if (mIPrompterProxy != null) {
@@ -360,7 +356,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
         if (isShowing()) {
             mBtnBackgroundUpdate.setVisibility(View.GONE);
             if (mUpdateEntity.isForce()) {
-                showInstallButton(file);
+                showInstallButton();
             } else {
                 dismiss();
             }
@@ -372,31 +368,50 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
     @Override
     public void handleError(Throwable throwable) {
         if (isShowing()) {
-            dismiss();
+            if (mPromptEntity.isIgnoreDownloadError()) {
+                refreshUpdateButton();
+            } else {
+                dismiss();
+            }
         }
+    }
+
+    /**
+     * 刷新升级按钮显示
+     */
+    private void refreshUpdateButton() {
+        if (UpdateUtils.isApkDownloaded(mUpdateEntity)) {
+            showInstallButton();
+        } else {
+            showUpdateButton();
+        }
+        mTvIgnore.setVisibility(mUpdateEntity.isIgnorable() ? View.VISIBLE : View.GONE);
     }
 
     /**
      * 显示安装的按钮
      */
-    private void showInstallButton(final File apkFile) {
+    private void showInstallButton() {
         mNumberProgressBar.setVisibility(View.GONE);
+        mBtnBackgroundUpdate.setVisibility(View.GONE);
         mBtnUpdate.setText(R.string.xupdate_lab_install);
         mBtnUpdate.setVisibility(View.VISIBLE);
-        mBtnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onInstallApk(apkFile);
-            }
-        });
+        mBtnUpdate.setOnClickListener(this);
+    }
+
+    /**
+     * 显示升级的按钮
+     */
+    private void showUpdateButton() {
+        mNumberProgressBar.setVisibility(View.GONE);
+        mBtnBackgroundUpdate.setVisibility(View.GONE);
+        mBtnUpdate.setText(R.string.xupdate_lab_update);
+        mBtnUpdate.setVisibility(View.VISIBLE);
+        mBtnUpdate.setOnClickListener(this);
     }
 
     private void onInstallApk() {
         _XUpdate.startInstallApk(getContext(), UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity), mUpdateEntity.getDownLoadEntity());
-    }
-
-    private void onInstallApk(File apkFile) {
-        _XUpdate.startInstallApk(getContext(), apkFile, mUpdateEntity.getDownLoadEntity());
     }
 
     @Override
