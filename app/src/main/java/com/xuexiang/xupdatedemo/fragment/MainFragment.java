@@ -213,7 +213,7 @@ public class MainFragment extends XPageSimpleListFragment {
     @Permission(PermissionConsts.STORAGE)
     private void useApkDownLoadFunction() {
         XUpdate.newBuild(getActivity())
-                .apkCacheDir(PathUtils.getExtDownloadsPath())
+                .apkCacheDir(PathUtils.getAppExtCachePath())
                 .build()
                 .download(mDownloadUrl, new OnFileDownloadListener() {
                     @Override

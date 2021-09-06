@@ -506,7 +506,7 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
 
 ```
 XUpdate.newBuild(getActivity())
-        .apkCacheDir(PathUtils.getExtDownloadsPath()) //设置下载缓存的根目录
+        .apkCacheDir(PathUtils.getAppExtCachePath()) //设置下载缓存的根目录
         .build()
         .download(mDownloadUrl, new OnFileDownloadListener() {   //设置下载的地址和下载的监听
             @Override

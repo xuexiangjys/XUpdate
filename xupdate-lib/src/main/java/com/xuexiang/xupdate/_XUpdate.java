@@ -68,23 +68,23 @@ public final class _XUpdate {
     }
 
     public static IUpdateHttpService getIUpdateHttpService() {
-        return XUpdate.get().mIUpdateHttpService;
+        return XUpdate.get().mUpdateHttpService;
     }
 
     public static IUpdateChecker getIUpdateChecker() {
-        return XUpdate.get().mIUpdateChecker;
+        return XUpdate.get().mUpdateChecker;
     }
 
     public static IUpdateParser getIUpdateParser() {
-        return XUpdate.get().mIUpdateParser;
+        return XUpdate.get().mUpdateParser;
     }
 
     public static IUpdatePrompter getIUpdatePrompter() {
-        return XUpdate.get().mIUpdatePrompter;
+        return XUpdate.get().mUpdatePrompter;
     }
 
     public static IUpdateDownloader getIUpdateDownLoader() {
-        return XUpdate.get().mIUpdateDownloader;
+        return XUpdate.get().mUpdateDownloader;
     }
 
     public static boolean isGet() {
@@ -111,10 +111,10 @@ public final class _XUpdate {
      * @param file 需要加密的文件
      */
     public static String encryptFile(File file) {
-        if (XUpdate.get().mIFileEncryptor == null) {
-            XUpdate.get().mIFileEncryptor = new DefaultFileEncryptor();
+        if (XUpdate.get().mFileEncryptor == null) {
+            XUpdate.get().mFileEncryptor = new DefaultFileEncryptor();
         }
-        return XUpdate.get().mIFileEncryptor.encryptFile(file);
+        return XUpdate.get().mFileEncryptor.encryptFile(file);
     }
 
     /**
@@ -125,10 +125,10 @@ public final class _XUpdate {
      * @return 文件是否有效
      */
     public static boolean isFileValid(String encrypt, File file) {
-        if (XUpdate.get().mIFileEncryptor == null) {
-            XUpdate.get().mIFileEncryptor = new DefaultFileEncryptor();
+        if (XUpdate.get().mFileEncryptor == null) {
+            XUpdate.get().mFileEncryptor = new DefaultFileEncryptor();
         }
-        return XUpdate.get().mIFileEncryptor.isFileValid(encrypt, file);
+        return XUpdate.get().mFileEncryptor.isFileValid(encrypt, file);
     }
 
     //===========================apk安装监听===================================//

@@ -510,7 +510,7 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
 
 ```
 XUpdate.newBuild(getActivity())
-        .apkCacheDir(PathUtils.getExtDownloadsPath())  // Set the root directory of the download cache
+        .apkCacheDir(PathUtils.getAppExtCachePath())  // Set the root directory of the download cache
         .build()
         .download(mDownloadUrl, new OnFileDownloadListener() {   // Set the download address and download listener
             @Override

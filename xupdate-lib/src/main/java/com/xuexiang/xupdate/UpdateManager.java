@@ -64,6 +64,9 @@ public class UpdateManager implements IUpdateProxy {
      */
     private UpdateEntity mUpdateEntity;
 
+    /**
+     * 上下文
+     */
     private WeakReference<Context> mContext;
     //============请求参数==============//
     /**
@@ -152,8 +155,8 @@ public class UpdateManager implements IUpdateProxy {
     /**
      * 设置版本更新的代理，可自定义版本更新
      *
-     * @param updateProxy
-     * @return
+     * @param updateProxy 版本更新的代理
+     * @return 版本更新管理者
      */
     public UpdateManager setIUpdateProxy(IUpdateProxy updateProxy) {
         mIUpdateProxy = updateProxy;
@@ -299,7 +302,7 @@ public class UpdateManager implements IUpdateProxy {
     /**
      * 刷新本地参数
      *
-     * @param updateEntity
+     * @param updateEntity 版本更新信息
      */
     private UpdateEntity refreshParams(UpdateEntity updateEntity) {
         //更新信息（本地信息）

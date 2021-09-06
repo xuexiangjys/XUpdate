@@ -62,7 +62,7 @@ public final class ApkInstallUtils {
     /**
      * 设置是否支持静默安装
      *
-     * @param supportSilentInstall
+     * @param supportSilentInstall 是否支持静默安装
      */
     public static void setSupportSilentInstall(boolean supportSilentInstall) {
         ApkInstallUtils.sSupportSilentInstall = supportSilentInstall;
