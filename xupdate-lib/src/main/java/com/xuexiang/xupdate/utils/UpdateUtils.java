@@ -18,7 +18,9 @@ package com.xuexiang.xupdate.utils;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -40,6 +42,7 @@ import com.xuexiang.xupdate.R;
 import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
+import com.xuexiang.xupdate.logs.UpdateLog;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
 
 import java.io.File;
@@ -440,4 +443,28 @@ public final class UpdateUtils {
         return Looper.getMainLooper() == Looper.myLooper();
     }
 
+    /**
+     * 页面跳转
+     *
+     * @param intent 跳转意图
+     */
+    public static boolean startActivity(final Intent intent) {
+        if (intent == null) {
+            UpdateLog.e("[startActivity failed]: intent == null");
+            return false;
+        }
+        if (XUpdate.getContext().getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
+            try {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                XUpdate.getContext().startActivity(intent);
+                return true;
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
+                UpdateLog.e(e);
+            }
+        } else {
+            UpdateLog.e("[resolveActivity failed]: " + (intent.getComponent() != null ? intent.getComponent().getClassName() : intent.getAction()) + " do not register in manifest");
+        }
+        return false;
+    }
 }
