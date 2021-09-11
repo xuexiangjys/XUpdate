@@ -181,7 +181,7 @@ allprojects {
 dependencies {
   ...
   // androidx版本
-  implementation 'com.github.xuexiangjys:XUpdate:2.0.9'
+  implementation 'com.github.xuexiangjys:XUpdate:2.1.0'
 }
 ```
 
@@ -267,6 +267,7 @@ mButtonTextColor | int | 0 | 按钮文字颜色
 mSupportBackgroundUpdate | boolean | false | 是否支持后台更新
 mWidthRatio | float | -1（无约束） | 版本更新提示器宽度占屏幕的比例
 mHeightRatio | float | -1（无约束） | 版本更新提示器高度占屏幕的比例
+mIgnoreDownloadError | boolean | false | 是否忽略下载异常(下载失败更新提示框不消失)
 
 ### 2.4、文件加密校验方式
 

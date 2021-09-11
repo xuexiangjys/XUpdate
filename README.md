@@ -182,7 +182,7 @@ The following is the version description. Choose one.
 dependencies {
   ...
   // androidx project
-  implementation 'com.github.xuexiangjys:XUpdate:2.0.9'
+  implementation 'com.github.xuexiangjys:XUpdate:2.1.0'
 }
 ```
 
@@ -268,6 +268,7 @@ mButtonTextColor | int | 0 | Button text color
 mSupportBackgroundUpdate | boolean | false | Whether background updates are supported
 mWidthRatio | float | -1（Unconstrained） | The ratio of the width of the version update prompter to the screen
 mHeightRatio | float | -1（Unconstrained） | The ratio of the height of the version update prompter to the screen
+mIgnoreDownloadError | boolean | false | Whether to ignore the download exception (the update prompt box will not disappear if the download fails)
 
 ### 2.4、File encryption verification method
 
