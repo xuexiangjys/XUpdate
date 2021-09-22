@@ -20,6 +20,7 @@ import android.text.TextUtils;
 
 import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
+import com.xuexiang.xupdate.logs.UpdateLog;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 
 import org.json.JSONException;
@@ -58,10 +59,7 @@ public class DefaultUpdateParser extends AbstractUpdateParser {
             int updateStatus = jsonObject.getInt(APIKeyUpper.UPDATE_STATUS);
             int versionCode = jsonObject.getInt(APIKeyUpper.VERSION_CODE);
             if (updateStatus != APIConstant.NO_NEW_VERSION) {
-                //最新版本小于等于现在的版本，不需要更新
-                if (versionCode <= UpdateUtils.getVersionCode(XUpdate.getContext())) {
-                    updateStatus = APIConstant.NO_NEW_VERSION;
-                }
+                updateStatus = checkCurrentVersionCode(updateStatus, versionCode);
             }
             UpdateEntity updateEntity = new UpdateEntity();
             if (updateStatus == APIConstant.NO_NEW_VERSION) {
@@ -96,10 +94,7 @@ public class DefaultUpdateParser extends AbstractUpdateParser {
             int updateStatus = jsonObject.getInt(APIKeyLower.UPDATE_STATUS);
             int versionCode = jsonObject.getInt(APIKeyLower.VERSION_CODE);
             if (updateStatus != APIConstant.NO_NEW_VERSION) {
-                //最新版本小于等于现在的版本，不需要更新
-                if (versionCode <= UpdateUtils.getVersionCode(XUpdate.getContext())) {
-                    updateStatus = APIConstant.NO_NEW_VERSION;
-                }
+                updateStatus = checkCurrentVersionCode(updateStatus, versionCode);
             }
             UpdateEntity updateEntity = new UpdateEntity();
             if (updateStatus == APIConstant.NO_NEW_VERSION) {
@@ -121,6 +116,22 @@ public class DefaultUpdateParser extends AbstractUpdateParser {
             return updateEntity;
         }
         return null;
+    }
+
+    /**
+     * 本地校验版本。当最新版本小于等于应用当前的版本时，不需要更新。
+     *
+     * @param updateStatus 更新状态
+     * @param versionCode  云端获取的版本号
+     * @return 版本更新的状态
+     */
+    protected int checkCurrentVersionCode(int updateStatus, int versionCode) {
+        int currentVersionCode = UpdateUtils.getVersionCode(XUpdate.getContext());
+        if (versionCode <= currentVersionCode) {
+            UpdateLog.i("云端获取的最新版本小于等于应用当前的版本，不需要更新！当前版本:" + currentVersionCode + ", 云端版本:" + versionCode);
+            updateStatus = APIConstant.NO_NEW_VERSION;
+        }
+        return updateStatus;
     }
 
     /**

@@ -325,17 +325,30 @@ XUpdate.newBuild(getActivity())
 
 ```
 {
-  "Code": 0, //0代表请求成功，非0代表失败
-  "Msg": "", //请求出错的信息
-  "UpdateStatus": 1, //0代表不更新，1代表有版本更新，不需要强制升级，2代表有版本更新，需要强制升级
+  "Code": 0,
+  "Msg": "",
+  "UpdateStatus": 1,
   "VersionCode": 3,
   "VersionName": "1.0.2",
   "ModifyContent": "1、优化api接口。\r\n2、添加使用demo演示。\r\n3、新增自定义更新服务API接口。\r\n4、优化更新提示界面。",
   "DownloadUrl": "https://raw.githubusercontent.com/xuexiangjys/XUpdate/master/apk/xupdate_demo_1.0.2.apk",
-  "ApkSize": 2048
-  "ApkMd5": "..."  //应用apk的md5值没有的话，就无法保证apk是否完整，每次都会重新下载。框架默认使用的是md5加密。
+  "ApkSize": 2048,
+  "ApkMd5": ""
 }
 ```
+
+字段说明:
+
+* Code: 0代表请求成功，非0代表失败。
+* Msg: 请求出错的信息。
+* UpdateStatus: 版本更新状态。0代表不更新，1代表有版本更新，不需要强制升级，2代表有版本更新，需要强制升级。
+* VersionCode: 版本号，自增。本地会用于比较版本是否为最新版本。
+* VersionName: 版本的展示名称。
+* ModifyContent: 版本更新的内容。
+* DownloadUrl: 应用apk文件的下载地址。
+* ApkSize: 应用apk文件的文件大小，单位是KB。
+* ApkMd5: 应用apk文件的MD5值。如果没有的话，将无法保证apk是否完整，每次都会重新下载。框架默认使用的是MD5加密。
+
 
 ### 3.2、自动版本更新
 
