@@ -60,7 +60,7 @@ public class DownloadService extends Service {
 
     private static final int DOWNLOAD_NOTIFY_ID = 1000;
 
-    private static boolean mIsRunning = false;
+    private static boolean sIsRunning = false;
 
     private static final String CHANNEL_ID = "xupdate_channel_id";
     private static final CharSequence CHANNEL_NAME = "xupdate_channel_name";
@@ -73,13 +73,13 @@ public class DownloadService extends Service {
     /**
      * 绑定服务
      *
-     * @param connection
+     * @param connection 服务连接
      */
     public static void bindService(ServiceConnection connection) {
         Intent intent = new Intent(XUpdate.getContext(), DownloadService.class);
         XUpdate.getContext().startService(intent);
         XUpdate.getContext().bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        mIsRunning = true;
+        sIsRunning = true;
     }
 
     /**
@@ -102,7 +102,7 @@ public class DownloadService extends Service {
      * 关闭服务
      */
     private void close() {
-        mIsRunning = false;
+        sIsRunning = false;
         stopSelf();
     }
 
@@ -111,10 +111,10 @@ public class DownloadService extends Service {
     /**
      * 下载服务是否在运行
      *
-     * @return
+     * @return 是否在运行
      */
     public static boolean isRunning() {
-        return mIsRunning;
+        return sIsRunning;
     }
 
     @Override
@@ -126,13 +126,13 @@ public class DownloadService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        mIsRunning = true;
+        sIsRunning = true;
         return new DownloadBinder();
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
-        mIsRunning = false;
+        sIsRunning = false;
         return super.onUnbind(intent);
     }
 

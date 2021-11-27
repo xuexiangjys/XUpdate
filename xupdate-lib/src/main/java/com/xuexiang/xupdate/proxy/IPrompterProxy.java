@@ -15,6 +15,13 @@ import com.xuexiang.xupdate.service.OnFileDownloadListener;
 public interface IPrompterProxy {
 
     /**
+     * 获取版本更新的地址
+     *
+     * @return 版本更新的地址
+     */
+    String getUrl();
+
+    /**
      * 开始下载更新
      *
      * @param updateEntity     更新信息

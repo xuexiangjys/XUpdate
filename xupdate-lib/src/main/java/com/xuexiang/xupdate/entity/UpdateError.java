@@ -138,7 +138,6 @@ public class UpdateError extends Throwable {
         sMessages.append(ERROR.DOWNLOAD_FAILED, context.getString(R.string.xupdate_error_download_failed));
         sMessages.append(ERROR.DOWNLOAD_PERMISSION_DENIED, context.getString(R.string.xupdate_error_download_permission_denied));
 
-
         sMessages.append(ERROR.INSTALL_FAILED, context.getString(R.string.xupdate_error_install_failed));
     }
 }

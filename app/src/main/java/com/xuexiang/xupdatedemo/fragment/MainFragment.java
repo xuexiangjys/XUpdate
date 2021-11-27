@@ -50,6 +50,7 @@ public class MainFragment extends XPageSimpleListFragment {
         lists.add("进阶使用（自定义）");
         lists.add("版本更新提示框在FragmentActivity中使用UpdateDialogFragment, 在普通Activity中使用UpdateDialog");
         lists.add("使用XUpdateService版本更新服务");
+        lists.add("调试测试");
         return lists;
     }
 
@@ -70,6 +71,9 @@ public class MainFragment extends XPageSimpleListFragment {
                 break;
             case 4:
                 openPage(XUpdateServiceFragment.class);
+                break;
+            case 5:
+                openPage(TestFragment.class);
                 break;
             default:
                 break;

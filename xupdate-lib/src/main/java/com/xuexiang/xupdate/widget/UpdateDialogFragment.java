@@ -147,10 +147,9 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _XUpdate.setIsShowUpdatePrompter(true);
+        _XUpdate.setIsPrompterShow(getUrl(), true);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.XUpdate_Fragment_Dialog);
         mCurrentOrientation = getResources().getConfiguration().orientation;
-
     }
 
     @Override
@@ -487,6 +486,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
      * 弹窗消失
      */
     private void dismissDialog() {
+        _XUpdate.setIsPrompterShow(getUrl(), false);
         clearIPrompterProxy();
         dismissAllowingStateLoss();
     }
@@ -494,7 +494,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     @Override
     public void show(@NonNull FragmentManager manager, @Nullable String tag) {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
-            if (manager.isDestroyed()) {
+            if (manager.isDestroyed() || manager.isStateSaved()) {
                 return;
             }
         }
@@ -508,16 +508,10 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
     /**
      * 显示更新提示
      *
-     * @param manager
+     * @param manager 管理者
      */
     public void show(FragmentManager manager) {
         show(manager, "update_dialog");
-    }
-
-    @Override
-    public void onDestroyView() {
-        _XUpdate.setIsShowUpdatePrompter(false);
-        super.onDestroyView();
     }
 
     private static void setsIPrompterProxy(IPrompterProxy sIPrompterProxy) {
@@ -530,7 +524,6 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
             sIPrompterProxy = null;
         }
     }
-
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
@@ -550,6 +543,10 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
             initView(root);
             initData();
         }
+    }
+
+    private String getUrl() {
+        return sIPrompterProxy != null ? sIPrompterProxy.getUrl() : "";
     }
 
 }

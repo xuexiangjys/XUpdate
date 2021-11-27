@@ -101,7 +101,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
     /**
      * 更新代理
      */
-    private IPrompterProxy mIPrompterProxy;
+    private IPrompterProxy mPrompterProxy;
     /**
      * 提示器参数信息
      */
@@ -169,23 +169,27 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
 
     //====================生命周期============================//
 
+    private String getUrl() {
+        return mPrompterProxy != null ? mPrompterProxy.getUrl() : "";
+    }
+
     @Override
     public void show() {
-        _XUpdate.setIsShowUpdatePrompter(true);
+        _XUpdate.setIsPrompterShow(getUrl(), true);
         super.show();
     }
 
     @Override
     public void dismiss() {
-        _XUpdate.setIsShowUpdatePrompter(false);
+        _XUpdate.setIsPrompterShow(getUrl(), false);
         clearIPrompterProxy();
         super.dismiss();
     }
 
     private void clearIPrompterProxy() {
-        if (mIPrompterProxy != null) {
-            mIPrompterProxy.recycle();
-            mIPrompterProxy = null;
+        if (mPrompterProxy != null) {
+            mPrompterProxy.recycle();
+            mPrompterProxy = null;
         }
     }
     //====================UI构建============================//
@@ -270,7 +274,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
     //====================更新功能============================//
 
     public UpdateDialog setIPrompterProxy(IPrompterProxy prompterProxy) {
-        mIPrompterProxy = prompterProxy;
+        mPrompterProxy = prompterProxy;
         return this;
     }
 
@@ -288,11 +292,11 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
             }
         } else if (i == R.id.btn_background_update) {
             //点击后台更新按钮
-            mIPrompterProxy.backgroundDownload();
+            mPrompterProxy.backgroundDownload();
             dismiss();
         } else if (i == R.id.iv_close) {
             //点击关闭按钮
-            mIPrompterProxy.cancelDownload();
+            mPrompterProxy.cancelDownload();
             dismiss();
         } else if (i == R.id.tv_ignore) {
             //点击忽略按钮
@@ -312,8 +316,8 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
                 showInstallButton();
             }
         } else {
-            if (mIPrompterProxy != null) {
-                mIPrompterProxy.startDownload(mUpdateEntity, new WeakFileDownloadListener(this));
+            if (mPrompterProxy != null) {
+                mPrompterProxy.startDownload(mUpdateEntity, new WeakFileDownloadListener(this));
             }
             //忽略版本在点击更新按钮后隐藏
             if (mUpdateEntity.isIgnorable()) {
@@ -413,18 +417,5 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
     private void onInstallApk() {
         _XUpdate.startInstallApk(getContext(), UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity), mUpdateEntity.getDownLoadEntity());
     }
-
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        _XUpdate.setIsShowUpdatePrompter(true);
-    }
-
-    @Override
-    public void onDetachedFromWindow() {
-        _XUpdate.setIsShowUpdatePrompter(false);
-        super.onDetachedFromWindow();
-    }
-
 
 }

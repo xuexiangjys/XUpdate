@@ -3,6 +3,7 @@ package com.xuexiang.xupdate.proxy.impl;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.xuexiang.xupdate._XUpdate;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IPrompterProxy;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
@@ -16,38 +17,44 @@ import com.xuexiang.xupdate.service.OnFileDownloadListener;
  */
 public class DefaultPrompterProxyImpl implements IPrompterProxy {
 
-    private IUpdateProxy mIUpdateProxy;
+    private IUpdateProxy mUpdateProxy;
 
-    public DefaultPrompterProxyImpl(IUpdateProxy proxy) {
-        mIUpdateProxy = proxy;
+    DefaultPrompterProxyImpl(IUpdateProxy proxy) {
+        mUpdateProxy = proxy;
+    }
+
+    @Override
+    public String getUrl() {
+        return mUpdateProxy != null ? mUpdateProxy.getUrl() : "";
     }
 
     @Override
     public void startDownload(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener downloadListener) {
-        if (mIUpdateProxy != null) {
-            mIUpdateProxy.startDownload(updateEntity, downloadListener);
+        if (mUpdateProxy != null) {
+            mUpdateProxy.startDownload(updateEntity, downloadListener);
         }
     }
 
     @Override
     public void backgroundDownload() {
-        if (mIUpdateProxy != null) {
-            mIUpdateProxy.backgroundDownload();
+        if (mUpdateProxy != null) {
+            mUpdateProxy.backgroundDownload();
         }
     }
 
     @Override
     public void cancelDownload() {
-        if (mIUpdateProxy != null) {
-            mIUpdateProxy.cancelDownload();
+        _XUpdate.setIsPrompterShow(getUrl(), false);
+        if (mUpdateProxy != null) {
+            mUpdateProxy.cancelDownload();
         }
     }
 
     @Override
     public void recycle() {
-        if (mIUpdateProxy != null) {
-            mIUpdateProxy.recycle();
-            mIUpdateProxy = null;
+        if (mUpdateProxy != null) {
+            mUpdateProxy.recycle();
+            mUpdateProxy = null;
         }
     }
 

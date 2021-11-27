@@ -42,6 +42,13 @@ public interface IUpdateProxy {
     Context getContext();
 
     /**
+     * 获取版本更新的地址
+     *
+     * @return 版本更新的地址
+     */
+    String getUrl();
+
+    /**
      * 获取版本更新网络请求服务API
      *
      * @return 网络请求服务API

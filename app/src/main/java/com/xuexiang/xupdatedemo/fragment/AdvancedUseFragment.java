@@ -31,6 +31,7 @@ import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateChecker;
 import com.xuexiang.xupdate.proxy.impl.DefaultUpdateParser;
 import com.xuexiang.xupdate.service.OnFileDownloadListener;
+import com.xuexiang.xupdatedemo.Constants;
 import com.xuexiang.xupdatedemo.R;
 import com.xuexiang.xupdatedemo.custom.CustomUpdateParser;
 import com.xuexiang.xupdatedemo.custom.CustomUpdatePrompter;
@@ -55,10 +56,6 @@ import static android.app.Activity.RESULT_OK;
  */
 @Page(name = "进阶使用")
 public class AdvancedUseFragment extends XPageSimpleListFragment {
-
-    private String mUpdateUrl3 = "https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_custom.json";
-
-    private String mDownloadUrl = "https://xuexiangjys.oss-cn-shanghai.aliyuncs.com/apk/xupdate_demo_1.0.2.apk";
 
     private final static int REQUEST_CODE_SELECT_APK_FILE = 1000;
 
@@ -88,13 +85,13 @@ public class AdvancedUseFragment extends XPageSimpleListFragment {
                 break;
             case 1:
                 XUpdate.newBuild(getActivity())
-                        .updateUrl(mUpdateUrl3)
+                        .updateUrl(Constants.CUSTOM_UPDATE_URL)
                         .updateParser(new CustomUpdateParser())
                         .update();
                 break;
             case 2:
                 XUpdate.newBuild(getActivity())
-                        .updateUrl(mUpdateUrl3)
+                        .updateUrl(Constants.CUSTOM_UPDATE_URL)
                         .updateChecker(new DefaultUpdateChecker() {
                             @Override
                             public void onBeforeCheck() {
@@ -153,7 +150,7 @@ public class AdvancedUseFragment extends XPageSimpleListFragment {
                 // 注意在Android10及以上存在存储权限问题，不建议设置在外部存储下载目录
                 .apkCacheDir(PathUtils.getAppExtCachePath())
                 .build()
-                .download(mDownloadUrl, new OnFileDownloadListener() {
+                .download(Constants.XUPDATE_DEMO_DOWNLOAD_URL, new OnFileDownloadListener() {
                     @Override
                     public void onStart() {
                         HProgressDialogUtils.showHorizontalProgressDialog(getContext(), "下载进度", false);

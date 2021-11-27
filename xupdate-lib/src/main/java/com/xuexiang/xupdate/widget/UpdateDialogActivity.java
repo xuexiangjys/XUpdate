@@ -122,7 +122,7 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.xupdate_layout_update_prompter);
-        _XUpdate.setIsShowUpdatePrompter(true);
+        _XUpdate.setIsPrompterShow(getUrl(), true);
         initView();
         initData();
     }
@@ -449,14 +449,14 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onStop() {
         if (isFinishing()) {
-            _XUpdate.setIsShowUpdatePrompter(false);
+            _XUpdate.setIsPrompterShow(getUrl(), false);
             clearIPrompterProxy();
         }
         super.onStop();
     }
 
-    private static void setsIPrompterProxy(IPrompterProxy sIPrompterProxy) {
-        UpdateDialogActivity.sIPrompterProxy = sIPrompterProxy;
+    private static void setsIPrompterProxy(IPrompterProxy prompterProxy) {
+        UpdateDialogActivity.sIPrompterProxy = prompterProxy;
     }
 
     private static void clearIPrompterProxy() {
@@ -464,6 +464,10 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
             sIPrompterProxy.recycle();
             sIPrompterProxy = null;
         }
+    }
+
+    private String getUrl() {
+        return sIPrompterProxy != null ? sIPrompterProxy.getUrl() : "";
     }
 
 }
