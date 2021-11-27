@@ -514,6 +514,13 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         show(manager, "update_dialog");
     }
 
+    @Override
+    public void onDestroyView() {
+        _XUpdate.setIsPrompterShow(getUrl(), false);
+        clearIPrompterProxy();
+        super.onDestroyView();
+    }
+
     private static void setsIPrompterProxy(IPrompterProxy sIPrompterProxy) {
         UpdateDialogFragment.sIPrompterProxy = sIPrompterProxy;
     }

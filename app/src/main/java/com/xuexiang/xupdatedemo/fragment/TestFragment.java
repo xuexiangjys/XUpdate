@@ -24,6 +24,7 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.base.XPageSimpleListFragment;
 import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdatedemo.Constants;
+import com.xuexiang.xupdatedemo.utils.StatusBarUtils;
 
 import java.util.List;
 
@@ -36,10 +37,18 @@ public class TestFragment extends XPageSimpleListFragment {
 
     private Handler mMainHandler = new Handler(Looper.getMainLooper());
 
+    private boolean mIsFullScreen;
+
+    @Override
+    protected void initArgs() {
+        mIsFullScreen = StatusBarUtils.isFullScreen(getActivity());
+    }
+
     @Override
     protected List<String> initSimpleData(List<String> lists) {
         lists.add("多次执行版本更新检查");
         lists.add("定期执行版本更新检查");
+        lists.add("全屏/非全屏显示");
         return lists;
     }
 
@@ -55,6 +64,14 @@ public class TestFragment extends XPageSimpleListFragment {
                 for (int i = 0; i < 5; i++) {
                     mMainHandler.postDelayed(this::checkUpdate, i * 5000);
                 }
+                break;
+            case 2:
+                if (mIsFullScreen) {
+                    StatusBarUtils.cancelFullScreen(getActivity());
+                } else {
+                    StatusBarUtils.fullScreen(getActivity());
+                }
+                mIsFullScreen = !mIsFullScreen;
                 break;
             default:
                 break;

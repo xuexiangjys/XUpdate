@@ -165,6 +165,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
 
         setCancelable(false);
         setCanceledOnTouchOutside(false);
+        setIsSyncSystemUiVisibility(true);
     }
 
     //====================生命周期============================//
