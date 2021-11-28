@@ -16,6 +16,7 @@
 
 package com.xuexiang.xupdate.proxy.impl;
 
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -24,8 +25,10 @@ import androidx.fragment.app.FragmentActivity;
 import com.xuexiang.xupdate.entity.PromptEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.logs.UpdateLog;
+import com.xuexiang.xupdate.proxy.IPrompterProxy;
 import com.xuexiang.xupdate.proxy.IUpdatePrompter;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
+import com.xuexiang.xupdate.widget.UpdateDialog;
 import com.xuexiang.xupdate.widget.UpdateDialogActivity;
 import com.xuexiang.xupdate.widget.UpdateDialogFragment;
 
@@ -54,9 +57,11 @@ public class DefaultUpdatePrompter implements IUpdatePrompter {
         beforeShowPrompt(updateEntity, promptEntity);
         UpdateLog.d("[DefaultUpdatePrompter] showPrompt, " + promptEntity);
         if (context instanceof FragmentActivity) {
-            UpdateDialogFragment.show(((FragmentActivity) context).getSupportFragmentManager(), updateEntity, new DefaultPrompterProxyImpl(updateProxy), promptEntity);
+            UpdateDialogFragment.show(((FragmentActivity) context).getSupportFragmentManager(), updateEntity, getPrompterProxy(updateProxy), promptEntity);
+        } else if (context instanceof Activity) {
+            UpdateDialog.newInstance(context, updateEntity, getPrompterProxy(updateProxy), promptEntity).show();
         } else {
-            UpdateDialogActivity.show(context, updateEntity, new DefaultPrompterProxyImpl(updateProxy), promptEntity);
+            UpdateDialogActivity.show(context, updateEntity, getPrompterProxy(updateProxy), promptEntity);
         }
     }
 
@@ -72,4 +77,15 @@ public class DefaultUpdatePrompter implements IUpdatePrompter {
             promptEntity.setIgnoreDownloadError(true);
         }
     }
+
+    /**
+     * 构建版本更新提示器代理【可自定义属于自己的业务逻辑】
+     *
+     * @param updateProxy 版本更新代理
+     * @return 版本更新提示器代理
+     */
+    protected IPrompterProxy getPrompterProxy(@NonNull IUpdateProxy updateProxy) {
+        return new DefaultPrompterProxyImpl(updateProxy);
+    }
+
 }

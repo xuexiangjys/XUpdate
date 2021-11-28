@@ -18,20 +18,19 @@ package com.xuexiang.xupdatedemo.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+
 import com.xuexiang.xupdate.XUpdate;
+import com.xuexiang.xupdatedemo.Constants;
 import com.xuexiang.xupdatedemo.R;
 
 /**
  * @author xuexiang
  * @since 2018/7/24 上午10:38
  */
-public class UpdateActivity extends Activity implements View.OnClickListener{
-
-    private String mUpdateUrl = "https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_test.json";
-    private String mUpdateUrl2 = "https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_forced.json";
+public class UpdateActivity extends Activity implements View.OnClickListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,29 +40,29 @@ public class UpdateActivity extends Activity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
+        switch (v.getId()) {
             case R.id.btn_update:
                 XUpdate.newBuild(this)
-                        .updateUrl(mUpdateUrl)
+                        .updateUrl(Constants.DEFAULT_UPDATE_URL)
                         .update();
                 break;
             case R.id.btn_support_background_update:
                 XUpdate.newBuild(this)
-                        .updateUrl(mUpdateUrl)
+                        .updateUrl(Constants.DEFAULT_UPDATE_URL)
                         .promptWidthRatio(0.7F)
                         .supportBackgroundUpdate(true)
                         .update();
                 break;
             case R.id.btn_auto_update:
                 XUpdate.newBuild(this)
-                        .updateUrl(mUpdateUrl)
+                        .updateUrl(Constants.DEFAULT_UPDATE_URL)
                         //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
                         .isAutoMode(true)
                         .update();
                 break;
             case R.id.btn_force_update:
                 XUpdate.newBuild(this)
-                        .updateUrl(mUpdateUrl2)
+                        .updateUrl(Constants.FORCED_UPDATE_URL)
                         .update();
                 break;
             default:

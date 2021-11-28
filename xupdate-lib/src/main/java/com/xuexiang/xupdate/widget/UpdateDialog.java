@@ -419,4 +419,17 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
         _XUpdate.startInstallApk(getContext(), UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity), mUpdateEntity.getDownLoadEntity());
     }
 
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        _XUpdate.setIsPrompterShow(getUrl(), true);
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        _XUpdate.setIsPrompterShow(getUrl(), false);
+        clearIPrompterProxy();
+        super.onDetachedFromWindow();
+    }
+
 }
