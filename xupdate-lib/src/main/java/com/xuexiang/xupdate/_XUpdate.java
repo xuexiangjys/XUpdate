@@ -17,9 +17,11 @@
 package com.xuexiang.xupdate;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.LruCache;
 
 import androidx.annotation.NonNull;
 
@@ -40,6 +42,7 @@ import com.xuexiang.xupdate.utils.ApkInstallUtils;
 
 import java.io.File;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.INSTALL_FAILED;
@@ -64,6 +67,11 @@ public final class _XUpdate {
      * Runnable等待队列
      */
     private static Map<String, Runnable> sWaitRunnableMap = new ConcurrentHashMap<>();
+
+    /**
+     * 存储顶部图片资源
+     */
+    private static LruCache<String, Drawable> sTopDrawableCache = new LruCache<>(4);
 
     private static Handler sMainHandler = new Handler(Looper.getMainLooper());
 
@@ -135,6 +143,31 @@ public final class _XUpdate {
     public static boolean isPrompterShow(String url) {
         Boolean isShow = sPrompterMap.get(url);
         return isShow != null && isShow;
+    }
+
+    /**
+     * 保存顶部背景图片
+     *
+     * @param drawable 图片
+     * @return 图片标识
+     */
+    public static String saveTopDrawable(Drawable drawable) {
+        String tag = UUID.randomUUID().toString();
+        sTopDrawableCache.put(tag, drawable);
+        return tag;
+    }
+
+    /**
+     * 获取顶部背景图片
+     *
+     * @param drawableTag 图片标识
+     * @return 顶部背景图片
+     */
+    public static Drawable getTopDrawable(String drawableTag) {
+        if (TextUtils.isEmpty(drawableTag)) {
+            return null;
+        }
+        return sTopDrawableCache.get(drawableTag);
     }
 
     //===========================属性设置===================================//

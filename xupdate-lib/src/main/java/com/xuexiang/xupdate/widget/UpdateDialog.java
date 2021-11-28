@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
@@ -249,7 +250,12 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
      * @param heightRatio     高和屏幕的比例
      */
     private void setDialogTheme(int themeColor, int topResId, int buttonTextColor, float widthRatio, float heightRatio) {
-        mIvTop.setImageResource(topResId);
+        Drawable topDrawable = _XUpdate.getTopDrawable(mPromptEntity.getTopDrawableTag());
+        if (topDrawable != null) {
+            mIvTop.setImageDrawable(topDrawable);
+        } else {
+            mIvTop.setImageResource(topResId);
+        }
         DrawableUtils.setBackgroundCompat(mBtnUpdate, DrawableUtils.getDrawable(UpdateUtils.dip2px(4, getContext()), themeColor));
         DrawableUtils.setBackgroundCompat(mBtnBackgroundUpdate, DrawableUtils.getDrawable(UpdateUtils.dip2px(4, getContext()), themeColor));
         mNumberProgressBar.setProgressTextColor(themeColor);
@@ -257,6 +263,10 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
         mBtnUpdate.setTextColor(buttonTextColor);
         mBtnBackgroundUpdate.setTextColor(buttonTextColor);
 
+        initWindow(widthRatio, heightRatio);
+    }
+
+    private void initWindow(float widthRatio, float heightRatio) {
         Window window = getWindow();
         if (window == null) {
             return;

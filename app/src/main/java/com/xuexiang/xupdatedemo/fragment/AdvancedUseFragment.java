@@ -79,7 +79,8 @@ public class AdvancedUseFragment extends XPageSimpleListFragment {
                         .updateUrl("/xuexiangjys/XUpdate/raw/master/jsonapi/update_test.json")
                         .promptThemeColor(ResUtils.getColor(R.color.update_theme_color))
                         .promptButtonTextColor(Color.WHITE)
-                        .promptTopResId(R.mipmap.bg_update_top)
+                        .promptTopDrawable(ResUtils.getDrawable(getContext(), R.mipmap.bg_update_top))
+//                        .promptTopResId(R.mipmap.bg_update_top)
                         .promptWidthRatio(0.7F)
                         .update();
                 break;

@@ -17,6 +17,9 @@
 package com.xuexiang.xupdate;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
 import androidx.annotation.ColorInt;
@@ -716,6 +719,34 @@ public class UpdateManager implements IUpdateProxy {
          */
         public Builder promptTopResId(@DrawableRes int topResId) {
             promptEntity.setTopResId(topResId);
+            return this;
+        }
+
+        /**
+         * 设置顶部背景图片
+         *
+         * @param topDrawable 顶部背景图片
+         * @return this
+         */
+        public Builder promptTopDrawable(Drawable topDrawable) {
+            if (topDrawable != null) {
+                String tag = _XUpdate.saveTopDrawable(topDrawable);
+                promptEntity.setTopDrawableTag(tag);
+            }
+            return this;
+        }
+
+        /**
+         * 设置顶部背景图片
+         *
+         * @param topBitmap 顶部背景图片
+         * @return this
+         */
+        public Builder promptTopBitmap(Bitmap topBitmap) {
+            if (topBitmap != null) {
+                String tag = _XUpdate.saveTopDrawable(new BitmapDrawable(context.getResources(), topBitmap));
+                promptEntity.setTopDrawableTag(tag);
+            }
             return this;
         }
 
