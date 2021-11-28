@@ -51,6 +51,7 @@ import com.xuexiang.xupdate.entity.PromptEntity;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.proxy.IPrompterProxy;
 import com.xuexiang.xupdate.utils.ColorUtils;
+import com.xuexiang.xupdate.utils.DialogUtils;
 import com.xuexiang.xupdate.utils.DrawableUtils;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 
@@ -140,7 +141,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         args.putParcelable(KEY_UPDATE_ENTITY, updateEntity);
         args.putParcelable(KEY_UPDATE_PROMPT_ENTITY, promptEntity);
         fragment.setArguments(args);
-        setsIPrompterProxy(prompterProxy);
+        setIPrompterProxy(prompterProxy);
         fragment.show(fragmentManager);
     }
 
@@ -154,7 +155,19 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
 
     @Override
     public void onStart() {
+        Dialog dialog = getDialog();
+        if (dialog == null) {
+            return;
+        }
+        Window window = dialog.getWindow();
+        if (window == null) {
+            return;
+        }
+        window.addFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        // 在super.onStart();中调用mDialog.show
         super.onStart();
+        DialogUtils.syncSystemUiVisibility(getActivity(), window);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         initDialog();
     }
 
@@ -187,6 +200,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         }
         window.setAttributes(lp);
     }
+
 
     @Nullable
     @Override
@@ -521,8 +535,8 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
         super.onDestroyView();
     }
 
-    private static void setsIPrompterProxy(IPrompterProxy sIPrompterProxy) {
-        UpdateDialogFragment.sIPrompterProxy = sIPrompterProxy;
+    private static void setIPrompterProxy(IPrompterProxy prompterProxy) {
+        UpdateDialogFragment.sIPrompterProxy = prompterProxy;
     }
 
     private static void clearIPrompterProxy() {

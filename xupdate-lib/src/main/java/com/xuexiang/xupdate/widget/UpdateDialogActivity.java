@@ -114,7 +114,7 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
         if (!(context instanceof Activity)) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
-        setsIPrompterProxy(prompterProxy);
+        setIPrompterProxy(prompterProxy);
         context.startActivity(intent);
     }
 
@@ -455,7 +455,7 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
         super.onStop();
     }
 
-    private static void setsIPrompterProxy(IPrompterProxy prompterProxy) {
+    private static void setIPrompterProxy(IPrompterProxy prompterProxy) {
         UpdateDialogActivity.sIPrompterProxy = prompterProxy;
     }
 

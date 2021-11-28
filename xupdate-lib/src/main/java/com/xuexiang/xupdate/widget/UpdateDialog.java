@@ -274,7 +274,7 @@ public class UpdateDialog extends BaseDialog implements View.OnClickListener, ID
 
     //====================更新功能============================//
 
-    public UpdateDialog setIPrompterProxy(IPrompterProxy prompterProxy) {
+    private UpdateDialog setIPrompterProxy(IPrompterProxy prompterProxy) {
         mPrompterProxy = prompterProxy;
         return this;
     }
