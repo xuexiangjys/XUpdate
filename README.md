@@ -182,7 +182,7 @@ The following is the version description. Choose one.
 dependencies {
   ...
   // androidx project
-  implementation 'com.github.xuexiangjys:XUpdate:2.1.0'
+  implementation 'com.github.xuexiangjys:XUpdate:2.1.1'
 }
 ```
 
@@ -264,6 +264,7 @@ Field name | Type | Default value | Description
 :-|:-:|:-:|:-
 mThemeColor | int | R.color.xupdate_default_theme_color | Theme colors (background colors for progress bars and buttons)
 mTopResId | int | R.drawable.xupdate_bg_app_top | Top background image resource ID
+mTopDrawableTag | String | "" | Top background image drawable tag
 mButtonTextColor | int | 0 | Button text color
 mSupportBackgroundUpdate | boolean | false | Whether background updates are supported
 mWidthRatio | float | -1（Unconstrained） | The ratio of the width of the version update prompter to the screen
@@ -390,6 +391,8 @@ By setting the update top picture, theme color, button text color, width to heig
 * promptThemeColor: Set theme color
 * promptButtonTextColor: Set the text color of the button
 * promptTopResId: Set top background image Resource ID
+* promptTopDrawable: Set top background image drawable
+* promptTopBitmap: Set top background image bitmap
 * promptWidthRatio: Set the ratio of the width of the version update prompt to the screen. The default value is -1(No constraint is required).
 * promptHeightRatio: Set the ratio of the height of the version update prompt to the screen. The default value is -1(No constraint is required).
 

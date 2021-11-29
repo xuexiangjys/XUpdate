@@ -181,7 +181,7 @@ allprojects {
 dependencies {
   ...
   // androidx版本
-  implementation 'com.github.xuexiangjys:XUpdate:2.1.0'
+  implementation 'com.github.xuexiangjys:XUpdate:2.1.1'
 }
 ```
 
@@ -263,6 +263,7 @@ mIsShowNotification | boolean | false | 是否在通知栏上显示下载进度
 :-|:-:|:-:|:-
 mThemeColor | int | R.color.xupdate_default_theme_color | 主题色（进度条和按钮的背景色）
 mTopResId | int | R.drawable.xupdate_bg_app_top | 顶部背景图片资源id
+mTopDrawableTag | String | "" | 顶部背景图片Drawable标识
 mButtonTextColor | int | 0 | 按钮文字颜色
 mSupportBackgroundUpdate | boolean | false | 是否支持后台更新
 mWidthRatio | float | -1（无约束） | 版本更新提示器宽度占屏幕的比例
@@ -385,7 +386,9 @@ XUpdate.newBuild(getActivity())
 
 * promptThemeColor: 设置主题颜色
 * promptButtonTextColor: 设置按钮的文字颜色
-* promptTopResId: 设置顶部背景图片
+* promptTopResId: 设置顶部背景图片资源ID
+* promptTopDrawable: 设置顶部背景图片
+* promptTopBitmap: 设置顶部背景图片
 * promptWidthRatio: 设置版本更新提示器宽度占屏幕的比例，默认是-1，不做约束
 * promptHeightRatio: 设置版本更新提示器高度占屏幕的比例，默认是-1，不做约束
 
