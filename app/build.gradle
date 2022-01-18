@@ -69,17 +69,17 @@ dependencies {
     testImplementation deps.junit
     androidTestImplementation deps.runner
     androidTestImplementation deps.espresso.core
-//    implementation project(':xupdate-lib')
+    implementation project(':xupdate-lib')
 
-    implementation 'com.github.xuexiangjys:XUpdate:2.1.1'
+//    implementation 'com.github.xuexiangjys:XUpdate:2.1.1'
 
     implementation 'com.github.xuexiangjys.XUtil:xutil-core:2.0.0'
     implementation 'com.github.xuexiangjys.XUtil:xutil-sub:2.0.0'
     implementation 'com.github.xuexiangjys.XAOP:xaop-runtime:1.1.0'  //添加依赖
 
     //XPage
-    implementation 'com.github.xuexiangjys.XPage:xpage-lib:3.1.1'
-    annotationProcessor 'com.github.xuexiangjys.XPage:xpage-compiler:3.1.1'
+    implementation 'com.github.xuexiangjys.XPage:xpage-lib:3.2.0'
+    annotationProcessor 'com.github.xuexiangjys.XPage:xpage-compiler:3.2.0'
     //butterknife的sdk
     implementation deps.butterknife.runtime
     annotationProcessor deps.butterknife.compiler

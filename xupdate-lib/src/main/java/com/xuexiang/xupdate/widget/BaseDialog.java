@@ -16,6 +16,7 @@
 
 package com.xuexiang.xupdate.widget;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
@@ -24,7 +25,6 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.IdRes;
-import androidx.appcompat.app.AppCompatDialog;
 import androidx.core.content.ContextCompat;
 
 import com.xuexiang.xupdate.R;
@@ -37,7 +37,7 @@ import com.xuexiang.xupdate.utils.DialogUtils;
  * @author xuexiang
  * @since 2018/7/24 上午9:34
  */
-public abstract class BaseDialog extends AppCompatDialog {
+public abstract class BaseDialog extends Dialog {
 
     private View mContentView;
 
