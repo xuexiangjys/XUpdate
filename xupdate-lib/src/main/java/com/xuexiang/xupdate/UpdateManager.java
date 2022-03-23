@@ -200,6 +200,10 @@ public class UpdateManager implements IUpdateProxy {
     private void doUpdate() {
         onBeforeCheck();
 
+        doCheck();
+    }
+
+    private void doCheck() {
         if (mIsWifiOnly) {
             if (UpdateUtils.checkWifi()) {
                 checkVersion();
@@ -266,12 +270,6 @@ public class UpdateManager implements IUpdateProxy {
         }
     }
 
-    /**
-     * 将请求的json结果解析为版本更新信息实体
-     *
-     * @param json
-     * @return
-     */
     @Override
     public UpdateEntity parseJson(@NonNull String json) throws Exception {
         UpdateLog.i("服务端返回的最新版本信息:" + json);

@@ -106,6 +106,7 @@ public interface IUpdateProxy {
      *
      * @param json 请求的json数据
      * @return 版本更新信息实体
+     * @throws Exception 解析出错
      */
     UpdateEntity parseJson(@NonNull String json) throws Exception;
 
@@ -114,6 +115,7 @@ public interface IUpdateProxy {
      *
      * @param json     请求的json数据
      * @param callback 解析回调
+     * @throws Exception 解析出错
      */
     void parseJson(@NonNull String json, final IUpdateParseCallback callback) throws Exception;
 

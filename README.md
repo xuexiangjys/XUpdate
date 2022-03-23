@@ -172,7 +172,7 @@ allprojects {
 }
 ```
 
-2.Then, in the dependencies of the project:
+2. Then add in the dependencies of `build.gradle` of the application project (usually app):
 
 The following is the version description. Choose one.
 

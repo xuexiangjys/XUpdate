@@ -51,7 +51,7 @@ public interface IUpdateChecker {
     /**
      * 处理版本检查的结果
      *
-     * @param result
+     * @param result      检查返回的内容
      * @param updateProxy 版本更新代理
      */
     void processCheckResult(@NonNull String result, @NonNull IUpdateProxy updateProxy);

@@ -161,7 +161,7 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
 
 ### 2.1、Android Studio导入方法，添加Gradle依赖
 
-1.先在项目根目录的 build.gradle 的 repositories 添加:
+1.先在项目根目录的 `build.gradle` 的 repositories 添加:
 ```
 allprojects {
      repositories {
@@ -171,7 +171,7 @@ allprojects {
 }
 ```
 
-2.然后在dependencies添加:
+2.然后在应用项目(一般是app)的 `build.gradle` 的 dependencies 添加:
 
 以下是版本说明，选择一个即可。
 
