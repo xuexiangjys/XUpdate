@@ -18,7 +18,6 @@ package com.xuexiang.xupdate.widget;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -27,7 +26,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -178,13 +176,7 @@ public class UpdateDialogFragment extends DialogFragment implements View.OnClick
             return;
         }
         dialog.setCanceledOnTouchOutside(false);
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                // 如果是强制更新的话，就禁用返回键
-                return keyCode == KeyEvent.KEYCODE_BACK && mUpdateEntity != null && mUpdateEntity.isForce();
-            }
-        });
+        setCancelable(false);
         Window window = dialog.getWindow();
         if (window == null) {
             return;

@@ -282,8 +282,8 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // 如果是强制更新的话，就禁用返回键
-        return keyCode == KeyEvent.KEYCODE_BACK && mUpdateEntity != null && mUpdateEntity.isForce();
+        // 禁用返回键
+        return keyCode == KeyEvent.KEYCODE_BACK;
     }
 
     @Override
