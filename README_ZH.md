@@ -111,27 +111,27 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
 
 * 默认版本更新
 
-![xupdate_default.png](https://ss.im5i.com/2021/06/14/6TPSz.png)
+![xupdate_default.png](./img/xupdate_default.png)
 
 * 后台更新
 
-![xupdate_background.png](https://ss.im5i.com/2021/06/14/6TgXW.png)
+![xupdate_background.png](./img/xupdate_background.png)
 
 * 强制版本更新
 
-![xupdate_force.png](https://ss.im5i.com/2021/06/14/6Tlw8.png)
+![xupdate_force.png](./img/xupdate_force.png)
 
 * 可忽略版本更新
 
-![xupdate_ignore.png](https://ss.im5i.com/2021/06/14/6TVu5.png)
+![xupdate_ignore.png](./img/xupdate_ignore.png)
 
 * 自定义提示弹窗主题
 
-![xupdate_custom.png](https://ss.im5i.com/2021/06/14/6TGDG.png)
+![xupdate_custom.png](./img/xupdate_custom.png)
 
 * 使用系统弹窗提示
 
-![xupdate_system.png](https://ss.im5i.com/2021/06/14/6Td86.png)
+![xupdate_system.png](./img/xupdate_system.png)
 
 ### Demo更新后台服务
 
@@ -145,13 +145,13 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（请求服务器，�
 
 [![downloads](https://img.shields.io/badge/downloads-2.1M-blue.svg)](https://www.pgyer.com/xupdate)
 
-[![xupdate_download_pugongying.png](https://ss.im5i.com/2021/06/14/6jaJj.png)](https://www.pgyer.com/xupdate)
+[![xupdate_download_pugongying.png](./img/download_pugongying.png)](https://www.pgyer.com/xupdate)
 
 #### Github下载
 
 [![downloads](https://img.shields.io/badge/downloads-2.1M-blue.svg)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
 
-[![xupdate_download.png](https://ss.im5i.com/2021/06/14/6jDhD.png)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
+[![xupdate_download.png](./img/download.png)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
 
 ---
 
@@ -597,7 +597,7 @@ https://github.com/WVector/AppUpdate
 
 > 你的打赏是我维护的动力，我将会列出所有打赏人员的清单在下方作为凭证，打赏前请留下打赏项目的备注！
 
-![pay.png](https://ss.im5i.com/2021/06/14/6twG6.png)
+![pay.png](https://s1.ax1x.com/2022/04/27/LbGQWd.png)
 
 感谢下面小伙伴的打赏：
 
@@ -613,11 +613,11 @@ Joe | 88.88￥ | 微信
 
 > 更多资讯内容，欢迎扫描关注我的个人微信公众号:【我的Android开源之旅】
 
-![](https://ss.im5i.com/2021/06/14/65yoL.jpg)
+![](https://s1.ax1x.com/2022/04/27/LbGMJH.jpg)
 
 ## 联系方式
 
 [![](https://img.shields.io/badge/点击一键加入QQ交流群-720212425-blue.svg)](http://shang.qq.com/wpa/qunwpa?idkey=37ea606864cafa3c8a5d6b07f04fd672936a50fd6e535c13702baf705d57e6e8)
 
-![xupdate_qq.jpg](https://ss.im5i.com/2021/06/14/6TQuQ.jpg)
+![xupdate_qq.jpg](https://s1.ax1x.com/2022/04/27/LbJoCQ.jpg)
 

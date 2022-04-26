@@ -111,27 +111,27 @@ IUpdateProxy/XUpdate --- (update) ---> IUpdateChecker --->（Request the server 
 
 * Default version update
 
-![xupdate_default.png](https://ss.im5i.com/2021/06/14/6TPSz.png)
+![xupdate_default.png](./img/xupdate_default.png)
 
 * Background update
 
-![xupdate_background.png](https://ss.im5i.com/2021/06/14/6TgXW.png)
+![xupdate_background.png](./img/xupdate_background.png)
 
 * Force version update
 
-![xupdate_force.png](https://ss.im5i.com/2021/06/14/6Tlw8.png)
+![xupdate_force.png](./img/xupdate_force.png)
 
 * Ignored version update
 
-![xupdate_ignore.png](https://ss.im5i.com/2021/06/14/6TVu5.png)
+![xupdate_ignore.png](./img/xupdate_ignore.png)
 
 * Custom pop up theme
 
-![xupdate_custom.png](https://ss.im5i.com/2021/06/14/6TGDG.png)
+![xupdate_custom.png](./img/xupdate_custom.png)
 
 * Use the system pop-up prompt
 
-![xupdate_system.png](https://ss.im5i.com/2021/06/14/6Td86.png)
+![xupdate_system.png](./img/xupdate_system.png)
 
 ### Demo update background service
 
@@ -145,13 +145,13 @@ Because GitHub is slow to visit recently, if you need to experience xupdate bett
 
 [![downloads](https://img.shields.io/badge/downloads-2.1M-blue.svg)](https://www.pgyer.com/xupdate)
 
-[![xupdate_download_pugongying.png](https://ss.im5i.com/2021/06/14/6jaJj.png)](https://www.pgyer.com/xupdate)
+[![xupdate_download_pugongying.png](./img/download_pugongying.png)](https://www.pgyer.com/xupdate)
 
 #### GitHub Download
 
 [![downloads](https://img.shields.io/badge/downloads-2.1M-blue.svg)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
 
-[![xupdate_download.png](https://ss.im5i.com/2021/06/14/6jDhD.png)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
+[![xupdate_download.png](./img/download.png)](https://github.com/xuexiangjys/XUpdate/blob/master/apk/xupdate_demo_1.0.apk?raw=true)
 
 ---
 
