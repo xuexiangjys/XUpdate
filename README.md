@@ -623,5 +623,5 @@ Joe | 88.88￥ | WeChat
 
 [![](https://img.shields.io/badge/QQGroup-720212425-blue.svg)](http://shang.qq.com/wpa/qunwpa?idkey=37ea606864cafa3c8a5d6b07f04fd672936a50fd6e535c13702baf705d57e6e8)
 
-![xupdate_qq.jpg](https://s1.ax1x.com/2022/04/27/LbJoCQ.jpg)
+![xupdate_qq.jpg](https://s1.ax1x.com/2022/04/27/LbY1qP.jpg)
 
