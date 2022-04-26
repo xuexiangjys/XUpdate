@@ -21,7 +21,7 @@ Please read the [instruction document](https://github.com/xuexiangjys/XUpdate/wi
 
 | WeChat public number   | juejin     |  zhihu    |  CSDN   |   jianshu   |   segmentfault  |   bilibili  |   toutiao
 |---------|---------|--------- |---------|---------|---------|---------|---------|
-| [我的Android开源之旅](https://ss.im5i.com/2021/06/14/6tqAU.png)  |  [Click me](https://juejin.im/user/598feef55188257d592e56ed/posts)    |   [Click me](https://www.zhihu.com/people/xuexiangjys/posts)       |   [Click me](https://xuexiangjys.blog.csdn.net/)  |   [Click me](https://www.jianshu.com/u/6bf605575337)  |   [Click me](https://segmentfault.com/u/xuexiangjys)  |   [Click me](https://space.bilibili.com/483850585)  |   [Click me](https://img.rruu.net/image/5ff34ff7b02dd)
+| [我的Android开源之旅](https://s1.ax1x.com/2022/04/27/LbG8yt.png)  |  [Click me](https://juejin.im/user/598feef55188257d592e56ed/posts)    |   [Click me](https://www.zhihu.com/people/xuexiangjys/posts)       |   [Click me](https://xuexiangjys.blog.csdn.net/)  |   [Click me](https://www.jianshu.com/u/6bf605575337)  |   [Click me](https://segmentfault.com/u/xuexiangjys)  |   [Click me](https://space.bilibili.com/483850585)  |   [Click me](https://img.rruu.net/image/5ff34ff7b02dd)
 
 ## Simplify use
 
@@ -601,7 +601,7 @@ https://github.com/WVector/AppUpdate
 
 > Your support is the driving force of my maintenance. I will list the list of all the reward personnel at the bottom as the voucher. Please leave the notes of the support items before rewarding!
 
-![pay.png](https://ss.im5i.com/2021/06/14/6twG6.png)
+![pay.png](https://s1.ax1x.com/2022/04/27/LbGQWd.png)
 
 Thank you for your sponsorship：
 
@@ -617,11 +617,11 @@ Joe | 88.88￥ | WeChat
 
 > More information, please scan my personal WeChat Subscription:【我的Android开源之旅】
 
-![](https://ss.im5i.com/2021/06/14/65yoL.jpg)
+![](https://s1.ax1x.com/2022/04/27/LbGMJH.jpg)
 
 ## Contact
 
 [![](https://img.shields.io/badge/QQGroup-720212425-blue.svg)](http://shang.qq.com/wpa/qunwpa?idkey=37ea606864cafa3c8a5d6b07f04fd672936a50fd6e535c13702baf705d57e6e8)
 
-![xupdate_qq.jpg](https://ss.im5i.com/2021/06/14/6TQuQ.jpg)
+![xupdate_qq.jpg](https://s1.ax1x.com/2022/04/27/LbJoCQ.jpg)
 
