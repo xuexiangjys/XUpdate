@@ -597,7 +597,7 @@ https://github.com/WVector/AppUpdate
 
 > 你的打赏是我维护的动力，我将会列出所有打赏人员的清单在下方作为凭证，打赏前请留下打赏项目的备注！
 
-![pay.png](https://s1.ax1x.com/2022/04/27/LbGQWd.png)
+![pay.png](https://raw.githubusercontent.com/xuexiangjys/Resource/master/img/pay/pay.png)
 
 感谢下面小伙伴的打赏：
 
@@ -618,6 +618,3 @@ Joe | 88.88￥ | 微信
 ## 联系方式
 
 [![](https://img.shields.io/badge/点击一键加入QQ交流群-720212425-blue.svg)](http://shang.qq.com/wpa/qunwpa?idkey=37ea606864cafa3c8a5d6b07f04fd672936a50fd6e535c13702baf705d57e6e8)
-
-![xupdate_qq.jpg](https://s1.ax1x.com/2022/04/27/LbY1qP.jpg)
-

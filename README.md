@@ -601,7 +601,7 @@ https://github.com/WVector/AppUpdate
 
 > Your support is the driving force of my maintenance. I will list the list of all the reward personnel at the bottom as the voucher. Please leave the notes of the support items before rewarding!
 
-![pay.png](https://s1.ax1x.com/2022/04/27/LbGQWd.png)
+![pay.png](https://raw.githubusercontent.com/xuexiangjys/Resource/master/img/pay/pay.png)
 
 Thank you for your sponsorship：
 
@@ -622,6 +622,4 @@ Joe | 88.88￥ | WeChat
 ## Contact
 
 [![](https://img.shields.io/badge/QQGroup-720212425-blue.svg)](http://shang.qq.com/wpa/qunwpa?idkey=37ea606864cafa3c8a5d6b07f04fd672936a50fd6e535c13702baf705d57e6e8)
-
-![xupdate_qq.jpg](https://s1.ax1x.com/2022/04/27/LbY1qP.jpg)
 
