@@ -37,6 +37,7 @@ public class BasicUseFragment extends XPageSimpleListFragment {
         lists.add("默认App更新 + 支持后台更新");
         lists.add("版本更新(自动模式)");
         lists.add("强制版本更新");
+        lists.add("可忽略版本更新");
         return lists;
     }
 
@@ -64,6 +65,11 @@ public class BasicUseFragment extends XPageSimpleListFragment {
             case 3:
                 XUpdate.newBuild(getActivity())
                         .updateUrl(Constants.FORCED_UPDATE_URL)
+                        .update();
+                break;
+            case 4:
+                XUpdate.newBuild(getActivity())
+                        .updateUrl(Constants.IGNORE_UPDATE_URL)
                         .update();
                 break;
             default:

@@ -82,7 +82,7 @@ public final class UpdateUtils {
         if (updateEntity != null) {
             if (updateEntity.isHasUpdate()) {
                 //校验是否是已忽略版本
-                if (UpdateUtils.isIgnoreVersion(updateProxy.getContext(), updateEntity.getVersionName())) {
+                if (updateEntity.isIgnorable() && UpdateUtils.isIgnoreVersion(updateProxy.getContext(), updateEntity.getVersionName())) {
                     _XUpdate.onUpdateError(CHECK_IGNORED_VERSION);
                     //校验apk下载缓存目录是否为空
                 } else if (TextUtils.isEmpty(updateEntity.getApkCacheDir())) {
@@ -242,8 +242,8 @@ public final class UpdateUtils {
     /**
      * 保存忽略的版本信息
      *
-     * @param context
-     * @param newVersion
+     * @param context 上下文
+     * @param newVersion 新版本
      */
     public static void saveIgnoreVersion(Context context, String newVersion) {
         getSP(context).edit().putString(IGNORE_VERSION, newVersion).apply();
@@ -252,9 +252,9 @@ public final class UpdateUtils {
     /**
      * 是否是忽略版本
      *
-     * @param context
-     * @param newVersion
-     * @return
+     * @param context 上下文
+     * @param newVersion 新版本
+     * @return 是否是忽略版本
      */
     public static boolean isIgnoreVersion(Context context, String newVersion) {
         return getSP(context).getString(IGNORE_VERSION, "").equals(newVersion);
