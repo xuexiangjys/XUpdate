@@ -181,7 +181,7 @@ allprojects {
 dependencies {
   ...
   // androidx版本
-  implementation 'com.github.xuexiangjys:XUpdate:2.1.1'
+  implementation 'com.github.xuexiangjys:XUpdate:2.1.2'
 }
 ```
 

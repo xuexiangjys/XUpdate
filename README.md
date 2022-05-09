@@ -182,7 +182,7 @@ The following is the version description. Choose one.
 dependencies {
   ...
   // androidx project
-  implementation 'com.github.xuexiangjys:XUpdate:2.1.1'
+  implementation 'com.github.xuexiangjys:XUpdate:2.1.2'
 }
 ```
 
