@@ -58,22 +58,22 @@ public final class _XUpdate {
     /**
      * 存储正在进行检查版本的状态，key为url，value为是否正在检查
      */
-    private static Map<String, Boolean> sCheckMap = new ConcurrentHashMap<>();
+    private static final Map<String, Boolean> sCheckMap = new ConcurrentHashMap<>();
     /**
      * 存储是否正在显示版本更新，key为url，value为是否正在显示版本更新
      */
-    private static Map<String, Boolean> sPrompterMap = new ConcurrentHashMap<>();
+    private static final Map<String, Boolean> sPrompterMap = new ConcurrentHashMap<>();
     /**
      * Runnable等待队列
      */
-    private static Map<String, Runnable> sWaitRunnableMap = new ConcurrentHashMap<>();
+    private static final Map<String, Runnable> sWaitRunnableMap = new ConcurrentHashMap<>();
 
     /**
      * 存储顶部图片资源
      */
-    private static LruCache<String, Drawable> sTopDrawableCache = new LruCache<>(4);
+    private static final LruCache<String, Drawable> sTopDrawableCache = new LruCache<>(4);
 
-    private static Handler sMainHandler = new Handler(Looper.getMainLooper());
+    private static final Handler sMainHandler = new Handler(Looper.getMainLooper());
 
     /**
      * 10秒的检查延迟

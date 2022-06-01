@@ -284,13 +284,13 @@ public class DownloadService extends Service {
         /**
          * 是否下载完成后自动安装
          */
-        private boolean mIsAutoInstall;
+        private final boolean mIsAutoInstall;
 
         private int mOldRate = 0;
 
         private boolean mIsCancel;
 
-        private Handler mMainHandler;
+        private final Handler mMainHandler;
 
         FileDownloadCallBack(@NonNull UpdateEntity updateEntity, @Nullable OnFileDownloadListener listener) {
             mDownloadEntity = updateEntity.getDownLoadEntity();
