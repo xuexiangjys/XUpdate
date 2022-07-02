@@ -225,7 +225,11 @@ public class DownloadService extends Service {
                 mFileDownloadCallBack.onCancel();
                 mFileDownloadCallBack = null;
             }
-            mUpdateEntity.getIUpdateHttpService().cancelDownload(mUpdateEntity.getDownloadUrl());
+            if (mUpdateEntity.getIUpdateHttpService() != null) {
+                mUpdateEntity.getIUpdateHttpService().cancelDownload(mUpdateEntity.getDownloadUrl());
+            } else {
+                UpdateLog.e("cancelDownload failed, mUpdateEntity.getIUpdateHttpService() is null!");
+            }
             DownloadService.this.stop(msg);
         }
 
@@ -266,9 +270,12 @@ public class DownloadService extends Service {
         String target = apkCacheDir + File.separator + updateEntity.getVersionName();
 
         UpdateLog.d("开始下载更新文件, 下载地址:" + apkUrl + ", 保存路径:" + target + ", 文件名:" + apkName);
-        updateEntity.getIUpdateHttpService().download(apkUrl, target, apkName, fileDownloadCallBack);
+        if (updateEntity.getIUpdateHttpService() != null) {
+            updateEntity.getIUpdateHttpService().download(apkUrl, target, apkName, fileDownloadCallBack);
+        } else {
+            UpdateLog.e("startDownload failed, updateEntity.getIUpdateHttpService() is null!");
+        }
     }
-
 
     /**
      * 文件下载处理

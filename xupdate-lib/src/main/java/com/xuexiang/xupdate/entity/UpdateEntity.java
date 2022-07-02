@@ -20,6 +20,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import android.text.TextUtils;
 
@@ -274,11 +275,12 @@ public class UpdateEntity implements Parcelable {
 
     private IUpdateHttpService mIUpdateHttpService;
 
-    public UpdateEntity setIUpdateHttpService(IUpdateHttpService updateHttpService) {
+    public UpdateEntity setIUpdateHttpService(@NonNull IUpdateHttpService updateHttpService) {
         mIUpdateHttpService = updateHttpService;
         return this;
     }
 
+    @Nullable
     public IUpdateHttpService getIUpdateHttpService() {
         return mIUpdateHttpService;
     }
