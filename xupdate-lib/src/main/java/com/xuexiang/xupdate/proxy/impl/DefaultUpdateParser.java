@@ -114,6 +114,7 @@ public class DefaultUpdateParser extends AbstractUpdateParser {
 
     /**
      * 本地校验版本更新的状态。【默认处理：当最新版本小于等于应用当前的版本时，不需要更新。】
+     * 【注意：这里只是用于本地校验，应当以云端为主，如果云端没有判断逻辑，才会移至本地】
      *
      * 【==可重写该方法进行自定义处理==】
      *
