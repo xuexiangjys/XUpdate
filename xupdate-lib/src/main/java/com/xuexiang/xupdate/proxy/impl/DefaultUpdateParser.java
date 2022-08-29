@@ -55,12 +55,9 @@ public class DefaultUpdateParser extends AbstractUpdateParser {
     private UpdateEntity parseDefaultUpperFormatJson(JSONObject jsonObject) throws JSONException {
         int code = jsonObject.getInt(APIKeyUpper.CODE);
         if (code == APIConstant.REQUEST_SUCCESS) {
-            // 本地检查最新版本
-            int updateStatus = jsonObject.getInt(APIKeyUpper.UPDATE_STATUS);
             int versionCode = jsonObject.getInt(APIKeyUpper.VERSION_CODE);
-            if (updateStatus != APIConstant.NO_NEW_VERSION) {
-                updateStatus = checkCurrentVersionCode(updateStatus, versionCode);
-            }
+            String versionName = jsonObject.optString(APIKeyUpper.VERSION_NAME);
+            int updateStatus = checkUpdateStatus(jsonObject.getInt(APIKeyUpper.UPDATE_STATUS), versionCode, versionName);
             UpdateEntity updateEntity = new UpdateEntity();
             if (updateStatus == APIConstant.NO_NEW_VERSION) {
                 updateEntity.setHasUpdate(false);
@@ -73,10 +70,10 @@ public class DefaultUpdateParser extends AbstractUpdateParser {
                 updateEntity.setHasUpdate(true)
                         .setUpdateContent(jsonObject.getString(APIKeyUpper.MODIFY_CONTENT))
                         .setVersionCode(versionCode)
-                        .setVersionName(jsonObject.getString(APIKeyUpper.VERSION_NAME))
+                        .setVersionName(versionName)
                         .setDownloadUrl(jsonObject.getString(APIKeyUpper.DOWNLOAD_URL))
-                        .setSize(jsonObject.getLong(APIKeyUpper.APK_SIZE))
-                        .setMd5(jsonObject.getString(APIKeyUpper.APK_MD5));
+                        .setSize(jsonObject.optLong(APIKeyUpper.APK_SIZE))
+                        .setMd5(jsonObject.optString(APIKeyUpper.APK_MD5));
             }
             return updateEntity;
         }
@@ -90,12 +87,9 @@ public class DefaultUpdateParser extends AbstractUpdateParser {
     private UpdateEntity parseDefaultLowerFormatJson(JSONObject jsonObject) throws JSONException {
         int code = jsonObject.getInt(APIKeyLower.CODE);
         if (code == APIConstant.REQUEST_SUCCESS) {
-            // 本地检查最新版本
-            int updateStatus = jsonObject.getInt(APIKeyLower.UPDATE_STATUS);
             int versionCode = jsonObject.getInt(APIKeyLower.VERSION_CODE);
-            if (updateStatus != APIConstant.NO_NEW_VERSION) {
-                updateStatus = checkCurrentVersionCode(updateStatus, versionCode);
-            }
+            String versionName = jsonObject.optString(APIKeyLower.VERSION_NAME);
+            int updateStatus = checkUpdateStatus(jsonObject.getInt(APIKeyLower.UPDATE_STATUS), versionCode, versionName);
             UpdateEntity updateEntity = new UpdateEntity();
             if (updateStatus == APIConstant.NO_NEW_VERSION) {
                 updateEntity.setHasUpdate(false);
@@ -108,10 +102,10 @@ public class DefaultUpdateParser extends AbstractUpdateParser {
                 updateEntity.setHasUpdate(true)
                         .setUpdateContent(jsonObject.getString(APIKeyLower.MODIFY_CONTENT))
                         .setVersionCode(versionCode)
-                        .setVersionName(jsonObject.getString(APIKeyLower.VERSION_NAME))
+                        .setVersionName(versionName)
                         .setDownloadUrl(jsonObject.getString(APIKeyLower.DOWNLOAD_URL))
-                        .setSize(jsonObject.getLong(APIKeyLower.APK_SIZE))
-                        .setMd5(jsonObject.getString(APIKeyLower.APK_MD5));
+                        .setSize(jsonObject.optLong(APIKeyLower.APK_SIZE))
+                        .setMd5(jsonObject.optString(APIKeyLower.APK_MD5));
             }
             return updateEntity;
         }
@@ -119,16 +113,23 @@ public class DefaultUpdateParser extends AbstractUpdateParser {
     }
 
     /**
-     * 本地校验版本。当最新版本小于等于应用当前的版本时，不需要更新。
+     * 本地校验版本更新的状态。【默认处理：当最新版本小于等于应用当前的版本时，不需要更新。】
      *
-     * @param updateStatus 更新状态
-     * @param versionCode  云端获取的版本号
+     * 【==可重写该方法进行自定义处理==】
+     *
+     * @param updateStatus     更新状态
+     * @param cloudVersionCode 云端获取的版本号
+     * @param cloudVersionName 云端获取的版本名称
      * @return 版本更新的状态
      */
-    protected int checkCurrentVersionCode(int updateStatus, int versionCode) {
-        int currentVersionCode = UpdateUtils.getVersionCode(XUpdate.getContext());
-        if (versionCode <= currentVersionCode) {
-            UpdateLog.i("云端获取的最新版本小于等于应用当前的版本，不需要更新！当前版本:" + currentVersionCode + ", 云端版本:" + versionCode);
+    protected int checkUpdateStatus(int updateStatus, int cloudVersionCode, String cloudVersionName) {
+        if (updateStatus == APIConstant.NO_NEW_VERSION) {
+            // 优先以云端版本为主
+            return updateStatus;
+        }
+        int localVersionCode = UpdateUtils.getVersionCode(XUpdate.getContext());
+        if (cloudVersionCode <= localVersionCode) {
+            UpdateLog.i("云端获取的最新版本小于等于应用当前的版本，不需要更新！当前版本:" + localVersionCode + ", 云端版本:" + cloudVersionCode);
             updateStatus = APIConstant.NO_NEW_VERSION;
         }
         return updateStatus;
