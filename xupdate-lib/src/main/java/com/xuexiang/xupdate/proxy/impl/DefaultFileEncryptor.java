@@ -2,6 +2,7 @@ package com.xuexiang.xupdate.proxy.impl;
 
 import android.text.TextUtils;
 
+import com.xuexiang.xupdate.logs.UpdateLog;
 import com.xuexiang.xupdate.proxy.IFileEncryptor;
 import com.xuexiang.xupdate.utils.Md5Utils;
 
@@ -17,8 +18,8 @@ public class DefaultFileEncryptor implements IFileEncryptor {
     /**
      * 加密文件
      *
-     * @param file
-     * @return
+     * @param file 目标文件
+     * @return 文件的加密值
      */
     @Override
     public String encryptFile(File file) {
@@ -34,7 +35,15 @@ public class DefaultFileEncryptor implements IFileEncryptor {
      */
     @Override
     public boolean isFileValid(String encrypt, File file) {
-        return TextUtils.isEmpty(encrypt) || encrypt.equalsIgnoreCase(encryptFile(file));
+        if (TextUtils.isEmpty(encrypt)) {
+            return true;
+        }
+        String fileEncrypt = encryptFile(file);
+        boolean result = encrypt.equalsIgnoreCase(fileEncrypt);
+        if (!result) {
+            UpdateLog.d("File verification failed! Target encrypt value is: " + encrypt + ", but file encrypt value is: " + fileEncrypt);
+        }
+        return result;
     }
 
 }
