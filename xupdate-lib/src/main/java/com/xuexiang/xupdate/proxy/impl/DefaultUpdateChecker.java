@@ -52,7 +52,7 @@ public class DefaultUpdateChecker implements IUpdateChecker {
 
     @Override
     public void checkVersion(boolean isGet, @NonNull final String url, @NonNull Map<String, Object> params, final @NonNull IUpdateProxy updateProxy) {
-        if (DownloadService.isRunning() || _XUpdate.getCheckUrlStatus(url) || _XUpdate.isPrompterShow(url)) {
+        if (_XUpdate.isAppUpdating(url)) {
             updateProxy.onAfterCheck();
             _XUpdate.onUpdateError(CHECK_UPDATING);
             return;

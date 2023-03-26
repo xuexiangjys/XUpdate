@@ -18,6 +18,7 @@ package com.xuexiang.xupdate;
 
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NETWORK;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_WIFI;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_UPDATING;
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.PROMPT_ACTIVITY_DESTROY;
 
 import android.content.Context;
@@ -432,23 +433,35 @@ public class UpdateManager implements IUpdateProxy {
      *
      * @param downloadUrl      下载地址
      * @param downloadListener 下载监听
+     * @return 是否执行成功
      */
-    public void download(String downloadUrl, @Nullable OnFileDownloadListener downloadListener) {
+    public boolean download(String downloadUrl, @Nullable OnFileDownloadListener downloadListener) {
+        if (_XUpdate.isAppUpdating("")) {
+            _XUpdate.onUpdateError(CHECK_UPDATING);
+            return false;
+        }
         startDownload(refreshParams(new UpdateEntity().setDownloadUrl(downloadUrl)), downloadListener);
+        return true;
     }
 
     /**
      * 直接更新，不使用版本更新检查器
      *
      * @param updateEntity 版本更新信息
+     * @return 是否执行成功
      */
-    public void update(UpdateEntity updateEntity) {
+    public boolean update(UpdateEntity updateEntity) {
+        if (_XUpdate.isAppUpdating("")) {
+            _XUpdate.onUpdateError(CHECK_UPDATING);
+            return false;
+        }
         mUpdateEntity = refreshParams(updateEntity);
         try {
             UpdateUtils.processUpdateEntity(mUpdateEntity, "这里调用的是直接更新方法，因此没有json!", this);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return true;
     }
 
 

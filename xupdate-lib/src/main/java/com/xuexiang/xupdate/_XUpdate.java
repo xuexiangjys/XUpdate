@@ -38,6 +38,7 @@ import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateParser;
 import com.xuexiang.xupdate.proxy.IUpdatePrompter;
 import com.xuexiang.xupdate.proxy.impl.DefaultFileEncryptor;
+import com.xuexiang.xupdate.service.DownloadService;
 import com.xuexiang.xupdate.utils.ApkInstallUtils;
 
 import java.io.File;
@@ -79,6 +80,15 @@ public final class _XUpdate {
      * 10秒的检查延迟
      */
     private static final long CHECK_TIMEOUT = 10 * 1000L;
+
+    /**
+     * 获取是否正在进行更新
+     *
+     * @param url        请求地址
+     */
+    public static boolean isAppUpdating(String url) {
+        return DownloadService.isRunning() || _XUpdate.getCheckUrlStatus(url) || _XUpdate.isPrompterShow(url);
+    }
 
     /**
      * 设置版本检查的状态【防止重复检查】
