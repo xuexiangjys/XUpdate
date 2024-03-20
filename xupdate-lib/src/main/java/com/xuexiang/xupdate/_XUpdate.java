@@ -28,6 +28,7 @@ import android.util.LruCache;
 import androidx.annotation.NonNull;
 
 import com.xuexiang.xupdate.entity.DownloadEntity;
+import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.entity.UpdateError;
 import com.xuexiang.xupdate.listener.OnInstallListener;
 import com.xuexiang.xupdate.listener.OnUpdateFailureListener;
@@ -42,6 +43,7 @@ import com.xuexiang.xupdate.proxy.IUpdatePrompter;
 import com.xuexiang.xupdate.proxy.impl.DefaultFileEncryptor;
 import com.xuexiang.xupdate.service.DownloadService;
 import com.xuexiang.xupdate.utils.ApkInstallUtils;
+import com.xuexiang.xupdate.utils.UpdateUtils;
 
 import java.io.File;
 import java.util.Map;
@@ -84,7 +86,7 @@ public final class _XUpdate {
     /**
      * 获取是否正在进行更新
      *
-     * @param url        请求地址
+     * @param url 请求地址
      */
     public static boolean isAppUpdating(String url) {
         return DownloadService.isRunning() || _XUpdate.getCheckUrlStatus(url) || _XUpdate.isPrompterShow(url);
@@ -264,6 +266,16 @@ public final class _XUpdate {
      */
     public static void startInstallApk(@NonNull Context context, @NonNull File apkFile) {
         startInstallApk(context, apkFile, new DownloadEntity());
+    }
+
+    /**
+     * 开始安装apk文件
+     *
+     * @param context      传activity可以获取安装的返回值，详见{@link ApkInstallUtils#REQUEST_CODE_INSTALL_APP}
+     * @param updateEntity 版本更新信息实体
+     */
+    public static void startInstallApk(@NonNull Context context, @NonNull UpdateEntity updateEntity) {
+        startInstallApk(context, UpdateUtils.getApkFileByUpdateEntity(updateEntity), updateEntity.getDownLoadEntity());
     }
 
     /**

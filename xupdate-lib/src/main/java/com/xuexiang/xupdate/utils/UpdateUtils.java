@@ -91,6 +91,7 @@ public final class UpdateUtils {
                     updateProxy.findNewVersion(updateEntity, updateProxy);
                 }
             } else {
+                UpdateLog.i("未发现新版本, 解析后的版本更新信息如下:" + updateEntity);
                 updateProxy.noNewVersion(null);
             }
         } else {

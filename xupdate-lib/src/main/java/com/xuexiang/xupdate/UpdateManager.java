@@ -335,7 +335,7 @@ public class UpdateManager implements IUpdateProxy {
                 startDownload(updateEntity, mOnFileDownloadListener);
             } else {
                 //已经下载好的直接安装
-                _XUpdate.startInstallApk(getContext(), UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity), mUpdateEntity.getDownLoadEntity());
+                _XUpdate.startInstallApk(getContext(), mUpdateEntity);
             }
         } else {
             if (mUpdateProxy != null) {

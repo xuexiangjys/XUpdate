@@ -442,7 +442,7 @@ public class UpdateDialogActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void onInstallApk() {
-        _XUpdate.startInstallApk(this, UpdateUtils.getApkFileByUpdateEntity(mUpdateEntity), mUpdateEntity.getDownLoadEntity());
+        _XUpdate.startInstallApk(this, mUpdateEntity);
     }
 
     /**
