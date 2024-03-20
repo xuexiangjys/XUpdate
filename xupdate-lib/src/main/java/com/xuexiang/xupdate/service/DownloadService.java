@@ -16,6 +16,10 @@
 
 package com.xuexiang.xupdate.service;
 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.DOWNLOAD_FAILED;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -34,6 +38,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.xuexiang.xupdate.R;
 import com.xuexiang.xupdate.XUpdate;
@@ -47,8 +52,6 @@ import com.xuexiang.xupdate.utils.FileUtils;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 
 import java.io.File;
-
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.DOWNLOAD_FAILED;
 
 /**
  * APK下载服务
@@ -65,7 +68,7 @@ public class DownloadService extends Service {
     private static final String CHANNEL_ID = "xupdate_channel_id";
     private static final CharSequence CHANNEL_NAME = "xupdate_channel_name";
 
-    private NotificationManager mNotificationManager;
+    private NotificationManagerCompat mNotificationManager;
     private NotificationCompat.Builder mBuilder;
 
     //=====================绑定服务============================//
@@ -120,7 +123,7 @@ public class DownloadService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        mNotificationManager = (NotificationManager) getSystemService(android.content.Context.NOTIFICATION_SERVICE);
+        mNotificationManager = NotificationManagerCompat.from(this);
     }
 
     @Nullable
@@ -491,7 +494,7 @@ public class DownloadService extends Service {
         //App后台运行
         //更新参数,注意flags要使用FLAG_UPDATE_CURRENT
         Intent installAppIntent = ApkInstallUtils.getInstallAppIntent(file);
-        PendingIntent contentIntent = PendingIntent.getActivity(DownloadService.this, 0, installAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentIntent = PendingIntent.getActivity(DownloadService.this, 0, installAppIntent, FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE);
         if (mBuilder == null) {
             mBuilder = getNotificationBuilder();
         }

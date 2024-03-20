@@ -7,12 +7,16 @@
     <uses-permission
         android:name="android.permission.INSTALL_PACKAGES"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application>
-        <service android:name="com.xuexiang.xupdate.service.DownloadService" />
+        <service
+            android:name="com.xuexiang.xupdate.service.DownloadService"
+            android:exported="false" />
 
         <provider
             android:name=".utils.UpdateFileProvider"
@@ -26,6 +30,7 @@
 
         <activity
             android:name=".widget.UpdateDialogActivity"
+            android:exported="false"
             android:theme="@style/XUpdate_DialogTheme" />
 
     </application>
