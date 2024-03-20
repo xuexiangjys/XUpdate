@@ -16,6 +16,9 @@
 
 package com.xuexiang.xupdate.widget;
 
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.DOWNLOAD_PERMISSION_DENIED;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.PROMPT_UNKNOWN;
+
 import android.Manifest;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
@@ -55,9 +58,6 @@ import com.xuexiang.xupdate.utils.DrawableUtils;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 
 import java.io.File;
-
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.DOWNLOAD_PERMISSION_DENIED;
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.PROMPT_UNKNOWN;
 
 /**
  * 版本更新提示器【DialogFragment实现】

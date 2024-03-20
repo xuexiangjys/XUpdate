@@ -16,6 +16,10 @@
 
 package com.xuexiang.xupdate.utils;
 
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_APK_CACHE_DIR_EMPTY;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_IGNORED_VERSION;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_PARSE;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
@@ -47,10 +51,6 @@ import com.xuexiang.xupdate.proxy.IUpdateProxy;
 
 import java.io.File;
 import java.util.List;
-
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_APK_CACHE_DIR_EMPTY;
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_IGNORED_VERSION;
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_PARSE;
 
 /**
  * 更新工具类

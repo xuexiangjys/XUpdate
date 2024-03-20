@@ -16,6 +16,12 @@
 
 package com.xuexiang.xupdate.proxy.impl;
 
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_JSON_EMPTY;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NET_REQUEST;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_PARSE;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_UPDATING;
+
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -26,16 +32,9 @@ import com.xuexiang.xupdate.listener.IUpdateParseCallback;
 import com.xuexiang.xupdate.proxy.IUpdateChecker;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.proxy.IUpdateProxy;
-import com.xuexiang.xupdate.service.DownloadService;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 
 import java.util.Map;
-
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_JSON_EMPTY;
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NET_REQUEST;
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_PARSE;
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_UPDATING;
 
 /**
  * 默认版本更新检查者

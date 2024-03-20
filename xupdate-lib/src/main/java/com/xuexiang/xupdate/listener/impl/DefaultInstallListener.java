@@ -16,6 +16,8 @@
 
 package com.xuexiang.xupdate.listener.impl;
 
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.INSTALL_FAILED;
+
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -27,8 +29,6 @@ import com.xuexiang.xupdate.utils.ApkInstallUtils;
 
 import java.io.File;
 import java.io.IOException;
-
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.INSTALL_FAILED;
 
 /**
  * 默认的apk安装监听【自定义安装监听可继承该类，并重写相应的方法】

@@ -16,6 +16,8 @@
 
 package com.xuexiang.xupdate;
 
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.INSTALL_FAILED;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -45,8 +47,6 @@ import java.io.File;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.INSTALL_FAILED;
 
 /**
  * 内部版本更新参数的获取

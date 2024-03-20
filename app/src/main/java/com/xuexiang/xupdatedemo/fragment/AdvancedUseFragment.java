@@ -17,6 +17,8 @@
 
 package com.xuexiang.xupdatedemo.fragment;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
 import android.graphics.Color;
 
@@ -47,8 +49,6 @@ import com.xuexiang.xutil.tip.ToastUtils;
 
 import java.io.File;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * @author xuexiang

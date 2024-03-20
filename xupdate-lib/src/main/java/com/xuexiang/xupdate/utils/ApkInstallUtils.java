@@ -15,6 +15,9 @@
  */
 package com.xuexiang.xupdate.utils;
 
+import static android.Manifest.permission.INSTALL_PACKAGES;
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.INSTALL_FAILED;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -31,9 +34,6 @@ import com.xuexiang.xupdate.utils.ShellUtils.CommandResult;
 
 import java.io.File;
 import java.io.IOException;
-
-import static android.Manifest.permission.INSTALL_PACKAGES;
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.INSTALL_FAILED;
 
 /**
  * APK安装工具类

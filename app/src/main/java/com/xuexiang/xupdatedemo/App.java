@@ -16,6 +16,8 @@
 
 package com.xuexiang.xupdatedemo;
 
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
+
 import android.app.Application;
 
 import com.xuexiang.xaop.XAOP;
@@ -37,8 +39,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
-
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 
 /**
  * @author xuexiang

@@ -18,11 +18,10 @@ package com.xuexiang.xupdate.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import android.text.TextUtils;
 
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 

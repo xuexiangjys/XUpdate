@@ -17,6 +17,9 @@
 
 package com.xuexiang.xupdatedemo.utils;
 
+import static android.os.Build.VERSION_CODES.HONEYCOMB;
+import static android.os.Build.VERSION_CODES.KITKAT;
+
 import android.app.Activity;
 import android.os.Build;
 import android.view.View;
@@ -24,9 +27,6 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.ColorInt;
-
-import static android.os.Build.VERSION_CODES.HONEYCOMB;
-import static android.os.Build.VERSION_CODES.KITKAT;
 
 /**
  * 状态栏工具

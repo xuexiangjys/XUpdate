@@ -1,5 +1,7 @@
 package com.xuexiang.xupdatedemo.fragment;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.View;
@@ -21,8 +23,6 @@ import com.xuexiang.xutil.tip.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * @author xuexiang

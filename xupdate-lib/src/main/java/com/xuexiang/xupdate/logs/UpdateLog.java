@@ -16,9 +16,10 @@
 
 package com.xuexiang.xupdate.logs;
 
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 /**
  * 版本更新日志打印

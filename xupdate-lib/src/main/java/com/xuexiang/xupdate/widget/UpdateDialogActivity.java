@@ -1,5 +1,10 @@
 package com.xuexiang.xupdate.widget;
 
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.DOWNLOAD_PERMISSION_DENIED;
+import static com.xuexiang.xupdate.widget.UpdateDialogFragment.KEY_UPDATE_ENTITY;
+import static com.xuexiang.xupdate.widget.UpdateDialogFragment.KEY_UPDATE_PROMPT_ENTITY;
+import static com.xuexiang.xupdate.widget.UpdateDialogFragment.REQUEST_CODE_REQUEST_PERMISSIONS;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -36,11 +41,6 @@ import com.xuexiang.xupdate.utils.DrawableUtils;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 
 import java.io.File;
-
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.DOWNLOAD_PERMISSION_DENIED;
-import static com.xuexiang.xupdate.widget.UpdateDialogFragment.KEY_UPDATE_ENTITY;
-import static com.xuexiang.xupdate.widget.UpdateDialogFragment.KEY_UPDATE_PROMPT_ENTITY;
-import static com.xuexiang.xupdate.widget.UpdateDialogFragment.REQUEST_CODE_REQUEST_PERMISSIONS;
 
 /**
  * 版本更新提示器【AppCompatActivity实现】
