@@ -51,7 +51,7 @@ In order to facilitate the rapid integration of X-Library, I provide a template 
 
 * Support custom request API interface.
 
-* Compatible with Android 6.0 ~ 11.0.
+* Compatible with Android 6.0 ~ 12.0.
 
 * Support Chinese and English language (internationalization).
 
@@ -182,7 +182,7 @@ The following is the version description. Choose one.
 dependencies {
   ...
   // androidx project
-  implementation 'com.github.xuexiangjys:XUpdate:2.1.4'
+  implementation 'com.github.xuexiangjys:XUpdate:2.1.5'
 }
 ```
 

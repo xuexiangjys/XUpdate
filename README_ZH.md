@@ -51,7 +51,7 @@
 
 * 支持自定义请求API接口。
 
-* 兼容Android6.0～11.0。
+* 兼容Android6.0～12.0。
 
 * 支持中文和英文两种语言显示（国际化）。
 
@@ -181,7 +181,7 @@ allprojects {
 dependencies {
   ...
   // androidx版本
-  implementation 'com.github.xuexiangjys:XUpdate:2.1.4'
+  implementation 'com.github.xuexiangjys:XUpdate:2.1.5'
 }
 ```
 
